@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Myrdams Cars for Sales Davao is a luxury-style vehicle catalog for premium SUVs, sedans, pickups, vans, and sports units in Davao City."
+    />
+    <title>Myrdams Cars for Sales Davao</title>
+    <link rel="preconnect" href="https://images.pexels.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <a class="brand" href="#top" aria-label="Myrdams Cars for Sales Davao home">
+        <span class="brand-mark">M</span>
+        <span>
+          <strong>Myrdams</strong>
+          <small>Cars for Sales Davao</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#catalog">Catalog</a>
+        <a href="#service">Service</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="eyebrow">Davao City premium vehicle catalog</p>
+          <h1 id="hero-title">Myrdams Cars for Sales Davao</h1>
+          <p class="hero-copy">
+            Curated SUVs, sedans, pickups, vans, and performance cars with transparent
+            posted prices. No checkout wall, no hidden payment step, just the unit,
+            the price, and a direct inquiry path.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#catalog">Browse Cars</a>
+            <a class="button button-ghost" href="#contact">Book Viewing</a>
+          </div>
+        </div>
+        <div class="hero-panel" aria-label="Business highlights">
+          <span>Premium display</span>
+          <strong>12</strong>
+          <span>sample units ready for inquiry</span>
+        </div>
+      </section>
+
+      <section class="trust-strip" aria-label="Catalog highlights">
+        <div>
+          <strong>Transparent PHP prices</strong>
+          <span>Every card shows the listed amount up front.</span>
+        </div>
+        <div>
+          <strong>Davao viewing focus</strong>
+          <span>Built around appointments, inspection, and inquiry.</span>
+        </div>
+        <div>
+          <strong>No payment wall</strong>
+          <span>The site is a catalog, not an online checkout.</span>
+        </div>
+      </section>
+
+      <section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
+        <div class="section-heading">
+          <p class="eyebrow">Available catalog</p>
+          <h2 id="catalog-title">Premium units with posted prices</h2>
+          <p>
+            Filter by body style, fuel, transmission, price, or keyword. The current
+            listings use representative online images until actual unit photos are added.
+          </p>
+        </div>
+
+        <form class="filters" id="filters" aria-label="Vehicle filters">
+          <div class="search-field">
+            <label for="search">Search</label>
+            <input id="search" type="search" placeholder="Model, year, feature..." autocomplete="off" />
+          </div>
+
+          <div class="control-group">
+            <span class="control-label">Body</span>
+            <div class="segmented" id="typeFilters" role="group" aria-label="Body type filter">
+              <button type="button" class="chip active" data-type="All">All</button>
+              <button type="button" class="chip" data-type="SUV">SUV</button>
+              <button type="button" class="chip" data-type="Sedan">Sedan</button>
+              <button type="button" class="chip" data-type="Pickup">Pickup</button>
+              <button type="button" class="chip" data-type="Van">Van</button>
+              <button type="button" class="chip" data-type="Sports">Sports</button>
+            </div>
+          </div>
+
+          <div class="select-grid">
+            <label>
+              Fuel
+              <select id="fuel">
+                <option value="All">All fuel types</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Gasoline">Gasoline</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+            </label>
+
+            <label>
+              Transmission
+              <select id="transmission">
+                <option value="All">All transmissions</option>
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
+              </select>
+            </label>
+
+            <label>
+              Sort
+              <select id="sort">
+                <option value="featured">Featured first</option>
+                <option value="price-low">Lowest price</option>
+                <option value="price-high">Highest price</option>
+                <option value="year-new">Newest year</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="price-control">
+            <label for="maxPrice">Max price <strong id="priceLabel">PHP 5,800,000</strong></label>
+            <input id="maxPrice" type="range" min="900000" max="5800000" step="50000" value="5800000" />
+          </div>
+        </form>
+
+        <div class="catalog-toolbar">
+          <p id="resultCount" aria-live="polite">Showing all units</p>
+          <button type="button" class="text-button" id="resetFilters">Reset Filters</button>
+        </div>
+
+        <div class="vehicle-grid" id="vehicleGrid"></div>
+      </section>
+
+      <section class="service-band" id="service" aria-labelledby="service-title">
+        <div class="section-heading">
+          <p class="eyebrow">Buyer support</p>
+          <h2 id="service-title">A polished buying path without online checkout</h2>
+        </div>
+        <div class="service-grid">
+          <article>
+            <span>01</span>
+            <h3>Shortlist</h3>
+            <p>Compare units by body style, price, fuel type, year, and mileage.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>View</h3>
+            <p>Send an inquiry and schedule an in-person inspection in Davao City.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Decide</h3>
+            <p>Discuss cash purchase, financing, trade-in, or reservation offline.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contact" aria-labelledby="contact-title">
+        <div class="section-heading">
+          <p class="eyebrow">Contact</p>
+          <h2 id="contact-title">Book a viewing in Davao</h2>
+          <p>
+            Add your real phone, Facebook page, and showroom address here when ready.
+            The form is intentionally inquiry-only and does not collect payments.
+          </p>
+        </div>
+
+        <form class="contact-form">
+          <label>
+            Full name
+            <input type="text" name="name" placeholder="Juan Dela Cruz" />
+          </label>
+          <label>
+            Mobile number
+            <input type="tel" name="mobile" placeholder="09XX XXX XXXX" />
+          </label>
+          <label>
+            Interested unit
+            <input type="text" name="unit" placeholder="Toyota Fortuner, sedan, pickup..." />
+          </label>
+          <label>
+            Message
+            <textarea name="message" rows="4" placeholder="Preferred viewing day, budget, trade-in details..."></textarea>
+          </label>
+          <button type="button" class="button button-primary" id="prepareInquiry">Prepare Inquiry</button>
+          <p class="form-status" id="formStatus" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Myrdams Cars for Sales Davao. Catalog-only website with posted prices.</p>
+      <p>
+        Representative images from
+        <a href="https://www.pexels.com/" target="_blank" rel="noreferrer">Pexels</a>
+        and
+        <a href="https://unsplash.com/" target="_blank" rel="noreferrer">Unsplash</a>.
+      </p>
+    </footer>
+
+    <dialog class="vehicle-dialog" id="vehicleDialog">
+      <button class="dialog-close" id="closeDialog" type="button" aria-label="Close details">x</button>
+      <div id="dialogContent"></div>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>
