@@ -11,7 +11,7 @@ export const inventory = [
     seats: 7,
     badge: "Featured",
     image: "https://images.pexels.com/photos/1005634/pexels-photo-1005634.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#caa86a",
+    accent: "#66d9f1",
     description:
       "Executive family SUV profile with diesel efficiency, strong road presence, and Davao-ready ground clearance."
   },
@@ -27,7 +27,7 @@ export const inventory = [
     seats: 5,
     badge: "Prestige",
     image: "https://images.pexels.com/photos/8556280/pexels-photo-8556280.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#6f9ea5",
+    accent: "#2bb8d8",
     description:
       "A refined sedan choice for buyers who want a premium cabin, crisp handling, and business-class styling."
   },
@@ -43,7 +43,7 @@ export const inventory = [
     seats: 5,
     badge: "Utility Luxe",
     image: "https://images.pexels.com/photos/4895416/pexels-photo-4895416.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#8d6b35",
+    accent: "#00a99d",
     description:
       "A premium pickup listing for buyers needing cargo strength, elevated stance, and everyday comfort."
   },
@@ -59,7 +59,7 @@ export const inventory = [
     seats: 7,
     badge: "VIP",
     image: "https://images.pexels.com/photos/37147584/pexels-photo-37147584.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#7b2833",
+    accent: "#087fb4",
     description:
       "A luxury transport profile for family, executive, or client-service use with a VIP seating focus."
   },
@@ -75,7 +75,7 @@ export const inventory = [
     seats: 4,
     badge: "Performance",
     image: "https://images.pexels.com/photos/13741314/pexels-photo-13741314.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#d7b56d",
+    accent: "#7ee7ff",
     description:
       "A statement performance listing for buyers who want weekend drama and unmistakable street presence."
   },
@@ -91,7 +91,7 @@ export const inventory = [
     seats: 7,
     badge: "Family Luxe",
     image: "https://images.pexels.com/photos/5975536/pexels-photo-5975536.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#2e5a50",
+    accent: "#20c8b8",
     description:
       "A seven-seat premium SUV profile with a composed highway feel and strong everyday practicality."
   },
@@ -107,7 +107,7 @@ export const inventory = [
     seats: 5,
     badge: "Refined",
     image: "https://images.pexels.com/photos/7394765/pexels-photo-7394765.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#a8a39a",
+    accent: "#6aaeea",
     description:
       "A quiet luxury sedan listing with elegant styling, premium comfort, and a polished ownership feel."
   },
@@ -123,7 +123,7 @@ export const inventory = [
     seats: 8,
     badge: "New Arrival",
     image: "https://images.pexels.com/photos/25286626/pexels-photo-25286626.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#4b6f78",
+    accent: "#0b8aa9",
     description:
       "A modern people-mover profile with spacious seating and a premium shuttle look for family or business."
   },
@@ -139,7 +139,7 @@ export const inventory = [
     seats: 5,
     badge: "Low Mileage",
     image: "https://images.pexels.com/photos/305070/pexels-photo-305070.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#8797a5",
+    accent: "#94dff5",
     description:
       "A sharp compact sedan profile with turbo character, clean cabin tech, and a younger premium look."
   },
@@ -155,7 +155,7 @@ export const inventory = [
     seats: 7,
     badge: "Executive 4x4",
     image: "https://images.pexels.com/photos/12681128/pexels-photo-12681128.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#3f4b42",
+    accent: "#1e7898",
     description:
       "A premium 4x4 listing for buyers who want comfort, command seating, and long-trip confidence."
   },
@@ -171,7 +171,7 @@ export const inventory = [
     seats: 5,
     badge: "Adventure",
     image: "https://images.pexels.com/photos/15489329/pexels-photo-15489329.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#a46b46",
+    accent: "#18a1c5",
     description:
       "A bold performance pickup profile for buyers who like aggressive styling and weekend capability."
   },
@@ -187,7 +187,7 @@ export const inventory = [
     seats: 5,
     badge: "Hybrid Luxe",
     image: "https://images.pexels.com/photos/14313337/pexels-photo-14313337.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#6f7f70",
+    accent: "#4bbfae",
     description:
       "A luxury crossover listing for buyers who want a quiet drive, premium comfort, and hybrid efficiency."
   }

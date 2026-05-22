@@ -125,7 +125,7 @@ export default function Home() {
         <Link className="brand" href="/" aria-label="Myrdams Cars for Sales Davao home">
           <motion.span
             className="brand-mark"
-            animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(202,168,106,0)", "0 0 38px rgba(202,168,106,.34)", "0 0 0 rgba(202,168,106,0)"] }}
+            animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(102,217,241,0)", "0 0 38px rgba(102,217,241,.38)", "0 0 0 rgba(102,217,241,0)"] }}
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
           >
             M
@@ -161,7 +161,7 @@ export default function Home() {
             Myrdams Cars for Sales Davao
           </motion.h1>
           <motion.p className="hero-copy" variants={fadeUp}>
-            A cinematic Next.js vehicle catalog with transparent posted prices, fast filtering,
+            An ocean-blue Next.js vehicle catalog with transparent posted prices, fast filtering,
             luxury-grade motion, and dedicated product pages for every unit.
           </motion.p>
           <motion.div className="hero-actions" variants={fadeUp}>

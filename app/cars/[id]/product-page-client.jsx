@@ -44,7 +44,7 @@ function ProductHeader() {
       <Link className="brand" href="/" aria-label="Myrdams Cars for Sales Davao home">
         <motion.span
           className="brand-mark"
-          animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(202,168,106,0)", "0 0 38px rgba(202,168,106,.34)", "0 0 0 rgba(202,168,106,0)"] }}
+          animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(102,217,241,0)", "0 0 38px rgba(102,217,241,.38)", "0 0 0 rgba(102,217,241,0)"] }}
           transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
         >
           M
@@ -90,7 +90,7 @@ export default function ProductPageClient({ vehicle, related }) {
       <section className="product-hero">
         <motion.div
           className="product-hero-bg"
-          style={{ backgroundImage: `linear-gradient(90deg, rgba(18,17,15,.9), rgba(18,17,15,.45)), url("${vehicle.image}")` }}
+          style={{ backgroundImage: `linear-gradient(90deg, rgba(4,54,80,.84), rgba(7,111,148,.5), rgba(239,251,255,.14)), url("${vehicle.image}")` }}
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.35, ease: [0.19, 1, 0.22, 1] }}
