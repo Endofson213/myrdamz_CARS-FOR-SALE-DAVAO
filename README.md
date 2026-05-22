@@ -1,20 +1,30 @@
 # myrdamz_CARS-FOR-SALE-DAVAO
 
-Luxury-style static catalog website for **Myrdams Cars for Sales Davao**.
+Luxury animated Next.js catalog website for **Myrdams Cars for Sales Davao**.
 
 ## What is included
 
-- Responsive landing/catalog page
+- Next.js app router project
+- Static export support for GitHub Pages
+- Advanced motion using Framer Motion
 - Vehicle cards with posted PHP prices
-- Filtering by body type, fuel, transmission, price range, search, and sort order
+- Animated filtering by body type, fuel, transmission, price range, search, and sort order
+- 3D hover tilt cards, animated hero treatment, detail modal transitions, and scroll reveals
 - Inquiry-focused contact section with no online checkout or payment wall
 - Representative online vehicle/showroom imagery
 
-## Files
+## Local development
 
-- `index.html`
-- `styles.css`
-- `script.js`
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
 
 ## Image credits
 
