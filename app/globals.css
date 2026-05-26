@@ -62,12 +62,56 @@ img {
   right: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 22px;
-  padding: 18px 5vw;
+  justify-content: flex-start;
+  gap: 18px;
+
+  width: 100%;
+  padding: 6px 5vw;
+
   color: var(--ink);
-  background: linear-gradient(180deg, rgba(235, 250, 255, 0.94), rgba(235, 250, 255, 0.58), rgba(235, 250, 255, 0));
+  background: linear-gradient(
+    180deg,
+    rgba(235, 250, 255, 0.94),
+    rgba(235, 250, 255, 0.58),
+    rgba(235, 250, 255, 0)
+  );
   backdrop-filter: blur(16px);
+
+
+  transition:
+    top 0.55s ease,
+    left 0.55s ease,
+    right 0.55s ease,
+    width 0.55s ease,
+    padding 0.55s ease,
+    gap 0.55s ease,
+    background 0.55s ease,
+    border-radius 0.55s ease,
+    border-color 0.55s ease,
+    box-shadow 0.55s ease,
+    backdrop-filter 0.55s ease;
+}
+
+.site-header.is-scrolled {
+  top: 18px;
+  left: 5vw;
+  right: auto;
+
+  width: max-content;
+  max-width: calc(100vw - 10vw);
+
+  padding: 8px 16px 8px 10px;
+  gap: 12px;
+
+  border-radius: 999px;
+  border-color: rgba(102, 217, 241, 0.34);
+
+  background: rgba(235, 250, 255, 0.509);
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 18px 42px rgba(0, 47, 67, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.48);
 }
 
 .brand {
@@ -75,19 +119,120 @@ img {
   align-items: center;
   gap: 12px;
   min-width: 0;
+  flex: 0 0 auto;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .brand-mark {
-  display: grid;
-  width: 42px;
-  height: 42px;
+  width: 80px;
+  height: 80px;
   place-items: center;
+  overflow: hidden;
+  display: flex;
+
   border: 1px solid rgba(7, 48, 71, 0.2);
   border-radius: 50%;
+
   background: rgba(255, 255, 255, 0.46);
   color: var(--wine);
+
   font-family: Georgia, serif;
   font-size: 1.35rem;
+
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    width 0.35s ease,
+    height 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+.site-header.is-scrolled .brand-mark {
+  width: 46px;
+  height: 46px;
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.1rem;
+}
+
+.brand small {
+  color: rgba(7, 48, 71, 0.66);
+  font-size: 0.75rem;
+}
+
+/* Hide MYRDAMS text when scrolled so the logo + buttons fit inside one pill */
+.site-header .brand > span:not(.brand-mark) {
+  max-width: 190px;
+  opacity: 1;
+  overflow: hidden;
+  white-space: nowrap;
+
+  transition:
+    max-width 0.3s ease,
+    opacity 0.25s ease,
+    transform 0.3s ease;
+}
+
+.site-header.is-scrolled .brand > span:not(.brand-mark) {
+  max-width: 0;
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  color: rgba(7, 48, 71, 0.78);
+  font-size: 0.92rem;
+  font-weight: 700;
+
+  transition:
+    gap 0.3s ease,
+    font-size 0.3s ease;
+}
+
+.site-header.is-scrolled .nav-links {
+  gap: 8px;
+  font-size: 0.88rem;
+}
+
+.nav-links a {
+  border-radius: 999px;
+  padding: 8px 6px;
+
+  transition:
+    color 180ms ease,
+    transform 180ms ease,
+    background 180ms ease,
+    padding 0.3s ease;
+}
+
+.site-header.is-scrolled .nav-links a {
+  padding: 8px 10px;
+}
+
+.nav-links a:hover {
+  color: var(--wine);
+  background: rgba(102, 217, 241, 0.16);
+  transform: translateY(-2px);
 }
 
 .brand strong,
@@ -134,27 +279,17 @@ img {
   background: var(--charcoal);
 }
 
-.hero-bg,
-.hero::before {
+.hero-bg {
+  overflow: hidden;
+}
+
+.hero-bg-slide {
   position: absolute;
   inset: 0;
-}
 
-.hero-bg {
-  background-image:
-    linear-gradient(90deg, rgba(4, 54, 80, 0.82) 0%, rgba(7, 111, 148, 0.58) 45%, rgba(239, 251, 255, 0.16) 100%),
-    url("https://images.pexels.com/photos/17632052/pexels-photo-17632052.jpeg?auto=compress&cs=tinysrgb&w=2200");
   background-position: center;
   background-size: cover;
-}
-
-.hero::before {
-  z-index: 1;
-  content: "";
-  background:
-    linear-gradient(135deg, rgba(102, 217, 241, 0.26), transparent 34%),
-    linear-gradient(0deg, rgba(3, 45, 68, 0.8), transparent 44%);
-  pointer-events: none;
+  background-repeat: no-repeat;
 }
 
 .scan-lines {
@@ -193,6 +328,7 @@ img {
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
+  font-size: 20px;
 }
 
 .hero .eyebrow,
@@ -378,7 +514,11 @@ h3 {
   color: rgba(7, 48, 71, 0.64);
 }
 
-.catalog-section,
+.catalog-section {
+  padding: 50px 5vw;
+  padding-top: 5px;
+}
+
 .contact-section {
   padding: 84px 5vw;
 }
@@ -404,7 +544,7 @@ h3 {
   align-items: end;
   border: 1px solid rgba(7, 48, 71, 0.12);
   border-radius: 8px;
-  padding: 20px;
+  padding: 25px;
   background: rgba(247, 253, 255, 0.82);
   box-shadow: 0 18px 50px rgba(8, 91, 126, 0.1);
   backdrop-filter: blur(20px);
@@ -676,6 +816,7 @@ textarea:focus {
   padding: 82px 5vw;
   background: var(--charcoal);
   color: var(--foam);
+  padding-top: 25px;
 }
 
 .experience-band::before {
@@ -1229,19 +1370,99 @@ textarea:focus {
 
 
 @media (max-width: 680px) {
-  .site-header {
+  .site-header,
+  .site-header.is-scrolled {
     position: absolute;
-    align-items: flex-start;
-    padding: 16px 18px;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    width: 100%;
+    max-width: none;
+
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 14px 12px;
+    gap: 8px;
+
+    border-radius: 0;
+    border-color: transparent;
+
+    background: linear-gradient(
+      180deg,
+      rgba(235, 250, 255, 0.94),
+      rgba(235, 250, 255, 0.58),
+      rgba(235, 250, 255, 0)
+    );
+
+    box-shadow: none;
+    backdrop-filter: blur(16px);
+
+    transition: none !important;
+  }
+
+  .brand {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .brand-mark,
+  .site-header.is-scrolled .brand-mark {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+
+    border-color: rgba(7, 48, 71, 0.2);
+    background: rgba(255, 255, 255, 0.46);
+
+    transition: none !important;
+  }
+
+  .brand > span:not(.brand-mark),
+  .site-header.is-scrolled .brand > span:not(.brand-mark) {
+    max-width: 78px;
+    opacity: 1;
+    transform: none;
+    overflow: hidden;
+    white-space: nowrap;
+
+    transition: none !important;
+  }
+
+  .brand strong {
+    font-size: 0.85rem;
   }
 
   .brand small {
     display: none;
   }
 
-  .nav-links {
-    gap: 11px;
-    font-size: 0.8rem;
+  .nav-links,
+  .site-header.is-scrolled .nav-links {
+    margin-left: auto;
+    width: auto;
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 7px;
+    font-size: 0.68rem;
+
+    transition: none !important;
+  }
+
+  .nav-links a,
+  .site-header.is-scrolled .nav-links a {
+    padding: 5px 0;
+    white-space: nowrap;
+
+    transition: none !important;
   }
 
   .hero {

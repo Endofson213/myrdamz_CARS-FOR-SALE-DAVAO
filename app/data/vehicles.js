@@ -9,7 +9,6 @@ export const inventory = [
     fuel: "Diesel",
     transmission: "Automatic",
     seats: 7,
-    badge: "Featured",
     image: "https://images.pexels.com/photos/1005634/pexels-photo-1005634.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#66d9f1",
     description:
@@ -25,7 +24,6 @@ export const inventory = [
     fuel: "Gasoline",
     transmission: "Automatic",
     seats: 5,
-    badge: "Prestige",
     image: "https://images.pexels.com/photos/8556280/pexels-photo-8556280.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#2bb8d8",
     description:
@@ -41,7 +39,6 @@ export const inventory = [
     fuel: "Diesel",
     transmission: "Automatic",
     seats: 5,
-    badge: "Utility Luxe",
     image: "https://images.pexels.com/photos/4895416/pexels-photo-4895416.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#00a99d",
     description:
@@ -57,7 +54,6 @@ export const inventory = [
     fuel: "Gasoline",
     transmission: "Automatic",
     seats: 7,
-    badge: "VIP",
     image: "https://images.pexels.com/photos/37147584/pexels-photo-37147584.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#087fb4",
     description:
@@ -73,7 +69,6 @@ export const inventory = [
     fuel: "Gasoline",
     transmission: "Automatic",
     seats: 4,
-    badge: "Performance",
     image: "https://images.pexels.com/photos/13741314/pexels-photo-13741314.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#7ee7ff",
     description:
@@ -89,7 +84,6 @@ export const inventory = [
     fuel: "Diesel",
     transmission: "Automatic",
     seats: 7,
-    badge: "Family Luxe",
     image: "https://images.pexels.com/photos/5975536/pexels-photo-5975536.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#20c8b8",
     description:
@@ -105,7 +99,6 @@ export const inventory = [
     fuel: "Gasoline",
     transmission: "Automatic",
     seats: 5,
-    badge: "Refined",
     image: "https://images.pexels.com/photos/7394765/pexels-photo-7394765.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#6aaeea",
     description:
@@ -121,7 +114,6 @@ export const inventory = [
     fuel: "Diesel",
     transmission: "Automatic",
     seats: 8,
-    badge: "New Arrival",
     image: "https://images.pexels.com/photos/25286626/pexels-photo-25286626.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#0b8aa9",
     description:
@@ -137,7 +129,6 @@ export const inventory = [
     fuel: "Gasoline",
     transmission: "Automatic",
     seats: 5,
-    badge: "Low Mileage",
     image: "https://images.pexels.com/photos/305070/pexels-photo-305070.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#94dff5",
     description:
@@ -153,7 +144,6 @@ export const inventory = [
     fuel: "Diesel",
     transmission: "Automatic",
     seats: 7,
-    badge: "Executive 4x4",
     image: "https://images.pexels.com/photos/12681128/pexels-photo-12681128.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#1e7898",
     description:
@@ -169,7 +159,6 @@ export const inventory = [
     fuel: "Diesel",
     transmission: "Automatic",
     seats: 5,
-    badge: "Adventure",
     image: "https://images.pexels.com/photos/15489329/pexels-photo-15489329.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#18a1c5",
     description:
@@ -185,7 +174,6 @@ export const inventory = [
     fuel: "Hybrid",
     transmission: "Automatic",
     seats: 5,
-    badge: "Hybrid Luxe",
     image: "https://images.pexels.com/photos/14313337/pexels-photo-14313337.jpeg?auto=compress&cs=tinysrgb&w=1400",
     accent: "#4bbfae",
     description:

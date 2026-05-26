@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent} from "framer-motion";
+import { useMemo, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -17,6 +18,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { formatMileage, formatPrice } from "../../data/vehicles";
+import Image from "next/image";
+import logo from "../../pictures/LogoMYRDAMZ.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30, filter: "blur(12px)" },
@@ -27,7 +30,6 @@ const fadeUp = {
     transition: { duration: 0.72, ease: [0.19, 1, 0.22, 1] }
   }
 };
-
 const stagger = {
   hidden: {},
   visible: {
@@ -37,29 +39,46 @@ const stagger = {
     }
   }
 };
-
+ 
 function ProductHeader() {
-  return (
-    <header className="site-header product-header">
-      <Link className="brand" href="/" aria-label="Myrdams Cars for Sales Davao home">
-        <motion.span
-          className="brand-mark"
-          animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(102,217,241,0)", "0 0 38px rgba(102,217,241,.38)", "0 0 0 rgba(102,217,241,0)"] }}
-          transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          M
-        </motion.span>
-        <span>
-          <strong>Myrdams</strong>
-          <small>Cars for Sales Davao</small>
-        </span>
-      </Link>
 
-      <nav className="nav-links" aria-label="Product navigation">
-        <Link href="/#catalog">Catalog</Link>
-        <Link href="/#contact">Contact</Link>
-      </nav>
-    </header>
+   const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+  setIsScrolled(latest > 30);
+});
+  return (
+    
+    <header
+    className={`site-header ${isScrolled ? "is-scrolled" : ""}`}
+  >
+    <Link className="brand" href="/" aria-label="Myrdams Cars for Sales Davao home">
+      <motion.span
+       className="brand-mark"
+            animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(102,217,241,0)", "0 0 38px rgba(102,217,241,.38)", "0 0 0 rgba(102,217,241,0)"] }}
+            transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <Image
+          src={logo}
+          alt="Myrdams Cars for Sales Davao logo"
+          width={45}
+          height={45}
+          className="brand-logo"
+        />
+      </motion.span>
+
+      <span>
+        <strong>Myrdams</strong>
+        <small>Cars for Sales Davao</small>
+      </span>
+    </Link>
+
+    <nav className="nav-links" aria-label="Primary navigation">
+      <a href="#catalog">Catalog</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
   );
 }
 

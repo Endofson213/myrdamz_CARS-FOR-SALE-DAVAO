@@ -1,6 +1,14 @@
 "use client";
 
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { 
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useScroll,
+  useMotionValueEvent 
+} from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
@@ -13,8 +21,18 @@ import {
   SlidersHorizontal
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState , useEffect } from "react";
 import { bodyTypes, formatMileage, formatPrice, fuels, inventory, transmissions } from "./data/vehicles";
+import Image from "next/image";
+import logo from "./pictures/LogoMYRDAMZ.png";
+import hero1 from "./pictures/CarHeroBG.jpg";
+import hero2 from "./pictures/CarHeroBG2.jpg";
+import hero3 from "./pictures/CarHeroBG3.jpg";
+import hero4 from "./pictures/CarHeroBG4.jpg";
+import hero5 from "./pictures/CarHeroBG5.jpg";
+
+const heroImages = [hero1, hero2, hero3, hero4, hero5];
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 34, filter: "blur(12px)" },
@@ -87,7 +105,6 @@ export default function Home() {
         vehicle.year,
         vehicle.fuel,
         vehicle.transmission,
-        vehicle.badge,
         vehicle.description
       ]
         .join(" ")
@@ -107,7 +124,15 @@ export default function Home() {
     if (filters.sort === "year-new") return [...list].sort((a, b) => b.year - a.year);
     return list;
   }, [filters]);
+const [heroIndex, setHeroIndex] = useState(0);
 
+useEffect(() => {
+  const interval = setInterval(() => {
+    setHeroIndex((current) => (current + 1) % heroImages.length);
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
   function resetFilters() {
     setFilters({
       type: "All",
@@ -118,33 +143,70 @@ export default function Home() {
       sort: "featured"
     });
   }
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+  setIsScrolled(latest > 80);
+});
 
   return (
-    <main>
-      <header className="site-header">
-        <Link className="brand" href="/" aria-label="Myrdams Cars for Sales Davao home">
-          <motion.span
+<main>
+  <header
+  className={`site-header ${isScrolled ? "is-scrolled" : ""}`}
+  >
+    <Link className="brand" href="/" aria-label="Myrdams Cars for Sales Davao home">
+      <motion.span
             className="brand-mark"
             animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(102,217,241,0)", "0 0 38px rgba(102,217,241,.38)", "0 0 0 rgba(102,217,241,0)"] }}
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
           >
-            M
-          </motion.span>
-          <span>
-            <strong>Myrdams</strong>
-            <small>Cars for Sales Davao</small>
-          </span>
-        </Link>
+        <Image
+          src={logo}
+          alt="Myrdams Cars for Sales Davao logo"
+          width={45}
+          height={45}
+          className="brand-logo"
+        />
+      </motion.span>
 
-        <nav className="nav-links" aria-label="Primary navigation">
-          <a href="#catalog">Catalog</a>
-          <a href="#experience">Experience</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </header>
+      <span>
+        <strong>MYRDAMS</strong>
+        <small>Cars for Sales Davao</small>
+      </span>
+    </Link>
+
+    <nav className="nav-links" aria-label="Primary navigation">
+      <a href="#catalog">Catalog</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <motion.div className="hero-bg" initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 1.7, ease: [0.19, 1, 0.22, 1] }} />
+       <motion.div
+  className="hero-bg"
+  initial={{ scale: 1.08 }}
+  animate={{ scale: 1 }}
+  transition={{ duration: 1.7, ease: [0.19, 1, 0.22, 1] }}
+>
+  {heroImages.map((image, index) => (
+    <motion.div
+      key={image.src}
+      className="hero-bg-slide"
+      style={{
+        backgroundImage: `linear-gradient(90deg, rgba(4, 54, 80, 0.82) 0%, rgba(7, 111, 148, 0.58) 45%, rgba(239, 251, 255, 0.16) 100%), url(${image.src})`,
+      }}
+      animate={{
+        opacity: heroIndex === index ? 1 : 0,
+      }}
+      transition={{
+        duration: 1.2,
+        ease: "easeInOut",
+      }}
+    />
+  ))}
+        </motion.div>
         <div className="scan-lines" aria-hidden="true" />
         <motion.div
           className="light-sweep"
@@ -154,15 +216,12 @@ export default function Home() {
         />
 
         <motion.div className="hero-content" variants={stagger} initial="hidden" animate="visible">
-          <motion.p className="eyebrow" variants={fadeUp}>
-            Davao City premium vehicle catalog
-          </motion.p>
+          <p className="eyebrow">{inventory.length} Units In Stock!</p>
           <motion.h1 id="hero-title" variants={fadeUp}>
             Myrdams Cars for Sales Davao
           </motion.h1>
           <motion.p className="hero-copy" variants={fadeUp}>
-            An ocean-blue Next.js vehicle catalog with transparent posted prices, fast filtering,
-            luxury-grade motion, and dedicated product pages for every unit.
+            Find your next ride in Davao with trusted cars, clear deals, and a smoother buying experience.
           </motion.p>
           <motion.div className="hero-actions" variants={fadeUp}>
             <a className="button button-primary magnetic" href="#catalog">
@@ -184,11 +243,31 @@ export default function Home() {
           <motion.div className="orbit-car" animate={{ y: [-7, 7, -7] }} transition={{ duration: 3.7, repeat: Infinity, ease: "easeInOut" }}>
             <CarFront size={54} />
           </motion.div>
-          <span>{inventory.length} premium sample units</span>
         </motion.div>
       </section>
 
-      <motion.section className="trust-strip" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
+      <section className="experience-band" id="experience" aria-labelledby="experience-title">
+        <motion.div className="section-heading light" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
+          <p className="eyebrow">Buyer flow</p>
+          <h2 id="experience-title">Luxury feeling, practical path</h2>
+        </motion.div>
+
+        <motion.div className="experience-grid" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
+          {[
+            ["01", "Shortlist", "Compare price, year, body, fuel, transmission, and mileage at speed."],
+            ["02", "View Product Page", "Open a selected unit for deeper specs, visuals, and inquiry context."],
+            ["03", "Close Offline", "Discuss cash purchase, financing, reservation, and trade-in outside the site."]
+          ].map(([number, title, copy]) => (
+            <motion.article key={title} variants={fadeUp} whileHover={{ y: -8 }}>
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+            </motion.article>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* <motion.section className="trust-strip" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
         {[
           ["Transparent PHP prices", "Every vehicle card displays the listed amount up front."],
           ["Advanced browsing", "Animated filters, live search, sort order, and price range."],
@@ -200,16 +279,16 @@ export default function Home() {
             <span>{copy}</span>
           </motion.div>
         ))}
-      </motion.section>
+      </motion.section> */}
 
       <section className="catalog-section" id="catalog" aria-labelledby="catalog-title">
         <motion.div className="section-heading" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
-          <p className="eyebrow">Animated catalog</p>
-          <h2 id="catalog-title">Premium units with posted prices</h2>
-          <p>
+          {/* <p className="eyebrow">Animated catalog</p>
+          <h2 id="catalog-title">Premium units with posted prices</h2> */}
+          {/* <p>
             Cards react to motion, filters transition smoothly, and selecting a unit opens a full
             product page with more room for specs, pricing, and inquiry context.
-          </p>
+          </p> */}
         </motion.div>
 
         <motion.div className="filter-shell" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
@@ -278,8 +357,9 @@ export default function Home() {
               </select>
             </label>
           </div>
-
-          <label className="price-range">
+          
+          {/* price range slider filter */}
+          {/* <label className="price-range">
             <span>
               Max price <strong>{formatPrice(filters.maxPrice)}</strong>
             </span>
@@ -291,7 +371,7 @@ export default function Home() {
               value={filters.maxPrice}
               onChange={(event) => setFilters((current) => ({ ...current, maxPrice: Number(event.target.value) }))}
             />
-          </label>
+          </label> */}
         </motion.div>
 
         <div className="catalog-toolbar">
@@ -317,12 +397,12 @@ export default function Home() {
                   <Link className="vehicle-media" href={`/cars/${vehicle.id}`} aria-label={`View product page for ${vehicle.name}`}>
                     <img src={vehicle.image} alt={vehicle.name} loading="lazy" />
                     <span className="badge">{vehicle.badge}</span>
-                    <motion.span
+                    {/* <motion.span
                       className="card-glint"
                       aria-hidden="true"
                       animate={{ x: ["-120%", "180%"] }}
                       transition={{ duration: 3.9, repeat: Infinity, repeatDelay: 2 + index * 0.12, ease: "easeInOut" }}
-                    />
+                    /> */}
                   </Link>
                   <div className="vehicle-body">
                     <div>
@@ -363,26 +443,7 @@ export default function Home() {
         )}
       </section>
 
-      <section className="experience-band" id="experience" aria-labelledby="experience-title">
-        <motion.div className="section-heading light" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
-          <p className="eyebrow">Buyer flow</p>
-          <h2 id="experience-title">Luxury feeling, practical path</h2>
-        </motion.div>
-
-        <motion.div className="experience-grid" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
-          {[
-            ["01", "Shortlist", "Compare price, year, body, fuel, transmission, and mileage at speed."],
-            ["02", "View Product Page", "Open a selected unit for deeper specs, visuals, and inquiry context."],
-            ["03", "Close Offline", "Discuss cash purchase, financing, reservation, and trade-in outside the site."]
-          ].map(([number, title, copy]) => (
-            <motion.article key={title} variants={fadeUp} whileHover={{ y: -8 }}>
-              <span>{number}</span>
-              <h3>{title}</h3>
-              <p>{copy}</p>
-            </motion.article>
-          ))}
-        </motion.div>
-      </section>
+      
 
       <section className="contact-section" id="contact" aria-labelledby="contact-title">
         <motion.div className="section-heading" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
@@ -434,8 +495,7 @@ export default function Home() {
       </section>
 
       <footer className="site-footer">
-        <p>Myrdams Cars for Sales Davao. Next.js animated catalog with posted prices.</p>
-        <p>Representative images from Pexels and Unsplash research.</p>
+        <p>Myrdams Cars for Sales Davao.</p>
       </footer>
     </main>
   );
