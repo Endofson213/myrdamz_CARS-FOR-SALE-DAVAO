@@ -15,11 +15,12 @@ import {
   CalendarDays,
   CarFront,
   Gauge,
-  MapPin,
   MessageCircle,
+  Menu,
   RefreshCw,
   Search,
-  SlidersHorizontal
+  SlidersHorizontal,
+  X
 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState , useEffect } from "react";
@@ -33,10 +34,6 @@ import hero4 from "./pictures/CarHeroBG4.jpg";
 import hero5 from "./pictures/CarHeroBG5.jpg";
 
 const heroImages = [hero1, hero2, hero3, hero4, hero5];
-const mapsLocationUrl =
-  "https://www.google.com/maps/search/?api=1&query=MYRDAMZ%20CAR%20DISPLAY%20CENTER%20%2F%20CARS%20FOR%20SALE%20DAVAO";
-const mapsEmbedUrl =
-  "https://maps.google.com/maps?hl=en&q=MYRDAMZ%20CAR%20DISPLAY%20CENTER%20%2F%20CARS%20FOR%20SALE%20DAVAO&z=16&output=embed";
 
 
 const fadeUp = {
@@ -100,6 +97,7 @@ export default function Home() {
     sort: "featured"
   });
   const [inquiryStatus, setInquiryStatus] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const search = filters.search.toLowerCase();
@@ -153,6 +151,7 @@ useEffect(() => {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
   setIsScrolled(latest > 80);
+  if (latest > 80) setIsMenuOpen(false);
 });
 
   return (
@@ -163,7 +162,7 @@ useEffect(() => {
     <Link className="brand" href="/" aria-label="Myrdamz Cars for Sales Davao home">
       <motion.span
             className="brand-mark"
-            animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(237,28,36,0)", "0 0 38px rgba(237,28,36,.32)", "0 0 0 rgba(237,28,36,0)"] }}
+            animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(143,29,36,0)", "0 0 38px rgba(143,29,36,.3)", "0 0 0 rgba(143,29,36,0)"] }}
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
           >
         <Image
@@ -181,10 +180,20 @@ useEffect(() => {
       </span>
     </Link>
 
-    <nav className="nav-links" aria-label="Primary navigation">
-      <a href="#catalog">Catalog</a>
-      <a href="#experience">Experience</a>
-      <a href="#contact">Contact</a>
+    <button
+      className="menu-toggle"
+      type="button"
+      aria-label="Toggle navigation menu"
+      aria-expanded={isMenuOpen}
+      onClick={() => setIsMenuOpen((open) => !open)}
+    >
+      {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+    </button>
+
+    <nav className={`nav-links ${isMenuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
+      <a href="#catalog" onClick={() => setIsMenuOpen(false)}>Catalog</a>
+      <a href="#experience" onClick={() => setIsMenuOpen(false)}>Experience</a>
+      <a href="#contact" onClick={() => setIsMenuOpen(false)}>Contact</a>
     </nav>
   </header>
 
@@ -200,7 +209,7 @@ useEffect(() => {
       key={image.src}
       className="hero-bg-slide"
       style={{
-        backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.66) 0%, rgba(237, 28, 36, 0.36) 45%, rgba(247, 247, 247, 0.18) 100%), url(${image.src})`,
+        backgroundImage: `url(${image.src})`,
       }}
       animate={{
         opacity: heroIndex === index ? 1 : 0,
@@ -213,15 +222,7 @@ useEffect(() => {
   ))}
         </motion.div>
         <div className="scan-lines" aria-hidden="true" />
-        <motion.div
-          className="light-sweep"
-          aria-hidden="true"
-          animate={{ x: ["-30%", "135%"], opacity: [0, 0.75, 0] }}
-          transition={{ duration: 5.8, repeat: Infinity, repeatDelay: 1.2, ease: "easeInOut" }}
-        />
-
         <motion.div className="hero-content" variants={stagger} initial="hidden" animate="visible">
-          <p className="eyebrow">{inventory.length} Units In Stock!</p>
           <motion.h1 id="hero-title" variants={fadeUp}>
             Myrdamz Cars for Sales Davao
           </motion.h1>
@@ -455,26 +456,18 @@ useEffect(() => {
           <p className="eyebrow">Contact</p>
           <h2 id="contact-title">Book a viewing in Davao</h2>
           <p>
-            Send an inquiry, then visit the display center to inspect available units in person.
+            The form stays inquiry-only. Add the real phone number, Facebook page, or email endpoint
+            when the business is ready.
           </p>
+
           <div className="map-card">
-            <div className="map-frame">
-              <iframe
-                title="MYRDAMZ Car Display Center map"
-                src={mapsEmbedUrl}
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-            <div className="map-caption">
-              <MapPin size={20} />
-              <span>MYRDAMZ CAR DISPLAY CENTER / CARS FOR SALE DAVAO</span>
-              <a className="location-link" href={mapsLocationUrl} target="_blank" rel="noreferrer">
-                Open in Google Maps
-              </a>
-            </div>
-          </div>
+         <iframe title="MYRDAMZ Car Display Center map" 
+         src="https://maps.google.com/maps?hl=en&amp;q=MYRDAMZ%20CAR%20DISPLAY%20CENTER%20%2F%20CARS%20FOR%20SALE%20DAVAO&amp;z=16&amp;output=embed" 
+         loading="lazy" 
+         allowFullScreen="" 
+         referrerPolicy="no-referrer-when-downgrade">
+         </iframe>
+        </div>
         </motion.div>
 
         <motion.form className="contact-form" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>

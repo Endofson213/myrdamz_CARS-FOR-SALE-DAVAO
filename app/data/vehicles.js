@@ -10,7 +10,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 7,
     image: "https://images.pexels.com/photos/1005634/pexels-photo-1005634.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#ed1c24",
+    accent: "#66d9f1",
     description:
       "Executive family SUV profile with diesel efficiency, strong road presence, and Davao-ready ground clearance."
   },
@@ -25,7 +25,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 5,
     image: "https://images.pexels.com/photos/8556280/pexels-photo-8556280.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#c8102e",
+    accent: "#2bb8d8",
     description:
       "A refined sedan choice for buyers who want a premium cabin, crisp handling, and business-class styling."
   },
@@ -40,7 +40,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 5,
     image: "https://images.pexels.com/photos/4895416/pexels-photo-4895416.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#d8d8d8",
+    accent: "#00a99d",
     description:
       "A premium pickup listing for buyers needing cargo strength, elevated stance, and everyday comfort."
   },
@@ -55,7 +55,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 7,
     image: "https://images.pexels.com/photos/37147584/pexels-photo-37147584.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#101010",
+    accent: "#087fb4",
     description:
       "A luxury transport profile for family, executive, or client-service use with a VIP seating focus."
   },
@@ -70,7 +70,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 4,
     image: "https://images.pexels.com/photos/13741314/pexels-photo-13741314.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#ff4a50",
+    accent: "#7ee7ff",
     description:
       "A statement performance listing for buyers who want weekend drama and unmistakable street presence."
   },
@@ -85,7 +85,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 7,
     image: "https://images.pexels.com/photos/5975536/pexels-photo-5975536.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#bfc0c2",
+    accent: "#20c8b8",
     description:
       "A seven-seat premium SUV profile with a composed highway feel and strong everyday practicality."
   },
@@ -100,7 +100,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 5,
     image: "https://images.pexels.com/photos/7394765/pexels-photo-7394765.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#d71920",
+    accent: "#6aaeea",
     description:
       "A quiet luxury sedan listing with elegant styling, premium comfort, and a polished ownership feel."
   },
@@ -115,7 +115,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 8,
     image: "https://images.pexels.com/photos/25286626/pexels-photo-25286626.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#8f0e15",
+    accent: "#0b8aa9",
     description:
       "A modern people-mover profile with spacious seating and a premium shuttle look for family or business."
   },
@@ -130,7 +130,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 5,
     image: "https://images.pexels.com/photos/305070/pexels-photo-305070.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#f0f0f0",
+    accent: "#94dff5",
     description:
       "A sharp compact sedan profile with turbo character, clean cabin tech, and a younger premium look."
   },
@@ -145,7 +145,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 7,
     image: "https://images.pexels.com/photos/12681128/pexels-photo-12681128.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#151515",
+    accent: "#1e7898",
     description:
       "A premium 4x4 listing for buyers who want comfort, command seating, and long-trip confidence."
   },
@@ -160,7 +160,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 5,
     image: "https://images.pexels.com/photos/15489329/pexels-photo-15489329.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#e31b23",
+    accent: "#18a1c5",
     description:
       "A bold performance pickup profile for buyers who like aggressive styling and weekend capability."
   },
@@ -175,7 +175,7 @@ export const inventory = [
     transmission: "Automatic",
     seats: 5,
     image: "https://images.pexels.com/photos/14313337/pexels-photo-14313337.jpeg?auto=compress&cs=tinysrgb&w=1400",
-    accent: "#a6a6a6",
+    accent: "#4bbfae",
     description:
       "A luxury crossover listing for buyers who want a quiet drive, premium comfort, and hybrid efficiency."
   }
