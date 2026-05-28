@@ -11,8 +11,6 @@ import {
 } from "framer-motion";
 import {
   ArrowRight,
-  BadgeCheck,
-  CalendarDays,
   CarFront,
   Gauge,
   MessageCircle,
@@ -23,8 +21,8 @@ import {
   X
 } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState , useEffect } from "react";
-import { bodyTypes, formatMileage, formatPrice, fuels, inventory, transmissions } from "./data/vehicles";
+import { useMemo, useRef, useState , useEffect } from "react";
+import { bodyTypes, formatMileage, formatPrice } from "./data/vehicles";
 import Image from "next/image";
 import logo from "./pictures/LogoMYRDAMZ.png";
 import hero1 from "./pictures/CarHeroBG.jpg";
@@ -35,6 +33,14 @@ import hero5 from "./pictures/CarHeroBG5.jpg";
 
 const heroImages = [hero1, hero2, hero3, hero4, hero5];
 
+const MESSENGER_URL = "https://www.messenger.com/t/105855237963972";
+
+const emptyInquiry = {
+  name: "",
+  mobile: "",
+  unit: "",
+  message: ""
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 34, filter: "blur(12px)" },
@@ -87,21 +93,53 @@ function TiltCard({ children, className, accent }) {
   );
 }
 
+function createOptions(vehicles, key, preferredOptions = ["All"]) {
+  const values = Array.from(new Set(vehicles.map((vehicle) => vehicle[key]).filter(Boolean)));
+  const preferred = preferredOptions.filter((option) => option === "All" || values.includes(option) || key === "type");
+  const extras = values.filter((value) => !preferred.includes(value));
+  return [...preferred, ...extras];
+}
+
+function getVehicleStatus(vehicle) {
+  return vehicle.status || "Available";
+}
+
+function isSold(vehicle) {
+  return getVehicleStatus(vehicle) === "Sold";
+}
+
+function isUnavailable(vehicle) {
+  return ["Reserved", "Sold"].includes(getVehicleStatus(vehicle));
+}
+
+function statusRank(vehicle) {
+  const status = getVehicleStatus(vehicle);
+  if (status === "Sold") return 2;
+  if (status === "Reserved") return 1;
+  return 0;
+}
+
 export default function Home() {
   const [filters, setFilters] = useState({
     type: "All",
     fuel: "All",
     transmission: "All",
     search: "",
-    maxPrice: 5800000,
     sort: "featured"
   });
+  const [vehicles, setVehicles] = useState([]);
+  const [vehicleLoadStatus, setVehicleLoadStatus] = useState("loading");
   const [inquiryStatus, setInquiryStatus] = useState("");
+  const [inquiry, setInquiry] = useState(emptyInquiry);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const inquiryParamHandled = useRef(false);
+  const bodyTypeOptions = useMemo(() => createOptions(vehicles, "type", bodyTypes), [vehicles]);
+  const fuelOptions = useMemo(() => createOptions(vehicles, "fuel"), [vehicles]);
+  const transmissionOptions = useMemo(() => createOptions(vehicles, "transmission"), [vehicles]);
 
   const filtered = useMemo(() => {
     const search = filters.search.toLowerCase();
-    const list = inventory.filter((vehicle) => {
+    const list = vehicles.filter((vehicle) => {
       const haystack = [
         vehicle.name,
         vehicle.type,
@@ -117,16 +155,16 @@ export default function Home() {
         (filters.type === "All" || vehicle.type === filters.type) &&
         (filters.fuel === "All" || vehicle.fuel === filters.fuel) &&
         (filters.transmission === "All" || vehicle.transmission === filters.transmission) &&
-        vehicle.price <= filters.maxPrice &&
         haystack.includes(search)
       );
     });
 
-    if (filters.sort === "price-low") return [...list].sort((a, b) => a.price - b.price);
-    if (filters.sort === "price-high") return [...list].sort((a, b) => b.price - a.price);
-    if (filters.sort === "year-new") return [...list].sort((a, b) => b.year - a.year);
-    return list;
-  }, [filters]);
+    const activeFirst = (a, b) => statusRank(a) - statusRank(b);
+    if (filters.sort === "price-low") return [...list].sort((a, b) => activeFirst(a, b) || a.price - b.price);
+    if (filters.sort === "price-high") return [...list].sort((a, b) => activeFirst(a, b) || b.price - a.price);
+    if (filters.sort === "year-new") return [...list].sort((a, b) => activeFirst(a, b) || b.year - a.year);
+    return [...list].sort(activeFirst);
+  }, [filters, vehicles]);
 const [heroIndex, setHeroIndex] = useState(0);
 
 useEffect(() => {
@@ -136,13 +174,87 @@ useEffect(() => {
 
   return () => clearInterval(interval);
 }, []);
+
+useEffect(() => {
+  async function loadVehicles() {
+    setVehicleLoadStatus("loading");
+    try {
+      const response = await fetch("/api/vehicles", { cache: "no-store" });
+      const data = await response.json();
+      if (response.ok && Array.isArray(data.vehicles)) {
+        setVehicles(data.vehicles);
+        setVehicleLoadStatus("ready");
+        return;
+      }
+      setVehicleLoadStatus("error");
+    } catch {
+      setVehicleLoadStatus("error");
+    }
+  }
+
+  loadVehicles();
+}, []);
+
+useEffect(() => {
+  if (inquiryParamHandled.current) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const vehicleId = params.get("inquire");
+  if (!vehicleId) return;
+
+  const selected = vehicles.find((vehicle) => vehicle.id === vehicleId);
+  if (!selected) return;
+
+  inquiryParamHandled.current = true;
+  fillInquiryFromVehicle(selected);
+}, [vehicles]);
+
+  function createVehicleMessage(vehicle) {
+    return [
+      `Hi, I am interested in ${vehicle.name}.`,
+      `Specs: ${vehicle.year} ${vehicle.type}, ${formatMileage(vehicle.mileage)}, ${vehicle.fuel}, ${vehicle.transmission}, ${vehicle.seats} seats.`,
+      "Please confirm if this unit is still available and when I can book a viewing in Davao."
+    ].join("\n").trim();
+  }
+
+  function fillInquiryFromVehicle(vehicle) {
+    setInquiry((current) => ({
+      ...current,
+      unit: `${vehicle.name} - ${formatPrice(vehicle.price)}`,
+      message: createVehicleMessage(vehicle)
+    }));
+    setInquiryStatus(`Selected ${vehicle.name}. Enter your name and mobile number so the seller can confirm availability and viewing schedule.`);
+
+    window.requestAnimationFrame(() => {
+      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function handleInquiryChange(event) {
+    const { name, value } = event.target;
+    setInquiry((current) => ({ ...current, [name]: value }));
+  }
+
+  function handleInquirySubmit(event) {
+    event.preventDefault();
+
+    const lines = [
+      `Name: ${inquiry.name.trim()}`,
+      `Mobile: ${inquiry.mobile.trim()}`,
+      inquiry.unit.trim() && `Interested unit: ${inquiry.unit.trim()}`,
+      inquiry.message.trim()
+    ].filter(Boolean);
+
+    const messengerUrl = `${MESSENGER_URL}?text=${encodeURIComponent(lines.join("\n"))}`;
+    setInquiryStatus("Messenger opened in a new tab. If it did not open, check your browser pop-up settings.");
+    window.open(messengerUrl, "_blank", "noopener,noreferrer");
+  }
   function resetFilters() {
     setFilters({
       type: "All",
       fuel: "All",
       transmission: "All",
       search: "",
-      maxPrice: 5800000,
       sort: "featured"
     });
   }
@@ -191,9 +303,8 @@ useEffect(() => {
     </button>
 
     <nav className={`nav-links ${isMenuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
-      <a href="#catalog" onClick={() => setIsMenuOpen(false)}>Catalog</a>
-      <a href="#experience" onClick={() => setIsMenuOpen(false)}>Experience</a>
-      <a href="#contact" onClick={() => setIsMenuOpen(false)}>Contact</a>
+      <a href="#catalog" onClick={() => setIsMenuOpen(false)}>CATALOG</a>
+      <a href="#experience" onClick={() => setIsMenuOpen(false)}>EXPERIENCE</a>
     </nav>
   </header>
 
@@ -234,7 +345,7 @@ useEffect(() => {
               Browse Cars <ArrowRight size={18} />
             </a>
             <a className="button button-ghost" href="#contact">
-              Book Viewing <CalendarDays size={18} />
+              Message Us <MessageCircle size={18} />
             </a>
           </motion.div>
         </motion.div>
@@ -315,7 +426,7 @@ useEffect(() => {
           </label>
 
           <div className="chips" aria-label="Body type filters">
-            {bodyTypes.map((type) => (
+            {bodyTypeOptions.map((type) => (
               <button
                 key={type}
                 className={filters.type === type ? "chip active" : "chip"}
@@ -331,7 +442,7 @@ useEffect(() => {
             <label>
               Fuel
               <select value={filters.fuel} onChange={(event) => setFilters((current) => ({ ...current, fuel: event.target.value }))}>
-                {fuels.map((fuel) => (
+                {fuelOptions.map((fuel) => (
                   <option key={fuel} value={fuel}>
                     {fuel === "All" ? "All fuel types" : fuel}
                   </option>
@@ -345,7 +456,7 @@ useEffect(() => {
                 value={filters.transmission}
                 onChange={(event) => setFilters((current) => ({ ...current, transmission: event.target.value }))}
               >
-                {transmissions.map((transmission) => (
+                {transmissionOptions.map((transmission) => (
                   <option key={transmission} value={transmission}>
                     {transmission === "All" ? "All transmissions" : transmission}
                   </option>
@@ -363,26 +474,11 @@ useEffect(() => {
               </select>
             </label>
           </div>
-          
-          {/* price range slider filter */}
-          {/* <label className="price-range">
-            <span>
-              Max price <strong>{formatPrice(filters.maxPrice)}</strong>
-            </span>
-            <input
-              type="range"
-              min="900000"
-              max="5800000"
-              step="50000"
-              value={filters.maxPrice}
-              onChange={(event) => setFilters((current) => ({ ...current, maxPrice: Number(event.target.value) }))}
-            />
-          </label> */}
         </motion.div>
 
         <div className="catalog-toolbar">
           <motion.p key={filtered.length} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            Showing {filtered.length} of {inventory.length} units
+            {vehicleLoadStatus === "loading" ? "Loading units..." : `Showing ${filtered.length} of ${vehicles.length} units`}
           </motion.p>
           <button className="text-button" type="button" onClick={resetFilters}>
             <RefreshCw size={16} /> Reset Filters
@@ -402,7 +498,7 @@ useEffect(() => {
                 >
                   <Link className="vehicle-media" href={`/cars/${vehicle.id}`} aria-label={`View product page for ${vehicle.name}`}>
                     <img src={vehicle.image} alt={vehicle.name} loading="lazy" />
-                    <span className="badge">{vehicle.badge}</span>
+                    <span className={isSold(vehicle) ? "badge badge-sold" : getVehicleStatus(vehicle) === "Reserved" ? "badge badge-reserved" : "badge"}>{isSold(vehicle) ? "Sold" : getVehicleStatus(vehicle) === "Reserved" ? "Reserved" : vehicle.badge || vehicle.type}</span>
                     {/* <motion.span
                       className="card-glint"
                       aria-hidden="true"
@@ -430,9 +526,9 @@ useEffect(() => {
                       <Link className="button button-primary" href={`/cars/${vehicle.id}`}>
                         Details <ArrowRight size={16} />
                       </Link>
-                      <a className="button button-ghost dark" href="#contact">
-                        Inquire
-                      </a>
+                      <button className="button button-ghost dark" type="button" onClick={() => fillInquiryFromVehicle(vehicle)} disabled={isUnavailable(vehicle)}>
+                        {isSold(vehicle) ? "Sold" : getVehicleStatus(vehicle) === "Reserved" ? "Reserved" : "Inquire"}
+                      </button>
                     </div>
                   </div>
                 </motion.div>
@@ -443,8 +539,8 @@ useEffect(() => {
 
         {filtered.length === 0 && (
           <motion.div className="empty-state" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
-            <h3>No units match those filters</h3>
-            <p>Widen the price range or switch back to all body styles.</p>
+            <h3>{vehicleLoadStatus === "loading" ? "Loading inventory" : vehicleLoadStatus === "error" ? "Inventory could not load" : vehicles.length === 0 ? "No units listed yet" : "No units match those filters"}</h3>
+            <p>{vehicleLoadStatus === "loading" ? "Fetching the latest vehicle entries from the admin database." : vehicleLoadStatus === "error" ? "Refresh the page or check the vehicle database connection." : vehicles.length === 0 ? "Add real Davao units from the admin page when they are ready." : "Reset the filters or try a different search term."}</p>
           </motion.div>
         )}
       </section>
@@ -455,10 +551,7 @@ useEffect(() => {
         <motion.div className="section-heading" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
           <p className="eyebrow">Contact</p>
           <h2 id="contact-title">Book a viewing in Davao</h2>
-          <p>
-            The form stays inquiry-only. Add the real phone number, Facebook page, or email endpoint
-            when the business is ready.
-          </p>
+          <p>Choose a unit, review the auto-filled details, then send the inquiry through Messenger.</p>
 
           <div className="map-card">
          <iframe title="MYRDAMZ Car Display Center map" 
@@ -470,34 +563,28 @@ useEffect(() => {
         </div>
         </motion.div>
 
-        <motion.form className="contact-form" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
+        <motion.form className="contact-form" onSubmit={handleInquirySubmit} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
           <label>
             Full name
-            <input type="text" name="name" placeholder="Juan Dela Cruz" />
+            <input type="text" name="name" value={inquiry.name} onChange={handleInquiryChange} placeholder="Juan Dela Cruz" required />
           </label>
           <label>
             Mobile number
-            <input type="tel" name="mobile" placeholder="09XX XXX XXXX" />
+            <input type="tel" name="mobile" value={inquiry.mobile} onChange={handleInquiryChange} placeholder="09XX XXX XXXX" required />
           </label>
-          <label>
-            Interested unit
-            <input type="text" name="unit" placeholder="Toyota Fortuner, sedan, pickup..." />
-          </label>
+            <label>
+              Interested unit
+            <input type="text" name="unit" value={inquiry.unit} onChange={handleInquiryChange} placeholder="Vehicle name or body type..." />
+            </label>
           <label>
             Message
-            <textarea name="message" rows="4" placeholder="Preferred viewing day, budget, trade-in details..." />
+            <textarea name="message" value={inquiry.message} onChange={handleInquiryChange} rows="3" placeholder="Preferred viewing day, budget, trade-in details..." />
           </label>
           <button
             className="button button-primary"
-            type="button"
-            onClick={(event) => {
-              const form = event.currentTarget.closest("form");
-              const formData = new FormData(form);
-              const unit = formData.get("unit") || "a selected unit";
-              setInquiryStatus(`Inquiry draft ready for ${unit}. Connect this to your real contact channel before launch.`);
-            }}
+            type="submit"
           >
-            Prepare Inquiry <MessageCircle size={18} />
+            Send to Messenger <MessageCircle size={18} />
           </button>
           <AnimatePresence>
             {inquiryStatus && (

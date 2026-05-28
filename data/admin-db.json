@@ -1,0 +1,527 @@
+{
+  "users": [
+    {
+      "id": "c88008f5-fcca-4de0-b76c-5dcf3a829e59",
+      "username": "admin",
+      "passwordHash": "1fde3c7df55a4af000ee4093d7cd6993:56766dec9ab9faacba2a552fa5f7ad7492874c2184d63e6f4937bf9b434b2126",
+      "createdAt": "2026-05-28T08:05:51.201Z"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "toyota-hilux-2-8-g-conquest-2019-20",
+      "name": "Toyota Hilux 2.8 G Conquest 2019-20",
+      "type": "SUV",
+      "year": 2020,
+      "price": 1477248,
+      "mileage": 80000,
+      "fuel": "Diesel",
+      "transmission": "Automatic",
+      "seats": 5,
+      "status": "Reserved",
+      "image": "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+      "images": [
+        "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+        "/uploads/e363d233-5886-4f56-bde7-10e8f2b7eb9b.jpg",
+        "/uploads/4e55def5-efd1-4053-a82a-a609f4b71cdf.jpg",
+        "/uploads/a253a54a-a41b-435e-a651-237a1a633577.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "DP - 265K all in ( estimated )\n2 - 61,552\n3 - 45,202\n4 - 36,767\n5 - 32,060\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+    },
+    {
+      "id": "toyota-vios-1-3-xle-2022",
+      "name": "Toyota Vios 1.3 XLE 2022",
+      "type": "Sedan",
+      "year": 2026,
+      "price": 686400,
+      "mileage": 40000,
+      "fuel": "Gasoline",
+      "transmission": "Automatic",
+      "seats": 5,
+      "status": "Sold",
+      "image": "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+      "images": [
+        "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+        "/uploads/73e1bc27-460f-4aac-a575-4f2db014beff.jpg",
+        "/uploads/81e0c5fd-07e9-47b2-bdd8-5bfe44f8eaeb.jpg",
+        "/uploads/9d59b34e-a64c-49f4-a683-d6c6e7cfa3f2.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "DP - 75K all in ( estimated )\n2 - 28,600\n3 - 21,016\n4 - 17,095\n5 - 14,906\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+    },
+    {
+      "id": "toyota-hi-ace-super-grandia-3-0-2018",
+      "name": "Toyota Hi Ace Super Grandia 3.0 2018",
+      "type": "SUV",
+      "year": 2018,
+      "price": 1678968,
+      "mileage": 63000,
+      "fuel": "Diesel",
+      "transmission": "Automatic",
+      "seats": 10,
+      "status": "Available",
+      "image": "/uploads/4a2ec884-1537-4417-8d1a-97c16145f807.jpg",
+      "images": [
+        "/uploads/4a2ec884-1537-4417-8d1a-97c16145f807.jpg",
+        "/uploads/d0c38863-ada2-4ec8-a407-0c43767c210d.jpg",
+        "/uploads/66e727f7-f151-4014-bb73-0b027ac46b79.jpg",
+        "/uploads/7a7326c5-9a8e-4e69-a3ff-f4a8b15a3af3.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+    },
+    {
+      "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
+      "name": "Hyundai Accent 1.6 CRDI Diesel 2020-21",
+      "type": "Sedan",
+      "year": 2021,
+      "price": 660000,
+      "mileage": 70000,
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "seats": 5,
+      "status": "Available",
+      "image": "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+      "images": [
+        "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+        "/uploads/eabd01a9-b56b-4c34-a105-4ce23264251b.jpg",
+        "/uploads/86ced37d-3bc5-4bca-9b97-6fae7f3c7bfc.jpg",
+        "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+    },
+    {
+      "id": "toyota-fortuner-2-4-v-2017-2018",
+      "name": "Toyota Fortuner 2.4 V 2017-2018",
+      "type": "SUV",
+      "year": 2018,
+      "price": 1214400,
+      "mileage": 80000,
+      "fuel": "Gasoline",
+      "transmission": "Manual",
+      "seats": 7,
+      "status": "Available",
+      "image": "/uploads/d8a54d98-1717-4e28-b721-28a4869bb32f.jpg",
+      "images": [
+        "/uploads/d8a54d98-1717-4e28-b721-28a4869bb32f.jpg",
+        "/uploads/88823288-6d33-47cd-9521-50663a0327b4.jpg",
+        "/uploads/5029f27c-2beb-485a-bbba-7cb33d1c1b3c.jpg",
+        "/uploads/d72c0a74-aacc-4d8b-bfd6-d95c82f79410.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "DP - 165K DP  all in ( estimated ) \n24 months-50,600\n36 months-37,183\n48 months-30,245\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+    },
+    {
+      "id": "nissan-nv350-2-5-2024-2025",
+      "name": "Nissan Nv350 2.5 2024-2025",
+      "type": "Commercial",
+      "year": 2026,
+      "price": 1245672,
+      "mileage": 19000,
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "seats": 15,
+      "status": "Available",
+      "image": "/uploads/1936ecb5-880e-4ceb-b1bc-4224328c34cb.jpg",
+      "images": [
+        "/uploads/1936ecb5-880e-4ceb-b1bc-4224328c34cb.jpg",
+        "/uploads/c3a91ba5-2da2-4444-8984-9517d1aa98f6.jpg",
+        "/uploads/c7888550-e363-4611-8b5b-06cf0a68ac26.jpg",
+        "/uploads/792c47e1-0884-454d-a857-a7ef52caedd5.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "DP - 195K DP  all in ( estimated ) \n24 months-51,903\n36 months-37,183\n48 months-30,538\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+    },
+    {
+      "id": "toyota-fortuner-2-4-v-2015-4x2",
+      "name": "Toyota Fortuner 2.4 V 2015 4x2",
+      "type": "SUV",
+      "year": 2015,
+      "price": 969456,
+      "mileage": 130000,
+      "fuel": "Diesel",
+      "transmission": "Automatic",
+      "seats": 7,
+      "status": "Available",
+      "image": "/uploads/4ee08dab-e69b-4c14-88bf-25812342e4de.jpg",
+      "images": [
+        "/uploads/4ee08dab-e69b-4c14-88bf-25812342e4de.jpg",
+        "/uploads/4a4e4841-af56-4a7b-898e-50cb60ff8501.jpg",
+        "/uploads/423d02fb-f345-419f-ae86-ab064078e247.jpg",
+        "/uploads/10c2420c-c855-4a9b-9cc9-60947ae023fb.jpg"
+      ],
+      "accent": "#ffffff",
+      "description": "DP - 150K DP  all in ( estimated ) \n24 months-40,394\n36 months-28,938\n48 months-23,767\n60 months-20,525\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+    }
+  ],
+  "history": [
+    {
+      "id": "1780003171995-gnixx4jy",
+      "type": "edit",
+      "label": "Edited Toyota Hilux 2.8 G Conquest 2019-20",
+      "createdAt": "2026-05-28T21:19:31.995Z",
+      "before": {
+        "id": "toyota-hilux-2-8-g-conquest-2019-20",
+        "name": "Toyota Hilux 2.8 G Conquest 2019-20",
+        "type": "SUV",
+        "year": 2020,
+        "price": 1477248,
+        "mileage": 80000,
+        "fuel": "Diesel",
+        "transmission": "Automatic",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+        "images": [
+          "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+          "/uploads/e363d233-5886-4f56-bde7-10e8f2b7eb9b.jpg",
+          "/uploads/4e55def5-efd1-4053-a82a-a609f4b71cdf.jpg",
+          "/uploads/a253a54a-a41b-435e-a651-237a1a633577.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 265K all in ( estimated )\n2 - 61,552\n3 - 45,202\n4 - 36,767\n5 - 32,060\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      },
+      "after": {
+        "id": "toyota-hilux-2-8-g-conquest-2019-20",
+        "name": "Toyota Hilux 2.8 G Conquest 2019-20",
+        "type": "SUV",
+        "year": 2020,
+        "price": 1477248,
+        "mileage": 80000,
+        "fuel": "Diesel",
+        "transmission": "Automatic",
+        "seats": 5,
+        "status": "Reserved",
+        "image": "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+        "images": [
+          "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+          "/uploads/e363d233-5886-4f56-bde7-10e8f2b7eb9b.jpg",
+          "/uploads/4e55def5-efd1-4053-a82a-a609f4b71cdf.jpg",
+          "/uploads/a253a54a-a41b-435e-a651-237a1a633577.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 265K all in ( estimated )\n2 - 61,552\n3 - 45,202\n4 - 36,767\n5 - 32,060\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780003166942-1561mt2i",
+      "type": "edit",
+      "label": "Edited Toyota Vios 1.3 XLE 2022",
+      "createdAt": "2026-05-28T21:19:26.942Z",
+      "before": {
+        "id": "toyota-vios-1-3-xle-2022",
+        "name": "Toyota Vios 1.3 XLE 2022",
+        "type": "Sedan",
+        "year": 2026,
+        "price": 686400,
+        "mileage": 40000,
+        "fuel": "Gasoline",
+        "transmission": "Automatic",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+        "images": [
+          "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+          "/uploads/73e1bc27-460f-4aac-a575-4f2db014beff.jpg",
+          "/uploads/81e0c5fd-07e9-47b2-bdd8-5bfe44f8eaeb.jpg",
+          "/uploads/9d59b34e-a64c-49f4-a683-d6c6e7cfa3f2.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 75K all in ( estimated )\n2 - 28,600\n3 - 21,016\n4 - 17,095\n5 - 14,906\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      },
+      "after": {
+        "id": "toyota-vios-1-3-xle-2022",
+        "name": "Toyota Vios 1.3 XLE 2022",
+        "type": "Sedan",
+        "year": 2026,
+        "price": 686400,
+        "mileage": 40000,
+        "fuel": "Gasoline",
+        "transmission": "Automatic",
+        "seats": 5,
+        "status": "Sold",
+        "image": "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+        "images": [
+          "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+          "/uploads/73e1bc27-460f-4aac-a575-4f2db014beff.jpg",
+          "/uploads/81e0c5fd-07e9-47b2-bdd8-5bfe44f8eaeb.jpg",
+          "/uploads/9d59b34e-a64c-49f4-a683-d6c6e7cfa3f2.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 75K all in ( estimated )\n2 - 28,600\n3 - 21,016\n4 - 17,095\n5 - 14,906\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780003138437-mbivmngo",
+      "type": "add",
+      "label": "Added Toyota Hilux 2.8 G Conquest 2019-20",
+      "createdAt": "2026-05-28T21:18:58.437Z",
+      "vehicle": {
+        "id": "toyota-hilux-2-8-g-conquest-2019-20",
+        "name": "Toyota Hilux 2.8 G Conquest 2019-20",
+        "type": "SUV",
+        "year": 2020,
+        "price": 1477248,
+        "mileage": 80000,
+        "fuel": "Diesel",
+        "transmission": "Automatic",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+        "images": [
+          "/uploads/cd1a296c-e0c9-4e50-925c-46a7afbd8802.jpg",
+          "/uploads/e363d233-5886-4f56-bde7-10e8f2b7eb9b.jpg",
+          "/uploads/4e55def5-efd1-4053-a82a-a609f4b71cdf.jpg",
+          "/uploads/a253a54a-a41b-435e-a651-237a1a633577.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 265K all in ( estimated )\n2 - 61,552\n3 - 45,202\n4 - 36,767\n5 - 32,060\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780002868859-vg5nhf81",
+      "type": "add",
+      "label": "Added Toyota Vios 1.3 XLE 2022",
+      "createdAt": "2026-05-28T21:14:28.860Z",
+      "vehicle": {
+        "id": "toyota-vios-1-3-xle-2022",
+        "name": "Toyota Vios 1.3 XLE 2022",
+        "type": "Sedan",
+        "year": 2026,
+        "price": 686400,
+        "mileage": 40000,
+        "fuel": "Gasoline",
+        "transmission": "Automatic",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+        "images": [
+          "/uploads/dc93acdb-1542-4951-abbd-a4b4c5c4747f.jpg",
+          "/uploads/73e1bc27-460f-4aac-a575-4f2db014beff.jpg",
+          "/uploads/81e0c5fd-07e9-47b2-bdd8-5bfe44f8eaeb.jpg",
+          "/uploads/9d59b34e-a64c-49f4-a683-d6c6e7cfa3f2.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 75K all in ( estimated )\n2 - 28,600\n3 - 21,016\n4 - 17,095\n5 - 14,906\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780002677537-7wyys63p",
+      "type": "edit",
+      "label": "Edited Toyota Hi Ace Super Grandia 3.0 2018",
+      "createdAt": "2026-05-28T21:11:17.537Z",
+      "before": {
+        "id": "toyota-hi-ace-super-grandia-3-0-2018",
+        "name": "Toyota Hi Ace Super Grandia 3.0 2018",
+        "type": "SUV",
+        "year": 2018,
+        "price": 1678968,
+        "mileage": 63000,
+        "fuel": "Diesel",
+        "transmission": "Automatic",
+        "seats": 10,
+        "status": "Available",
+        "image": "",
+        "images": [],
+        "accent": "#8f1d24",
+        "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      },
+      "after": {
+        "id": "toyota-hi-ace-super-grandia-3-0-2018",
+        "name": "Toyota Hi Ace Super Grandia 3.0 2018",
+        "type": "SUV",
+        "year": 2018,
+        "price": 1678968,
+        "mileage": 63000,
+        "fuel": "Diesel",
+        "transmission": "Automatic",
+        "seats": 10,
+        "status": "Available",
+        "image": "/uploads/4a2ec884-1537-4417-8d1a-97c16145f807.jpg",
+        "images": [
+          "/uploads/4a2ec884-1537-4417-8d1a-97c16145f807.jpg",
+          "/uploads/d0c38863-ada2-4ec8-a407-0c43767c210d.jpg",
+          "/uploads/66e727f7-f151-4014-bb73-0b027ac46b79.jpg",
+          "/uploads/7a7326c5-9a8e-4e69-a3ff-f4a8b15a3af3.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780002590349-0ly05a31",
+      "type": "add",
+      "label": "Added Toyota Hi Ace Super Grandia 3.0 2018",
+      "createdAt": "2026-05-28T21:09:50.349Z",
+      "vehicle": {
+        "id": "toyota-hi-ace-super-grandia-3-0-2018",
+        "name": "Toyota Hi Ace Super Grandia 3.0 2018",
+        "type": "SUV",
+        "year": 2018,
+        "price": 1678968,
+        "mileage": 63000,
+        "fuel": "Diesel",
+        "transmission": "Automatic",
+        "seats": 10,
+        "status": "Available",
+        "image": "",
+        "images": [],
+        "accent": "#8f1d24",
+        "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780002314686-2xg4b85e",
+      "type": "edit",
+      "label": "Edited Hyundai Accent 1.6 CRDI Diesel 2020-21",
+      "createdAt": "2026-05-28T21:05:14.686Z",
+      "before": {
+        "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
+        "name": "Hyundai Accent 1.6 CRDI Diesel 2020-21",
+        "type": "Sedan",
+        "year": 2021,
+        "price": 660000,
+        "mileage": 70000,
+        "fuel": "Diesel",
+        "transmission": "Manual",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+        "images": [
+          "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+          "/uploads/eabd01a9-b56b-4c34-a105-4ce23264251b.jpg",
+          "/uploads/86ced37d-3bc5-4bca-9b97-6fae7f3c7bfc.jpg",
+          "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      },
+      "after": {
+        "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
+        "name": "Hyundai Accent 1.6 CRDI Diesel 2020-21",
+        "type": "Sedan",
+        "year": 2021,
+        "price": 660000,
+        "mileage": 70000,
+        "fuel": "Diesel",
+        "transmission": "Manual",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+        "images": [
+          "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+          "/uploads/eabd01a9-b56b-4c34-a105-4ce23264251b.jpg",
+          "/uploads/86ced37d-3bc5-4bca-9b97-6fae7f3c7bfc.jpg",
+          "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780002308448-ad3n5fow",
+      "type": "add",
+      "label": "Added Hyundai Accent 1.6 CRDI Diesel 2020-21",
+      "createdAt": "2026-05-28T21:05:08.448Z",
+      "vehicle": {
+        "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
+        "name": "Hyundai Accent 1.6 CRDI Diesel 2020-21",
+        "type": "Sedan",
+        "year": 2021,
+        "price": 660000,
+        "mileage": 70000,
+        "fuel": "Diesel",
+        "transmission": "Manual",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+        "images": [
+          "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
+          "/uploads/eabd01a9-b56b-4c34-a105-4ce23264251b.jpg",
+          "/uploads/86ced37d-3bc5-4bca-9b97-6fae7f3c7bfc.jpg",
+          "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780002084054-h96t0vko",
+      "type": "add",
+      "label": "Added Toyota Fortuner 2.4 V 2017-2018",
+      "createdAt": "2026-05-28T21:01:24.054Z",
+      "vehicle": {
+        "id": "toyota-fortuner-2-4-v-2017-2018",
+        "name": "Toyota Fortuner 2.4 V 2017-2018",
+        "type": "SUV",
+        "year": 2018,
+        "price": 1214400,
+        "mileage": 80000,
+        "fuel": "Gasoline",
+        "transmission": "Manual",
+        "seats": 7,
+        "status": "Available",
+        "image": "/uploads/d8a54d98-1717-4e28-b721-28a4869bb32f.jpg",
+        "images": [
+          "/uploads/d8a54d98-1717-4e28-b721-28a4869bb32f.jpg",
+          "/uploads/88823288-6d33-47cd-9521-50663a0327b4.jpg",
+          "/uploads/5029f27c-2beb-485a-bbba-7cb33d1c1b3c.jpg",
+          "/uploads/d72c0a74-aacc-4d8b-bfd6-d95c82f79410.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 165K DP  all in ( estimated ) \n24 months-50,600\n36 months-37,183\n48 months-30,245\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    },
+    {
+      "id": "1780001861182-hvm1okn4",
+      "type": "edit",
+      "label": "Edited Nissan Nv350 2.5 2024-2025",
+      "createdAt": "2026-05-28T20:57:41.182Z",
+      "before": {
+        "id": "nissan-nv350-2-5-2024-2025",
+        "name": "Nissan Nv350 2.5 2024-2025",
+        "type": "SUV",
+        "year": 2026,
+        "price": 1245672,
+        "mileage": 19000,
+        "fuel": "Diesel",
+        "transmission": "Manual",
+        "seats": 15,
+        "status": "Available",
+        "image": "/uploads/1936ecb5-880e-4ceb-b1bc-4224328c34cb.jpg",
+        "images": [
+          "/uploads/1936ecb5-880e-4ceb-b1bc-4224328c34cb.jpg",
+          "/uploads/c3a91ba5-2da2-4444-8984-9517d1aa98f6.jpg",
+          "/uploads/c7888550-e363-4611-8b5b-06cf0a68ac26.jpg",
+          "/uploads/792c47e1-0884-454d-a857-a7ef52caedd5.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 195K DP  all in ( estimated ) \n24 months-51,903\n36 months-37,183\n48 months-30,538\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      },
+      "after": {
+        "id": "nissan-nv350-2-5-2024-2025",
+        "name": "Nissan Nv350 2.5 2024-2025",
+        "type": "Commercial",
+        "year": 2026,
+        "price": 1245672,
+        "mileage": 19000,
+        "fuel": "Diesel",
+        "transmission": "Manual",
+        "seats": 15,
+        "status": "Available",
+        "image": "/uploads/1936ecb5-880e-4ceb-b1bc-4224328c34cb.jpg",
+        "images": [
+          "/uploads/1936ecb5-880e-4ceb-b1bc-4224328c34cb.jpg",
+          "/uploads/c3a91ba5-2da2-4444-8984-9517d1aa98f6.jpg",
+          "/uploads/c7888550-e363-4611-8b5b-06cf0a68ac26.jpg",
+          "/uploads/792c47e1-0884-454d-a857-a7ef52caedd5.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "DP - 195K DP  all in ( estimated ) \n24 months-51,903\n36 months-37,183\n48 months-30,538\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      }
+    }
+  ],
+  "updatedAt": "2026-05-28T21:19:31.995Z"
+}
