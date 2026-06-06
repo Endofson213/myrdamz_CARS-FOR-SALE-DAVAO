@@ -19,7 +19,12 @@ const blankVehicle = {
   image: "",
   images: [],
   accent: "#8f1d24",
-  description: ""
+  description: "",
+  downPayment: "",
+  payment2Years: "",
+  payment3Years: "",
+  payment4Years: "",
+  payment5Years: ""
 };
 
 const currentYear = new Date().getFullYear();
@@ -113,8 +118,17 @@ function updateVehicleForm(event) {
     return `PHP ${amount.toLocaleString("en-PH")}`;
   }
 
-  function formatPriceField() {
-    setVehicleForm((current) => ({ ...current, price: formatPeso(current.price) }));
+  function formatPesoField(field) {
+    setVehicleForm((current) => ({ ...current, [field]: formatPeso(current[field]) }));
+  }
+
+  function updatePesoField(event) {
+    const { name, value } = event.target;
+    const digits = value.replace(/\D/g, "");
+    setVehicleForm((current) => ({
+      ...current,
+      [name]: digits ? formatPeso(digits) : ""
+    }));
   }
 
   async function uploadImage(event) {
@@ -224,7 +238,12 @@ function updateVehicleForm(event) {
       year: String(vehicle.year),
       price: String(vehicle.price),
       mileage: String(vehicle.mileage),
-      seats: String(vehicle.seats)
+      seats: String(vehicle.seats),
+      downPayment: formatPeso(vehicle.financing?.downPayment),
+      payment2Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 2)?.monthlyPayment),
+      payment3Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 3)?.monthlyPayment),
+      payment4Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 4)?.monthlyPayment),
+      payment5Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 5)?.monthlyPayment)
     });
     setVehicleForm((current) => ({ ...current, price: formatPeso(vehicle.price) }));
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -390,16 +409,10 @@ function updateVehicleForm(event) {
             </label>
           </div>
 
-          <div className="admin-field-row">
-            <label>
-              Price
-              <input name="price" value={vehicleForm.price} onChange={updateVehicleForm} onBlur={formatPriceField} inputMode="numeric" placeholder="PHP 1,850,000" required />
-            </label>
-            <label>
-              Mileage
-              <input name="mileage" value={vehicleForm.mileage} onChange={updateVehicleForm} type="number" required />
-            </label>
-          </div>
+          <label className="admin-half-field">
+            Mileage
+            <input name="mileage" value={vehicleForm.mileage} onChange={updateVehicleForm} type="number" min="0" required />
+          </label>
 
           <div className="admin-field-row">
             <label>
@@ -471,10 +484,55 @@ function updateVehicleForm(event) {
               ))}
             </div>
           )}
-          <label>
-            Description
-            <textarea name="description" value={vehicleForm.description} onChange={updateVehicleForm} rows="7" placeholder={"DP - 150K DP all in (estimated)\n24 months - 40,394\n36 months - 28,938\n\n- Transfer of Ownership\n- HPG Clearance\n- Full Car Detailing"} required />
-          </label>
+          <fieldset className="admin-financing-fields">
+            <legend>Financing</legend>
+            <p>Enter the vehicle price, estimated down payment, and monthly payment for each term.</p>
+            <div className="admin-financing-primary-grid">
+              <label>
+                Vehicle price
+                <input
+                  name="price"
+                  value={vehicleForm.price}
+                  onChange={updatePesoField}
+                  onBlur={() => formatPesoField("price")}
+                  inputMode="numeric"
+                  placeholder="PHP 1,850,000"
+                  required
+                />
+              </label>
+              <label>
+                Down payment
+                <input
+                  name="downPayment"
+                  value={vehicleForm.downPayment}
+                  onChange={updatePesoField}
+                  onBlur={() => formatPesoField("downPayment")}
+                  inputMode="numeric"
+                  placeholder="PHP 150,000"
+                  required
+                />
+              </label>
+            </div>
+            <div className="admin-financing-grid">
+              {[2, 3, 4, 5].map((years) => {
+                const field = `payment${years}Years`;
+                return (
+                  <label key={years}>
+                    {years} years / month
+                    <input
+                      name={field}
+                      value={vehicleForm[field]}
+                      onChange={updatePesoField}
+                      onBlur={() => formatPesoField(field)}
+                      inputMode="numeric"
+                      placeholder="PHP 25,000"
+                      required
+                    />
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
 
           <button className="button button-primary" type="submit">
             <Save size={18} /> Save vehicle

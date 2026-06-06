@@ -1096,6 +1096,45 @@ textarea:focus {
   gap: 12px;
 }
 
+.admin-financing-fields {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  border: 1px solid rgba(17, 24, 39, 0.14);
+  border-radius: 8px;
+  padding: 16px;
+  background: rgba(248, 250, 252, 0.72);
+}
+
+.admin-financing-fields legend {
+  padding: 0 6px;
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.admin-financing-fields > p {
+  margin: 0;
+  color: rgba(31, 41, 51, 0.62);
+  font-size: 0.86rem;
+}
+
+.admin-financing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-financing-primary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-half-field {
+  max-width: calc(50% - 6px);
+}
+
 .admin-status-field {
   display: grid;
   gap: 8px;
@@ -1431,11 +1470,38 @@ textarea:focus {
 .price-stage strong {
   color: var(--gold);
   font-family: inherit;
-  font-size: clamp(2.4rem, 4vw, 4rem);
+  font-size: clamp(2.25rem, 3.2vw, 3.55rem);
   line-height: 1;
 }
 
+.price-stage-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.price-stage-row > strong {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.price-stage .price-stage-action {
+  width: auto;
+  min-width: 172px;
+  min-height: 52px;
+  gap: 8px;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .price-stage p {
+  position: relative;
+  z-index: 1;
   margin: 0;
   color: rgba(239, 251, 255, 0.76);
 }
@@ -1461,12 +1527,11 @@ textarea:focus {
 .product-detail-section {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.86fr);
-  gap: 28px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(520px, 1.1fr);
+  gap: 32px;
   align-items: start;
   overflow: hidden;
-  padding: 84px 5vw 34px;
-  padding-top: 30px;
+  padding: 48px 3.5vw 56px;
   background: var(--charcoal);
   color: var(--foam);
 }
@@ -1489,10 +1554,7 @@ textarea:focus {
 }
 
 .product-image-panel {
-  display: grid;
-  grid-template-rows: auto auto;
   align-self: start;
-  align-content: start;
   overflow: hidden;
   border: 1px solid rgba(239, 251, 255, 0.14);
   border-radius: 8px;
@@ -1586,8 +1648,14 @@ textarea:focus {
   grid-template-rows: auto auto;
   align-self: start;
   align-content: start;
-  gap: 14px;
+  gap: 18px;
+  width: 100%;
   height: auto;
+}
+
+.spec-panel .section-heading {
+  width: 100%;
+  max-width: none;
 }
 
 .compact {
@@ -1610,54 +1678,71 @@ textarea:focus {
   text-wrap: auto;
 }
 
-.spec-description-card {
+.financing-card {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.08fr);
   gap: 16px;
+  width: 100%;
   max-width: 100%;
   margin-top: 10px;
   border: 1px solid rgba(239, 251, 255, 0.12);
   border-left: 3px solid var(--red);
   border-radius: 8px;
-  padding: 12px 14px;
+  padding: 18px;
   background: rgba(5, 5, 5, 0.38);
   color: rgba(239, 251, 255, 0.76);
-  font-size: 0.92rem;
-  line-height: 1.42;
 }
 
-.spec-description-lines {
+.financing-downpayment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(239, 251, 255, 0.1);
+}
+
+.financing-downpayment span,
+.financing-terms span,
+.financing-terms small {
+  color: rgba(239, 251, 255, 0.62);
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.financing-downpayment strong {
+  color: var(--foam);
+  font-size: 1.6rem;
+}
+
+.financing-terms {
   display: grid;
-  gap: 4px;
-  align-content: start;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
 }
 
-.spec-inclusion-details {
+.financing-terms div {
   display: grid;
-  gap: 6px;
-  align-content: start;
+  gap: 5px;
+  padding: 14px;
+  border-radius: 6px;
+  background: rgba(239, 251, 255, 0.05);
 }
 
-.spec-description-lines p,
-.spec-inclusion-details p,
-.spec-description-card ul {
-  margin: 0;
+.financing-terms strong {
+  color: var(--foam);
+  font-size: 1.22rem;
 }
 
-.spec-description-card ul {
-  display: grid;
-  gap: 3px;
-  padding-left: 18px;
-}
-
-.spec-description-card li::marker {
-  color: var(--red);
+.financing-terms small {
+  font-size: 0.74rem;
 }
 
 .product-spec-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(112px, auto));
+  grid-template-rows: repeat(2, minmax(140px, auto));
+  width: 100%;
   align-self: start;
   gap: 10px;
   margin: 0;
@@ -1668,24 +1753,24 @@ textarea:focus {
 .product-spec-grid li {
   display: grid;
   align-content: space-between;
-  gap: 6px;
+  gap: 8px;
   min-height: 0;
   border: 1px solid rgba(239, 251, 255, 0.12);
   border-radius: 8px;
-  padding: 14px;
+  padding: 18px;
   background: #080808;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .product-spec-grid svg {
-  width: 19px;
-  height: 19px;
+  width: 23px;
+  height: 23px;
   color: var(--red);
 }
 
 .product-spec-grid span {
   color: rgba(239, 251, 255, 0.62);
-  font-size: 0.74rem;
+  font-size: 0.86rem;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -1693,7 +1778,7 @@ textarea:focus {
 .product-spec-grid strong {
   align-self: end;
   color: var(--foam);
-  font-size: 1rem;
+  font-size: 1.22rem;
 }
 
 .ownership-band {
@@ -1765,41 +1850,6 @@ textarea:focus {
   margin-top: 6px;
   color: var(--gold);
   font-size: 1.35rem;
-}
-
-.product-image-panel .image-inquiry-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 18px;
-  margin-top: 0;
-  border: 0;
-  border-top: 1px solid rgba(239, 251, 255, 0.16);
-  border-radius: 0;
-  padding: 18px 22px;
-  color: var(--foam);
-  background: #161111;
-  box-shadow: none;
-}
-
-.product-image-panel .image-inquiry-card .eyebrow {
-  margin-bottom: 4px;
-  color: var(--red);
-}
-
-.product-image-panel .image-inquiry-card h3 {
-  font-size: 1rem;
-}
-
-.product-image-panel .image-inquiry-card strong {
-  margin-top: 4px;
-  font-size: 1.16rem;
-}
-
-.product-image-panel .image-inquiry-card .button {
-  width: auto;
-  min-width: 178px;
-  white-space: nowrap;
 }
 
 .related-section {
@@ -2181,7 +2231,8 @@ textarea:focus {
   }
 
   .product-detail-section {
-    padding-bottom: 22px;
+    padding-top: 36px;
+    padding-bottom: 36px;
   }
 
   .selected-unit-section {
@@ -2201,9 +2252,14 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
-  .spec-description-card {
-    grid-template-columns: 1fr;
-    gap: 10px;
+  .financing-downpayment {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .financing-terms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .catalog-toolbar,
@@ -2214,15 +2270,15 @@ textarea:focus {
     flex-direction: column;
   }
 
-  .product-image-panel .image-inquiry-card {
+  .price-stage-row {
     grid-template-columns: 1fr;
     align-items: stretch;
-    padding: 18px;
   }
 
-  .product-image-panel .image-inquiry-card .button {
+  .price-stage .price-stage-action {
     width: 100%;
     min-width: 0;
+    padding: 16px 20px;
   }
 
   .admin-page {
@@ -2245,8 +2301,14 @@ textarea:focus {
   }
 
   .admin-field-row,
+  .admin-financing-primary-grid,
+  .admin-financing-grid,
   .admin-vehicle-row {
     grid-template-columns: 1fr;
+  }
+
+  .admin-half-field {
+    max-width: none;
   }
 
   .admin-vehicle-row button {

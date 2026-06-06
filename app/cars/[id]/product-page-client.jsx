@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useScroll, useMotionValueEvent} from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -105,7 +105,39 @@ function SpecTile({ icon: Icon, label, value }) {
   );
 }
 
-function DescriptionBlock({ text }) {
+function formatFinancingAmount(value) {
+  const normalized = String(value || "").replace(/,/g, "").trim();
+  const multiplier = /k$/i.test(normalized) ? 1000 : 1;
+  const amount = Number(normalized.replace(/k$/i, "")) * multiplier;
+
+  return Number.isFinite(amount) ? formatPrice(amount) : value;
+}
+
+function FinancingBlock({ financing, text }) {
+  if (financing?.downPayment || financing?.terms?.some((term) => term.monthlyPayment)) {
+    return (
+      <div className="financing-card">
+        {financing.downPayment > 0 && (
+          <div className="financing-downpayment">
+            <span>Estimated down payment</span>
+            <strong>{formatPrice(financing.downPayment)}</strong>
+          </div>
+        )}
+        <div className="financing-terms">
+          {(financing.terms || [])
+            .filter((term) => term.monthlyPayment > 0)
+            .map(({ years, monthlyPayment }) => (
+              <div key={years}>
+                <span>{years} {years === 1 ? "year" : "years"}</span>
+                <strong>{formatPrice(monthlyPayment)}</strong>
+                <small>per month</small>
+              </div>
+            ))}
+        </div>
+      </div>
+    );
+  }
+
   const lines = String(text || "")
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -113,33 +145,43 @@ function DescriptionBlock({ text }) {
 
   if (!lines.length) return null;
 
-  const detailLines = lines.filter((line) => !/^[-*]\s+/.test(line) && !/(downpayment|financing)/i.test(line));
-  const noteLines = lines.filter((line) => !/^[-*]\s+/.test(line) && /(downpayment|financing)/i.test(line));
-  const bulletLines = lines
-    .filter((line) => /^[-*]\s+/.test(line))
-    .map((line) => line.replace(/^[-*]\s+/, ""));
+  const downPaymentMatch = lines
+    .map((line) => line.match(/\bDP\s*-\s*(?:DP\s*)?([\d,.]+\s*k?)/i))
+    .find(Boolean);
+  const downPayment = downPaymentMatch ? formatFinancingAmount(downPaymentMatch[1]) : null;
+  const terms = lines.flatMap((line) => {
+    const match = line.match(/^(\d+)(?:\s*months?)?\s*-\s*([\d,.]+)/i);
+    if (!match) return [];
+
+    const rawTerm = Number(match[1]);
+    const years = rawTerm >= 12 ? rawTerm / 12 : rawTerm;
+    if (!Number.isInteger(years)) return [];
+
+    return [{
+      years,
+      payment: formatFinancingAmount(match[2])
+    }];
+  });
+
+  if (!downPayment && !terms.length) return null;
 
   return (
-    <div className="spec-description-card">
-      {detailLines.length > 0 && (
-        <div className="spec-description-lines">
-          {detailLines.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
+    <div className="financing-card">
+      {downPayment && (
+        <div className="financing-downpayment">
+          <span>Estimated down payment</span>
+          <strong>{downPayment}</strong>
         </div>
       )}
-      {(noteLines.length > 0 || bulletLines.length > 0) && (
-        <div className="spec-inclusion-details">
-          {noteLines.map((line) => (
-            <p key={line}>{line}</p>
+      {terms.length > 0 && (
+        <div className="financing-terms">
+          {terms.map(({ years, payment }) => (
+            <div key={years}>
+              <span>{years} {years === 1 ? "year" : "years"}</span>
+              <strong>{payment}</strong>
+              <small>per month</small>
+            </div>
           ))}
-          {bulletLines.length > 0 && (
-            <ul>
-              {bulletLines.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          )}
         </div>
       )}
     </div>
@@ -159,6 +201,18 @@ export default function ProductPageClient({ vehicle, related }) {
   const [imageDirection, setImageDirection] = useState(1);
   const activeImage = getAssetPath(galleryImages[activeImageIndex] || vehicle.image);
   const coverImage = getAssetPath(galleryImages[0] || vehicle.image);
+
+  useEffect(() => {
+    if (galleryImages.length <= 1) return undefined;
+
+    const interval = window.setInterval(() => {
+      setImageDirection(1);
+      setActiveImageIndex((current) => (current + 1) % galleryImages.length);
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, [activeImageIndex, galleryImages.length]);
+
   const specs = [
     ["Year", vehicle.year, BadgeCheck],
     ["Mileage", formatMileage(vehicle.mileage), Gauge],
@@ -182,7 +236,7 @@ export default function ProductPageClient({ vehicle, related }) {
         />
         <div className="scan-lines" aria-hidden="true" />
         <Link className="back-link" href="/#catalog">
-          <ArrowLeft size={17} /> Back to catalog
+          <ArrowLeft size={17} /> Back
         </Link>
         <motion.div className="product-hero-grid" variants={stagger} initial="hidden" animate="visible">
           <motion.div className="product-copy" variants={fadeUp}>
@@ -194,8 +248,21 @@ export default function ProductPageClient({ vehicle, related }) {
 
           <motion.aside className="price-stage" variants={fadeUp}>
             <span>Posted price</span>
-            <strong>{formatPrice(vehicle.price)}</strong>
-            <p>{sold ? "This unit has been marked sold. Browse related units for available options." : reserved ? "This unit is currently reserved. Browse related units for available options." : "No checkout wall. Confirm availability and viewing schedule offline."}</p>
+            <div className="price-stage-row">
+              <strong>{formatPrice(vehicle.price)}</strong>
+              {unavailable ? (
+                <button className="button button-primary price-stage-action" type="button" disabled>
+                  {sold ? "Sold" : "Reserved"}
+                </button>
+              ) : (
+                <Link className="button button-primary price-stage-action" href={`/?inquire=${vehicle.id}#contact`}>
+                  Prepare Inquiry <ArrowRight size={19} />
+                </Link>
+              )}
+            </div>
+            {unavailable && (
+              <p>{sold ? "This unit has been marked sold. Browse related units for available options." : "This unit is currently reserved. Browse related units for available options."}</p>
+            )}
             <div className="price-ring" aria-hidden="true">
               <motion.span animate={{ rotate: 360 }} transition={{ duration: 13, repeat: Infinity, ease: "linear" }} />
             </div>
@@ -206,15 +273,30 @@ export default function ProductPageClient({ vehicle, related }) {
       <section className="product-detail-section">
         <motion.div className="product-image-panel" initial={{ opacity: 0, y: 42 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.75 }}>
           <div className="product-gallery">
-            <AnimatePresence initial={false}>
+            <AnimatePresence initial={false} mode="sync">
               <motion.img
                 key={activeImage}
                 src={activeImage}
                 alt={`${vehicle.name} photo ${activeImageIndex + 1}`}
-                initial={{ x: imageDirection > 0 ? "100%" : "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: imageDirection > 0 ? "-100%" : "100%" }}
-                transition={{ duration: 0.36, ease: [0.19, 1, 0.22, 1] }}
+                initial={{
+                  opacity: 0,
+                  x: imageDirection > 0 ? 36 : -36,
+                  scale: 1.025
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  scale: 1
+                }}
+                exit={{
+                  opacity: 0,
+                  x: imageDirection > 0 ? -24 : 24,
+                  scale: 0.985
+                }}
+                transition={{
+                  duration: 0.72,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
               />
             </AnimatePresence>
             {galleryImages.length > 1 && (
@@ -247,29 +329,11 @@ export default function ProductPageClient({ vehicle, related }) {
               </>
             )}
           </div>
-          <div className="inquiry-card image-inquiry-card">
-            <div>
-              <p className="eyebrow">Selected unit</p>
-              <h3>{vehicle.name}</h3>
-              <strong>{formatPrice(vehicle.price)}</strong>
-            </div>
-            {unavailable ? (
-              <button className="button button-primary" type="button" disabled>
-                {sold ? "Sold" : "Reserved"}
-              </button>
-            ) : (
-              <Link className="button button-primary" href={`/?inquire=${vehicle.id}#contact`}>
-                Prepare Inquiry <ArrowRight size={18} />
-              </Link>
-            )}
-          </div>
         </motion.div>
 
         <motion.div className="spec-panel" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
           <div className="section-heading compact">
-            <p className="eyebrow">Vehicle profile</p>
-            <h2 className="vehicle-profile-title">{vehicle.name}</h2>
-            <DescriptionBlock text={vehicle.description} />
+            <FinancingBlock financing={vehicle.financing} text={vehicle.description} />
           </div>
           <ul className="product-spec-grid">
             {specs.map(([label, value, Icon]) => (

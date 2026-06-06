@@ -27,7 +27,28 @@
         "/uploads/a253a54a-a41b-435e-a651-237a1a633577.jpg"
       ],
       "accent": "#8f1d24",
-      "description": "DP - 265K all in ( estimated )\n2 - 61,552\n3 - 45,202\n4 - 36,767\n5 - 32,060\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      "description": "DP - 265K all in ( estimated )\n2 - 61,552\n3 - 45,202\n4 - 36,767\n5 - 32,060\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )",
+      "financing": {
+        "downPayment": 265000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 61552
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 45202
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 36767
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 32060
+          }
+        ]
+      }
     },
     {
       "id": "toyota-vios-1-3-xle-2022",
@@ -48,7 +69,28 @@
         "/uploads/9d59b34e-a64c-49f4-a683-d6c6e7cfa3f2.jpg"
       ],
       "accent": "#8f1d24",
-      "description": "DP - 75K all in ( estimated )\n2 - 28,600\n3 - 21,016\n4 - 17,095\n5 - 14,906\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      "description": "DP - 75K all in ( estimated )\n2 - 28,600\n3 - 21,016\n4 - 17,095\n5 - 14,906\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )",
+      "financing": {
+        "downPayment": 75000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 28600
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 21016
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 17095
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 14906
+          }
+        ]
+      }
     },
     {
       "id": "toyota-hi-ace-super-grandia-3-0-2018",
@@ -69,7 +111,28 @@
         "/uploads/7a7326c5-9a8e-4e69-a3ff-f4a8b15a3af3.jpg"
       ],
       "accent": "#8f1d24",
-      "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )",
+      "financing": {
+        "downPayment": 275000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 69957
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 50117
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 41160
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 35547
+          }
+        ]
+      }
     },
     {
       "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
@@ -90,7 +153,28 @@
         "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
       ],
       "accent": "#8f1d24",
-      "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )",
+      "financing": {
+        "downPayment": 75000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 27500
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 20208
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 16437
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 14333
+          }
+        ]
+      }
     },
     {
       "id": "toyota-fortuner-2-4-v-2017-2018",
@@ -111,7 +195,28 @@
         "/uploads/d72c0a74-aacc-4d8b-bfd6-d95c82f79410.jpg"
       ],
       "accent": "#8f1d24",
-      "description": "DP - 165K DP  all in ( estimated ) \n24 months-50,600\n36 months-37,183\n48 months-30,245\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      "description": "DP - 165K DP  all in ( estimated ) \n24 months-50,600\n36 months-37,183\n48 months-30,245\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )",
+      "financing": {
+        "downPayment": 165000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 50600
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 37183
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 30245
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 26373
+          }
+        ]
+      }
     },
     {
       "id": "nissan-nv350-2-5-2024-2025",
@@ -132,7 +237,28 @@
         "/uploads/792c47e1-0884-454d-a857-a7ef52caedd5.jpg"
       ],
       "accent": "#8f1d24",
-      "description": "DP - 195K DP  all in ( estimated ) \n24 months-51,903\n36 months-37,183\n48 months-30,538\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      "description": "DP - 195K DP  all in ( estimated ) \n24 months-51,903\n36 months-37,183\n48 months-30,538\n60 months-26,373\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )",
+      "financing": {
+        "downPayment": 195000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 51903
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 37183
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 30538
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 26373
+          }
+        ]
+      }
     },
     {
       "id": "toyota-fortuner-2-4-v-2015-4x2",
@@ -153,7 +279,28 @@
         "/uploads/10c2420c-c855-4a9b-9cc9-60947ae023fb.jpg"
       ],
       "accent": "#ffffff",
-      "description": "DP - 150K DP  all in ( estimated ) \n24 months-40,394\n36 months-28,938\n48 months-23,767\n60 months-20,525\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
+      "description": "DP - 150K DP  all in ( estimated ) \n24 months-40,394\n36 months-28,938\n48 months-23,767\n60 months-20,525\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )",
+      "financing": {
+        "downPayment": 150000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 40394
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 28938
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 23767
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 20525
+          }
+        ]
+      }
     }
   ],
   "history": [
