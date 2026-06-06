@@ -23,11 +23,10 @@ import Image from "next/image";
 import logo from "../../pictures/LogoMYRDAMZ.png";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30, filter: "blur(12px)" },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { duration: 0.72, ease: [0.19, 1, 0.22, 1] }
   }
 };
@@ -59,7 +58,7 @@ function ProductHeader() {
     <Link className="brand" href="/" aria-label="Myrdamz Cars for Sales Davao home">
       <motion.span
        className="brand-mark"
-            animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(143,29,36,0)", "0 0 38px rgba(143,29,36,.3)", "0 0 0 rgba(143,29,36,0)"] }}
+            animate={{ rotate: [0, 6, -4, 0] }}
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
       >
         <Image
@@ -72,7 +71,7 @@ function ProductHeader() {
       </motion.span>
 
       <span>
-        <strong>Myrdamz</strong>
+        <strong>MYRDAMZ</strong>
         <small>Cars for Sales Davao</small>
       </span>
     </Link>
@@ -203,6 +202,13 @@ export default function ProductPageClient({ vehicle, related }) {
   const coverImage = getAssetPath(galleryImages[0] || vehicle.image);
 
   useEffect(() => {
+    galleryImages.forEach((image) => {
+      const preload = new window.Image();
+      preload.src = getAssetPath(image);
+    });
+  }, [galleryImages]);
+
+  useEffect(() => {
     if (galleryImages.length <= 1) return undefined;
 
     const interval = window.setInterval(() => {
@@ -230,9 +236,9 @@ export default function ProductPageClient({ vehicle, related }) {
         <motion.div
           className="product-hero-bg"
           style={{ backgroundImage: `url("${coverImage}")` }}
-          initial={{ scale: 1.1 }}
+          initial={{ scale: 1.035 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 1.35, ease: [0.19, 1, 0.22, 1] }}
+          transition={{ duration: 1.05, ease: [0.19, 1, 0.22, 1] }}
         />
         <div className="scan-lines" aria-hidden="true" />
         <Link className="back-link" href="/#catalog">
@@ -278,10 +284,11 @@ export default function ProductPageClient({ vehicle, related }) {
                 key={activeImage}
                 src={activeImage}
                 alt={`${vehicle.name} photo ${activeImageIndex + 1}`}
+                decoding="async"
                 initial={{
                   opacity: 0,
-                  x: imageDirection > 0 ? 36 : -36,
-                  scale: 1.025
+                  x: imageDirection > 0 ? 14 : -14,
+                  scale: 1.008
                 }}
                 animate={{
                   opacity: 1,
@@ -290,11 +297,11 @@ export default function ProductPageClient({ vehicle, related }) {
                 }}
                 exit={{
                   opacity: 0,
-                  x: imageDirection > 0 ? -24 : 24,
-                  scale: 0.985
+                  x: imageDirection > 0 ? -10 : 10,
+                  scale: 0.996
                 }}
                 transition={{
-                  duration: 0.72,
+                  duration: 0.48,
                   ease: [0.22, 1, 0.36, 1]
                 }}
               />

@@ -43,11 +43,10 @@ const emptyInquiry = {
 };
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 34, filter: "blur(12px)" },
+  hidden: { opacity: 0, y: 34 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { duration: 0.78, ease: [0.19, 1, 0.22, 1] }
   }
 };
@@ -65,8 +64,8 @@ const stagger = {
 function TiltCard({ children, className, accent }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [7, -7]), { stiffness: 220, damping: 24 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 220, damping: 24 });
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [3, -3]), { stiffness: 180, damping: 28 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-4, 4]), { stiffness: 180, damping: 28 });
 
   function handleMove(event) {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -82,11 +81,11 @@ function TiltCard({ children, className, accent }) {
   return (
     <motion.article
       className={className}
-      style={{ rotateX, rotateY, "--accent": accent }}
+      style={{ rotateX, rotateY, transformPerspective: 1000, "--accent": accent }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      whileHover={{ y: -10, scale: 1.015 }}
-      transition={{ type: "spring", stiffness: 220, damping: 22 }}
+      whileHover={{ y: -5, scale: 1.006 }}
+      transition={{ type: "spring", stiffness: 180, damping: 28 }}
     >
       {children}
     </motion.article>
@@ -168,6 +167,11 @@ export default function Home() {
 const [heroIndex, setHeroIndex] = useState(0);
 
 useEffect(() => {
+  heroImages.forEach((image) => {
+    const preload = new window.Image();
+    preload.src = image.src;
+  });
+
   const interval = setInterval(() => {
     setHeroIndex((current) => (current + 1) % heroImages.length);
   }, 5000);
@@ -280,7 +284,7 @@ useEffect(() => {
     <Link className="brand" href="/" aria-label="Myrdamz Cars for Sales Davao home">
       <motion.span
             className="brand-mark"
-            animate={{ rotate: [0, 6, -4, 0], boxShadow: ["0 0 0 rgba(143,29,36,0)", "0 0 38px rgba(143,29,36,.3)", "0 0 0 rgba(143,29,36,0)"] }}
+            animate={{ rotate: [0, 6, -4, 0] }}
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
           >
         <Image
@@ -315,28 +319,28 @@ useEffect(() => {
   </header>
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-       <motion.div
+<motion.div
   className="hero-bg"
-  initial={{ scale: 1.08 }}
+  initial={{ scale: 1.025 }}
   animate={{ scale: 1 }}
-  transition={{ duration: 1.7, ease: [0.19, 1, 0.22, 1] }}
+  transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
 >
-  {heroImages.map((image, index) => (
+  <AnimatePresence initial={false}>
     <motion.div
-      key={image.src}
+      key={heroImages[heroIndex].src}
       className="hero-bg-slide"
       style={{
-        backgroundImage: `url(${image.src})`,
+        backgroundImage: `url(${heroImages[heroIndex].src})`,
       }}
-      animate={{
-        opacity: heroIndex === index ? 1 : 0,
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       transition={{
-        duration: 1.2,
+        duration: 0.65,
         ease: "easeInOut",
       }}
     />
-  ))}
+  </AnimatePresence>
         </motion.div>
         <div className="scan-lines" aria-hidden="true" />
         <motion.div className="hero-content" variants={stagger} initial="hidden" animate="visible">
