@@ -1,11 +1,23 @@
 import { notFound } from "next/navigation";
 import { inventory } from "../../data/vehicles";
+import { readDb } from "../../../lib/admin-store";
 import ProductPageClient from "./product-page-client";
 
-export const dynamicParams = false;
+async function getVehicles() {
+  if (process.env.NEXT_PUBLIC_GITHUB_PAGES === "true") {
+    return inventory;
+  }
 
-function getRelatedVehicles(vehicle, inventory, count = 3) {
-  return inventory
+  try {
+    const db = await readDb();
+    return db.vehicles.length ? db.vehicles : inventory;
+  } catch {
+    return inventory;
+  }
+}
+
+function getRelatedVehicles(vehicle, vehicles, count = 3) {
+  return vehicles
     .filter((item) => item.id !== vehicle.id)
     .sort((a, b) => {
       const aScore = Number(a.type === vehicle.type) + Number(a.fuel === vehicle.fuel);
@@ -17,7 +29,8 @@ function getRelatedVehicles(vehicle, inventory, count = 3) {
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const vehicle = inventory.find((item) => item.id === id);
+  const vehicles = await getVehicles();
+  const vehicle = vehicles.find((item) => item.id === id);
 
   if (!vehicle) {
     return {
@@ -33,13 +46,14 @@ export async function generateMetadata({ params }) {
 
 export default async function VehicleProductPage({ params }) {
   const { id } = await params;
-  const vehicle = inventory.find((item) => item.id === id);
+  const vehicles = await getVehicles();
+  const vehicle = vehicles.find((item) => item.id === id);
 
   if (!vehicle) {
     notFound();
   }
 
-  return <ProductPageClient vehicle={vehicle} related={getRelatedVehicles(vehicle, inventory)} />;
+  return <ProductPageClient vehicle={vehicle} related={getRelatedVehicles(vehicle, vehicles)} />;
 }
 
 export function generateStaticParams() {

@@ -9,6 +9,174 @@
   ],
   "vehicles": [
     {
+      "id": "nissan-navara-2-5-ve-2022-2023",
+      "name": "Nissan Navara 2.5 VE 2022-2023",
+      "type": "SUV",
+      "year": 2023,
+      "price": 1140480,
+      "mileage": 28000,
+      "fuel": "Diesel",
+      "transmission": "Manual",
+      "seats": 5,
+      "status": "Available",
+      "image": "/uploads/cb7afd13-fd1f-4dfd-b877-45bf846e2fdc.jpg",
+      "images": [
+        "/uploads/cb7afd13-fd1f-4dfd-b877-45bf846e2fdc.jpg",
+        "/uploads/6b038b7f-3bd4-46ce-8118-9733dfa180a4.jpg",
+        "/uploads/30519fbf-4535-4f6f-b14e-526e759159ff.jpg",
+        "/uploads/de172ad8-85a5-436f-8831-e0132f3745d2.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "",
+      "financing": {
+        "downPayment": 195000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 47520
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 34839
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 28338
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 24710
+          }
+        ]
+      }
+    },
+    {
+      "id": "nissan-livina-1-5-vl-2025",
+      "name": "Nissan Livina 1.5 VL 2025",
+      "type": "MPV/AUV",
+      "year": 2025,
+      "price": 1011648,
+      "mileage": 12000,
+      "fuel": "Gasoline",
+      "transmission": "Automatic",
+      "seats": 8,
+      "status": "Available",
+      "image": "/uploads/a56c66d6-1f72-4700-aeaf-5429d43bebd3.jpg",
+      "images": [
+        "/uploads/a56c66d6-1f72-4700-aeaf-5429d43bebd3.jpg",
+        "/uploads/11b062a4-1a81-4bec-af02-221863e9dcef.jpg",
+        "/uploads/c301d445-ff97-40e0-81b0-bc4bb5153b94.jpg",
+        "/uploads/decf4ded-a1f0-447a-9331-0adf85ba3f19.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "",
+      "financing": {
+        "downPayment": 95000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 42152
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 30975
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 25195
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 21970
+          }
+        ]
+      }
+    },
+    {
+      "id": "toyota-innova-2-8-e-2022-2023",
+      "name": "Toyota Innova 2.8 E 2022-2023",
+      "type": "MPV/AUV",
+      "year": 2022,
+      "price": 1140480,
+      "mileage": 10000,
+      "fuel": "Gasoline",
+      "transmission": "Automatic",
+      "seats": 8,
+      "status": "Available",
+      "image": "/uploads/555a6f3b-c4c6-4dcc-90a9-0fdef68bb1b5.jpg",
+      "images": [
+        "/uploads/555a6f3b-c4c6-4dcc-90a9-0fdef68bb1b5.jpg",
+        "/uploads/ac05783d-9c3a-4b6b-af09-3848a17799d4.jpg",
+        "/uploads/ea8dd20a-2817-407d-abdb-f115c3c7310a.jpg",
+        "/uploads/c8fcae17-4bf7-4b98-a1d2-ee2a11833e45.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "",
+      "financing": {
+        "downPayment": 145000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 47520
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 34920
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 28404
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 24768
+          }
+        ]
+      }
+    },
+    {
+      "id": "mit-mirage-1-2-glx-2024",
+      "name": "Mit.Mirage 1.2 GLX 2024",
+      "type": "Sedan",
+      "year": 2024,
+      "price": 789888,
+      "mileage": 22000,
+      "fuel": "Gasoline",
+      "transmission": "Automatic",
+      "seats": 5,
+      "status": "Available",
+      "image": "/uploads/6488ae76-0e1d-4084-ad48-af92921e563d.jpg",
+      "images": [
+        "/uploads/6488ae76-0e1d-4084-ad48-af92921e563d.jpg",
+        "/uploads/9c3b41bc-adea-41cd-8680-4ac97ca906b2.jpg",
+        "/uploads/26be25b4-a50c-47b2-9418-dc2480512ee8.jpg",
+        "/uploads/3273f47e-9d23-42d4-8636-f25a01ab79d5.jpg"
+      ],
+      "accent": "#8f1d24",
+      "description": "",
+      "financing": {
+        "downPayment": 19000,
+        "terms": [
+          {
+            "years": 2,
+            "monthlyPayment": 32912
+          },
+          {
+            "years": 3,
+            "monthlyPayment": 23684
+          },
+          {
+            "years": 4,
+            "monthlyPayment": 18541
+          },
+          {
+            "years": 5,
+            "monthlyPayment": 16168
+          }
+        ]
+      }
+    },
+    {
       "id": "toyota-hilux-2-8-g-conquest-2019-20",
       "name": "Toyota Hilux 2.8 G Conquest 2019-20",
       "type": "SUV",
@@ -305,6 +473,198 @@
   ],
   "history": [
     {
+      "id": "1780938495068-iw89uvuo",
+      "type": "add",
+      "label": "Added Nissan Navara 2.5 VE 2022-2023",
+      "createdAt": "2026-06-08T17:08:15.068Z",
+      "vehicle": {
+        "id": "nissan-navara-2-5-ve-2022-2023",
+        "name": "Nissan Navara 2.5 VE 2022-2023",
+        "type": "SUV",
+        "year": 2023,
+        "price": 1140480,
+        "mileage": 28000,
+        "fuel": "Diesel",
+        "transmission": "Manual",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/cb7afd13-fd1f-4dfd-b877-45bf846e2fdc.jpg",
+        "images": [
+          "/uploads/cb7afd13-fd1f-4dfd-b877-45bf846e2fdc.jpg",
+          "/uploads/6b038b7f-3bd4-46ce-8118-9733dfa180a4.jpg",
+          "/uploads/30519fbf-4535-4f6f-b14e-526e759159ff.jpg",
+          "/uploads/de172ad8-85a5-436f-8831-e0132f3745d2.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "",
+        "financing": {
+          "downPayment": 195000,
+          "terms": [
+            {
+              "years": 2,
+              "monthlyPayment": 47520
+            },
+            {
+              "years": 3,
+              "monthlyPayment": 34839
+            },
+            {
+              "years": 4,
+              "monthlyPayment": 28338
+            },
+            {
+              "years": 5,
+              "monthlyPayment": 24710
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1780938175720-zx0a1kdc",
+      "type": "add",
+      "label": "Added Nissan Livina 1.5 VL 2025",
+      "createdAt": "2026-06-08T17:02:55.720Z",
+      "vehicle": {
+        "id": "nissan-livina-1-5-vl-2025",
+        "name": "Nissan Livina 1.5 VL 2025",
+        "type": "MPV/AUV",
+        "year": 2025,
+        "price": 1011648,
+        "mileage": 12000,
+        "fuel": "Gasoline",
+        "transmission": "Automatic",
+        "seats": 8,
+        "status": "Available",
+        "image": "/uploads/a56c66d6-1f72-4700-aeaf-5429d43bebd3.jpg",
+        "images": [
+          "/uploads/a56c66d6-1f72-4700-aeaf-5429d43bebd3.jpg",
+          "/uploads/11b062a4-1a81-4bec-af02-221863e9dcef.jpg",
+          "/uploads/c301d445-ff97-40e0-81b0-bc4bb5153b94.jpg",
+          "/uploads/decf4ded-a1f0-447a-9331-0adf85ba3f19.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "",
+        "financing": {
+          "downPayment": 95000,
+          "terms": [
+            {
+              "years": 2,
+              "monthlyPayment": 42152
+            },
+            {
+              "years": 3,
+              "monthlyPayment": 30975
+            },
+            {
+              "years": 4,
+              "monthlyPayment": 25195
+            },
+            {
+              "years": 5,
+              "monthlyPayment": 21970
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1780937764331-qrjgp936",
+      "type": "add",
+      "label": "Added Toyota Innova 2.8 E 2022-2023",
+      "createdAt": "2026-06-08T16:56:04.331Z",
+      "vehicle": {
+        "id": "toyota-innova-2-8-e-2022-2023",
+        "name": "Toyota Innova 2.8 E 2022-2023",
+        "type": "MPV/AUV",
+        "year": 2022,
+        "price": 1140480,
+        "mileage": 10000,
+        "fuel": "Gasoline",
+        "transmission": "Automatic",
+        "seats": 8,
+        "status": "Available",
+        "image": "/uploads/555a6f3b-c4c6-4dcc-90a9-0fdef68bb1b5.jpg",
+        "images": [
+          "/uploads/555a6f3b-c4c6-4dcc-90a9-0fdef68bb1b5.jpg",
+          "/uploads/ac05783d-9c3a-4b6b-af09-3848a17799d4.jpg",
+          "/uploads/ea8dd20a-2817-407d-abdb-f115c3c7310a.jpg",
+          "/uploads/c8fcae17-4bf7-4b98-a1d2-ee2a11833e45.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "",
+        "financing": {
+          "downPayment": 145000,
+          "terms": [
+            {
+              "years": 2,
+              "monthlyPayment": 47520
+            },
+            {
+              "years": 3,
+              "monthlyPayment": 34920
+            },
+            {
+              "years": 4,
+              "monthlyPayment": 28404
+            },
+            {
+              "years": 5,
+              "monthlyPayment": 24768
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1780937465533-yaup4beh",
+      "type": "add",
+      "label": "Added Mit.Mirage 1.2 GLX 2024",
+      "createdAt": "2026-06-08T16:51:05.533Z",
+      "vehicle": {
+        "id": "mit-mirage-1-2-glx-2024",
+        "name": "Mit.Mirage 1.2 GLX 2024",
+        "type": "Sedan",
+        "year": 2024,
+        "price": 789888,
+        "mileage": 22000,
+        "fuel": "Gasoline",
+        "transmission": "Automatic",
+        "seats": 5,
+        "status": "Available",
+        "image": "/uploads/6488ae76-0e1d-4084-ad48-af92921e563d.jpg",
+        "images": [
+          "/uploads/6488ae76-0e1d-4084-ad48-af92921e563d.jpg",
+          "/uploads/9c3b41bc-adea-41cd-8680-4ac97ca906b2.jpg",
+          "/uploads/26be25b4-a50c-47b2-9418-dc2480512ee8.jpg",
+          "/uploads/3273f47e-9d23-42d4-8636-f25a01ab79d5.jpg"
+        ],
+        "accent": "#8f1d24",
+        "description": "",
+        "financing": {
+          "downPayment": 19000,
+          "terms": [
+            {
+              "years": 2,
+              "monthlyPayment": 32912
+            },
+            {
+              "years": 3,
+              "monthlyPayment": 23684
+            },
+            {
+              "years": 4,
+              "monthlyPayment": 18541
+            },
+            {
+              "years": 5,
+              "monthlyPayment": 16168
+            }
+          ]
+        }
+      }
+    },
+    {
       "id": "1780758706285-roi2cyia",
       "type": "edit",
       "label": "Edited Toyota Vios 1.3 XLE 2022",
@@ -549,147 +909,7 @@
         "accent": "#8f1d24",
         "description": "DP - 75K all in ( estimated )\n2 - 28,600\n3 - 21,016\n4 - 17,095\n5 - 14,906\nFreebies ! Freebies !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
       }
-    },
-    {
-      "id": "1780002677537-7wyys63p",
-      "type": "edit",
-      "label": "Edited Toyota Hi Ace Super Grandia 3.0 2018",
-      "createdAt": "2026-05-28T21:11:17.537Z",
-      "before": {
-        "id": "toyota-hi-ace-super-grandia-3-0-2018",
-        "name": "Toyota Hi Ace Super Grandia 3.0 2018",
-        "type": "SUV",
-        "year": 2018,
-        "price": 1678968,
-        "mileage": 63000,
-        "fuel": "Diesel",
-        "transmission": "Automatic",
-        "seats": 10,
-        "status": "Available",
-        "image": "",
-        "images": [],
-        "accent": "#8f1d24",
-        "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
-      },
-      "after": {
-        "id": "toyota-hi-ace-super-grandia-3-0-2018",
-        "name": "Toyota Hi Ace Super Grandia 3.0 2018",
-        "type": "SUV",
-        "year": 2018,
-        "price": 1678968,
-        "mileage": 63000,
-        "fuel": "Diesel",
-        "transmission": "Automatic",
-        "seats": 10,
-        "status": "Available",
-        "image": "/uploads/4a2ec884-1537-4417-8d1a-97c16145f807.jpg",
-        "images": [
-          "/uploads/4a2ec884-1537-4417-8d1a-97c16145f807.jpg",
-          "/uploads/d0c38863-ada2-4ec8-a407-0c43767c210d.jpg",
-          "/uploads/66e727f7-f151-4014-bb73-0b027ac46b79.jpg",
-          "/uploads/7a7326c5-9a8e-4e69-a3ff-f4a8b15a3af3.jpg"
-        ],
-        "accent": "#8f1d24",
-        "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
-      }
-    },
-    {
-      "id": "1780002590349-0ly05a31",
-      "type": "add",
-      "label": "Added Toyota Hi Ace Super Grandia 3.0 2018",
-      "createdAt": "2026-05-28T21:09:50.349Z",
-      "vehicle": {
-        "id": "toyota-hi-ace-super-grandia-3-0-2018",
-        "name": "Toyota Hi Ace Super Grandia 3.0 2018",
-        "type": "SUV",
-        "year": 2018,
-        "price": 1678968,
-        "mileage": 63000,
-        "fuel": "Diesel",
-        "transmission": "Automatic",
-        "seats": 10,
-        "status": "Available",
-        "image": "",
-        "images": [],
-        "accent": "#8f1d24",
-        "description": "DP -  275K DP  all in ( estimated ) \n24 months-69,957\n36 months-50,117\n48 months-41,160\n60 months-35,547\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
-      }
-    },
-    {
-      "id": "1780002314686-2xg4b85e",
-      "type": "edit",
-      "label": "Edited Hyundai Accent 1.6 CRDI Diesel 2020-21",
-      "createdAt": "2026-05-28T21:05:14.686Z",
-      "before": {
-        "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
-        "name": "Hyundai Accent 1.6 CRDI Diesel 2020-21",
-        "type": "Sedan",
-        "year": 2021,
-        "price": 660000,
-        "mileage": 70000,
-        "fuel": "Diesel",
-        "transmission": "Manual",
-        "seats": 5,
-        "status": "Available",
-        "image": "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
-        "images": [
-          "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
-          "/uploads/eabd01a9-b56b-4c34-a105-4ce23264251b.jpg",
-          "/uploads/86ced37d-3bc5-4bca-9b97-6fae7f3c7bfc.jpg",
-          "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
-        ],
-        "accent": "#8f1d24",
-        "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
-      },
-      "after": {
-        "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
-        "name": "Hyundai Accent 1.6 CRDI Diesel 2020-21",
-        "type": "Sedan",
-        "year": 2021,
-        "price": 660000,
-        "mileage": 70000,
-        "fuel": "Diesel",
-        "transmission": "Manual",
-        "seats": 5,
-        "status": "Available",
-        "image": "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
-        "images": [
-          "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
-          "/uploads/eabd01a9-b56b-4c34-a105-4ce23264251b.jpg",
-          "/uploads/86ced37d-3bc5-4bca-9b97-6fae7f3c7bfc.jpg",
-          "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
-        ],
-        "accent": "#8f1d24",
-        "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
-      }
-    },
-    {
-      "id": "1780002308448-ad3n5fow",
-      "type": "add",
-      "label": "Added Hyundai Accent 1.6 CRDI Diesel 2020-21",
-      "createdAt": "2026-05-28T21:05:08.448Z",
-      "vehicle": {
-        "id": "hyundai-accent-1-6-crdi-diesel-2020-21",
-        "name": "Hyundai Accent 1.6 CRDI Diesel 2020-21",
-        "type": "Sedan",
-        "year": 2021,
-        "price": 660000,
-        "mileage": 70000,
-        "fuel": "Diesel",
-        "transmission": "Manual",
-        "seats": 5,
-        "status": "Available",
-        "image": "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
-        "images": [
-          "/uploads/93adfa18-104e-497d-8969-0006c092b16c.jpg",
-          "/uploads/eabd01a9-b56b-4c34-a105-4ce23264251b.jpg",
-          "/uploads/86ced37d-3bc5-4bca-9b97-6fae7f3c7bfc.jpg",
-          "/uploads/1d28b330-4d9e-48bc-b590-6fb5ebcc58c6.jpg"
-        ],
-        "accent": "#8f1d24",
-        "description": "DP -  75K DP  all in ( estimated ) \n24 months-27,500\n36 months-20,208\n48 months-16,437\n60 months-14,333\nInclusion on Downpayment \nonly applies on Financing Basis !\n- Transfer of Ownership\n- HPG Clearance\n- Deed of Sale ( Notarized )\n- Processing Fee / Chattel\n- Full Car Detailing\n- Rubbing / Wax / Buffing\n- Comprehensive Insurance ( Not Included )"
-      }
     }
   ],
-  "updatedAt": "2026-06-06T15:11:46.285Z"
+  "updatedAt": "2026-06-08T17:08:15.068Z"
 }
