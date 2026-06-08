@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "migrate:financing": "node scripts/migrate-financing.mjs",
+    "seed:supabase": "node scripts/seed-supabase.mjs",
     "snapshot": "node scripts/sync-static-vehicles.mjs",
     "start": "next start",
     "lint": "next lint"
