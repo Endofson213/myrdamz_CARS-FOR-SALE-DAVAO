@@ -497,6 +497,7 @@ h3 {
 .catalog-section > .filter-shell,
 .catalog-section > .catalog-toolbar,
 .catalog-section > .vehicle-grid,
+.catalog-section > .catalog-actions,
 .catalog-section > .empty-state {
   width: min(var(--content-max), 100%);
   margin-left: auto;
@@ -694,6 +695,21 @@ textarea:focus {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
   perspective: 1200px;
+}
+
+.catalog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.catalog-more-button {
+  min-width: 220px;
 }
 
 .vehicle-card {
@@ -2267,11 +2283,18 @@ textarea:focus {
   }
 
   .catalog-toolbar,
+  .catalog-actions,
   .site-footer,
   .admin-topbar,
   .inquiry-card {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .catalog-actions {
+    align-items: stretch;
+    gap: 10px;
+    text-align: center;
   }
 
   .price-stage-row {

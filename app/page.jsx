@@ -34,6 +34,8 @@ import hero5 from "./pictures/CarHeroBG5.jpg";
 const heroImages = [hero1, hero2, hero3, hero4, hero5];
 
 const MESSENGER_URL = "https://www.messenger.com/t/105855237963972";
+const DEFAULT_CATALOG_PAGE_SIZE = 8;
+const VIEW_MORE_ROW_COUNT = 2;
 
 const emptyInquiry = {
   name: "",
@@ -118,6 +120,22 @@ function statusRank(vehicle) {
   return 0;
 }
 
+function getCatalogPageSize() {
+  if (typeof window === "undefined") return DEFAULT_CATALOG_PAGE_SIZE;
+  if (window.innerWidth <= 680) return 3;
+  if (window.innerWidth <= 900) return 6;
+  if (window.innerWidth <= 1120) return 9;
+  return DEFAULT_CATALOG_PAGE_SIZE;
+}
+
+function getCatalogColumnCount() {
+  if (typeof window === "undefined") return 4;
+  if (window.innerWidth <= 680) return 1;
+  if (window.innerWidth <= 900) return 2;
+  if (window.innerWidth <= 1120) return 3;
+  return 4;
+}
+
 export default function Home() {
   const [filters, setFilters] = useState({
     type: "All",
@@ -131,6 +149,9 @@ export default function Home() {
   const [inquiryStatus, setInquiryStatus] = useState("");
   const [inquiry, setInquiry] = useState(emptyInquiry);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [catalogPageSize, setCatalogPageSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
+  const [catalogViewMoreSize, setCatalogViewMoreSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
+  const [visibleVehicleCount, setVisibleVehicleCount] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const inquiryParamHandled = useRef(false);
   const bodyTypeOptions = useMemo(() => createOptions(vehicles, "type", bodyTypes), [vehicles]);
   const fuelOptions = useMemo(() => createOptions(vehicles, "fuel"), [vehicles]);
@@ -164,6 +185,11 @@ export default function Home() {
     if (filters.sort === "year-new") return [...list].sort((a, b) => activeFirst(a, b) || b.year - a.year);
     return [...list].sort(activeFirst);
   }, [filters, vehicles]);
+  const visibleVehicles = useMemo(
+    () => filtered.slice(0, visibleVehicleCount),
+    [filtered, visibleVehicleCount]
+  );
+  const remainingVehicleCount = Math.max(filtered.length - visibleVehicles.length, 0);
 const [heroIndex, setHeroIndex] = useState(0);
 
 useEffect(() => {
@@ -178,6 +204,21 @@ useEffect(() => {
 
   return () => clearInterval(interval);
 }, []);
+
+useEffect(() => {
+  function updateCatalogPageSize() {
+    setCatalogPageSize(getCatalogPageSize());
+    setCatalogViewMoreSize(getCatalogColumnCount() * VIEW_MORE_ROW_COUNT);
+  }
+
+  updateCatalogPageSize();
+  window.addEventListener("resize", updateCatalogPageSize);
+  return () => window.removeEventListener("resize", updateCatalogPageSize);
+}, []);
+
+useEffect(() => {
+  setVisibleVehicleCount(catalogPageSize);
+}, [filters, catalogPageSize]);
 
 useEffect(() => {
   async function loadVehicles() {
@@ -267,6 +308,7 @@ useEffect(() => {
       search: "",
       sort: "featured"
     });
+    setVisibleVehicleCount(catalogPageSize);
   }
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
@@ -488,7 +530,7 @@ useEffect(() => {
 
         <div className="catalog-toolbar">
           <motion.p key={filtered.length} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            {vehicleLoadStatus === "loading" ? "Loading units..." : `Showing ${filtered.length} of ${vehicles.length} units`}
+            {vehicleLoadStatus === "loading" ? "Loading units..." : `Showing ${visibleVehicles.length} of ${filtered.length} matching units`}
           </motion.p>
           <button className="text-button" type="button" onClick={resetFilters}>
             <RefreshCw size={16} /> Reset Filters
@@ -497,7 +539,7 @@ useEffect(() => {
 
         <motion.div className="vehicle-grid" layout>
           <AnimatePresence mode="popLayout">
-            {filtered.map((vehicle, index) => (
+            {visibleVehicles.map((vehicle, index) => (
               <TiltCard key={vehicle.id} className="vehicle-card" accent={vehicle.accent}>
                 <motion.div
                   layout
@@ -546,6 +588,23 @@ useEffect(() => {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {remainingVehicleCount > 0 && (
+          <motion.div
+            className="catalog-actions"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <button
+              className="button button-primary catalog-more-button"
+              type="button"
+              onClick={() => setVisibleVehicleCount((count) => Math.min(count + catalogViewMoreSize, filtered.length))}
+            >
+              View more units <ArrowRight size={18} />
+            </button>
+            <span>{remainingVehicleCount} more matching unit{remainingVehicleCount === 1 ? "" : "s"}</span>
+          </motion.div>
+        )}
 
         {filtered.length === 0 && (
           <motion.div className="empty-state" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
