@@ -32,23 +32,28 @@ export async function POST(request) {
     return json({ error: "Image must be 6MB or smaller." }, 400);
   }
 
-  const bytes = Buffer.from(await file.arrayBuffer());
-  const supabaseUrl = await uploadVehiclePhoto({
-    bytes,
-    contentType: file.type,
-    extension: EXTENSIONS[file.type]
-  });
+  try {
+    const bytes = Buffer.from(await file.arrayBuffer());
+    const supabaseUrl = await uploadVehiclePhoto({
+      bytes,
+      contentType: file.type,
+      extension: EXTENSIONS[file.type]
+    });
 
-  if (supabaseUrl) {
-    return json({ url: supabaseUrl }, 201);
+    if (supabaseUrl) {
+      return json({ url: supabaseUrl }, 201);
+    }
+
+    const fileName = `${crypto.randomUUID()}.${EXTENSIONS[file.type]}`;
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const filePath = path.join(uploadDir, fileName);
+
+    await fs.mkdir(uploadDir, { recursive: true });
+    await fs.writeFile(filePath, bytes);
+
+    return json({ url: `/uploads/${fileName}` }, 201);
+  } catch (error) {
+    console.error("Vehicle photo upload failed:", error);
+    return json({ error: error instanceof Error ? error.message : "Could not upload image." }, 500);
   }
-
-  const fileName = `${crypto.randomUUID()}.${EXTENSIONS[file.type]}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  const filePath = path.join(uploadDir, fileName);
-
-  await fs.mkdir(uploadDir, { recursive: true });
-  await fs.writeFile(filePath, bytes);
-
-  return json({ url: `/uploads/${fileName}` }, 201);
 }

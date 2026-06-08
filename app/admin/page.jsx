@@ -140,32 +140,44 @@ function updateVehicleForm(event) {
 
     const uploadedUrls = [];
 
-    for (const file of files) {
-      const formData = new FormData();
-      formData.append("image", file);
+    try {
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append("image", file);
 
-      const response = await fetch("/api/admin/uploads", {
-        method: "POST",
-        body: formData
-      });
-      const data = await response.json();
+        const response = await fetch("/api/admin/uploads", {
+          method: "POST",
+          body: formData
+        });
+        const contentType = response.headers.get("content-type") || "";
+        const data = contentType.includes("application/json")
+          ? await response.json()
+          : { error: await response.text() };
 
-      if (!response.ok) {
-        setUploading(false);
-        setStatus(data.error || "Could not upload image.");
-        return;
+        if (!response.ok) {
+          setStatus(data.error || "Could not upload image.");
+          return;
+        }
+
+        if (!data.url) {
+          setStatus("The upload finished, but no image URL was returned.");
+          return;
+        }
+
+        uploadedUrls.push(data.url);
       }
 
-      uploadedUrls.push(data.url);
+      setVehicleForm((current) => {
+        const images = Array.from(new Set([...(current.images || []), current.image, ...uploadedUrls].filter(Boolean)));
+        return { ...current, image: images[0] || "", images };
+      });
+      setStatus(`${uploadedUrls.length} photo${uploadedUrls.length === 1 ? "" : "s"} uploaded. Save the vehicle to keep them.`);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Could not upload image.");
+    } finally {
+      setUploading(false);
+      event.target.value = "";
     }
-
-    setUploading(false);
-    setVehicleForm((current) => {
-      const images = Array.from(new Set([...(current.images || []), current.image, ...uploadedUrls].filter(Boolean)));
-      return { ...current, image: images[0] || "", images };
-    });
-    setStatus(`${uploadedUrls.length} photo${uploadedUrls.length === 1 ? "" : "s"} uploaded. Save the vehicle to keep them.`);
-    event.target.value = "";
   }
 
   function removeVehiclePhoto(photo) {

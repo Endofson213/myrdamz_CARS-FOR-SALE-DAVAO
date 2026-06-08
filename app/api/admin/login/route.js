@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { createToken, setAuthCookie, verifyPassword } from "../../../../lib/admin-auth";
-import { readDb } from "../../../../lib/admin-store";
+import { readLocalDb } from "../../../../lib/admin-store";
 
 
 export async function POST(request) {
   const { username, password } = await request.json();
-  const db = await readDb();
+  const db = await readLocalDb();
   const user = db.users.find((item) => item.username === String(username || "").trim());
 
   if (!user || !verifyPassword(password || "", user.passwordHash)) {

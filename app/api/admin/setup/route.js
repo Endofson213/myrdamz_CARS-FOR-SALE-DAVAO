@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { createToken, hashPassword, setAuthCookie } from "../../../../lib/admin-auth";
-import { readDb, writeDb } from "../../../../lib/admin-store";
+import { readLocalDb, writeLocalDb } from "../../../../lib/admin-store";
 
 
 export async function POST(request) {
-  const db = await readDb();
+  const db = await readLocalDb();
 
   if (db.users.length > 0) {
     return NextResponse.json({ error: "Admin setup has already been completed." }, { status: 409 });
@@ -24,7 +24,7 @@ export async function POST(request) {
     createdAt: new Date().toISOString()
   };
 
-  await writeDb({ ...db, users: [user] });
+  await writeLocalDb({ ...db, users: [user] });
 
   const token = createToken(user);
   const response = NextResponse.json({ user: { id: user.id, username: user.username } });
