@@ -1,10 +1,15 @@
 import { deleteUploadedImageIfUnused, readDb, writeDb } from "../../../../lib/admin-store";
+import { isSupabaseConfigured } from "../../../../lib/supabase-store";
 import { json, requireAdmin } from "../_utils";
 
 
 export async function POST(request) {
   const auth = requireAdmin(request);
   if (auth.error) return auth.error;
+
+  if (isSupabaseConfigured()) {
+    return json({ error: "Undo is unavailable while vehicles are stored in Supabase." }, 400);
+  }
 
   const db = await readDb();
   const [entry, ...history] = db.history;

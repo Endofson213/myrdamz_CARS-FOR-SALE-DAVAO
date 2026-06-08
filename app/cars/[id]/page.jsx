@@ -10,7 +10,7 @@ async function getVehicles() {
 
   try {
     const db = await readDb();
-    return db.vehicles.length ? db.vehicles : inventory;
+    return db.vehicles;
   } catch {
     return inventory;
   }
