@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { History, Home, ImagePlus, LogOut, Pencil, Save, ShieldCheck, Trash2, Undo2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, History, Home, ImagePlus, LogOut, Pencil, Save, ShieldCheck, Star, Trash2, Undo2 } from "lucide-react";
 import Link from "next/link";
 import { vehicleBodyTypes } from "../data/vehicles";
 
@@ -16,6 +16,7 @@ const blankVehicle = {
   transmission: "Automatic",
   seats: "",
   status: "Available",
+  soldDate: "",
   image: "",
   images: [],
   accent: "#8f1d24",
@@ -39,6 +40,8 @@ export default function AdminPage() {
   const [vehicleForm, setVehicleForm] = useState(blankVehicle);
   const [editingId, setEditingId] = useState("");
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [typeFilter, setTypeFilter] = useState("All");
   const [status, setStatus] = useState("");
   const [uploading, setUploading] = useState(false);
   const isGithubPages = process.env.NEXT_PUBLIC_GITHUB_PAGES === "true";
@@ -48,14 +51,22 @@ export default function AdminPage() {
       const query = search.trim().toLowerCase();
       return vehicles
         .filter((vehicle) => {
-          const text = [vehicle.name, vehicle.type, vehicle.year, vehicle.fuel, vehicle.transmission, vehicle.status]
+          const text = [vehicle.name, vehicle.type, vehicle.year, vehicle.fuel, vehicle.transmission, vehicle.status, vehicle.soldDate]
             .join(" ")
             .toLowerCase();
-          return text.includes(query);
+          const matchesSearch = text.includes(query);
+          const matchesStatus = statusFilter === "All" || (vehicle.status || "Available") === statusFilter;
+          const matchesType = typeFilter === "All" || vehicle.type === typeFilter;
+          return matchesSearch && matchesStatus && matchesType;
         })
         .sort((a, b) => String(a.name).localeCompare(String(b.name)));
     },
-    [vehicles, search]
+    [vehicles, search, statusFilter, typeFilter]
+  );
+
+  const adminTypeOptions = useMemo(
+    () => ["All", ...Array.from(new Set(vehicles.map((vehicle) => vehicle.type).filter(Boolean))).sort()],
+    [vehicles]
   );
 
   useEffect(() => {
@@ -96,6 +107,18 @@ function updateVehicleForm(event) {
     setVehicleForm((current) => ({ ...current, [name]: value }));
   }
 
+  function getTodayInputDate() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function updateVehicleStatus(statusOption) {
+    setVehicleForm((current) => ({
+      ...current,
+      status: statusOption,
+      soldDate: statusOption === "Sold" ? current.soldDate || getTodayInputDate() : ""
+    }));
+  }
+
   function makeSlug(value) {
     return value
       .toLowerCase()
@@ -131,6 +154,46 @@ function updateVehicleForm(event) {
     }));
   }
 
+  function loadImage(file) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      const url = URL.createObjectURL(file);
+      image.onload = () => {
+        URL.revokeObjectURL(url);
+        resolve(image);
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error("Could not read image for compression."));
+      };
+      image.src = url;
+    });
+  }
+
+  async function compressImageFile(file) {
+    if (file.type === "image/gif") return file;
+
+    const image = await loadImage(file);
+    const maxDimension = 1800;
+    const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
+    const width = Math.max(1, Math.round(image.naturalWidth * scale));
+    const height = Math.max(1, Math.round(image.naturalHeight * scale));
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+    if (!context) return file;
+
+    context.drawImage(image, 0, 0, width, height);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.82));
+    if (!blob || blob.size >= file.size) return file;
+
+    const name = file.name.replace(/\.[^.]+$/, "") || "vehicle-photo";
+    return new File([blob], `${name}.webp`, { type: "image/webp" });
+  }
+
   async function uploadImage(event) {
     const files = Array.from(event.target.files || []);
     if (!files.length) return;
@@ -142,8 +205,9 @@ function updateVehicleForm(event) {
 
     try {
       for (const file of files) {
+        const uploadFile = await compressImageFile(file);
         const formData = new FormData();
-        formData.append("image", file);
+        formData.append("image", uploadFile);
 
         const response = await fetch("/api/admin/uploads", {
           method: "POST",
@@ -171,7 +235,7 @@ function updateVehicleForm(event) {
         const images = Array.from(new Set([...(current.images || []), current.image, ...uploadedUrls].filter(Boolean)));
         return { ...current, image: images[0] || "", images };
       });
-      setStatus(`${uploadedUrls.length} photo${uploadedUrls.length === 1 ? "" : "s"} uploaded. Save the vehicle to keep them.`);
+      setStatus(`${uploadedUrls.length} compressed photo${uploadedUrls.length === 1 ? "" : "s"} uploaded. Save the vehicle to keep them.`);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Could not upload image.");
     } finally {
@@ -184,6 +248,26 @@ function updateVehicleForm(event) {
     setVehicleForm((current) => {
       const images = (current.images || []).filter((image) => image !== photo);
       return { ...current, images, image: images[0] || "" };
+    });
+  }
+
+  function moveVehiclePhoto(index, direction) {
+    setVehicleForm((current) => {
+      const images = [...(current.images?.length ? current.images : [current.image].filter(Boolean))];
+      const nextIndex = index + direction;
+      if (nextIndex < 0 || nextIndex >= images.length) return current;
+
+      [images[index], images[nextIndex]] = [images[nextIndex], images[index]];
+      return { ...current, images, image: images[0] || "" };
+    });
+  }
+
+  function setCoverPhoto(index) {
+    setVehicleForm((current) => {
+      const images = [...(current.images?.length ? current.images : [current.image].filter(Boolean))];
+      const [cover] = images.splice(index, 1);
+      const nextImages = [cover, ...images].filter(Boolean);
+      return { ...current, images: nextImages, image: nextImages[0] || "" };
     });
   }
 
@@ -251,6 +335,7 @@ function updateVehicleForm(event) {
       price: String(vehicle.price),
       mileage: String(vehicle.mileage),
       seats: String(vehicle.seats),
+      soldDate: vehicle.soldDate || "",
       downPayment: formatPeso(vehicle.financing?.downPayment),
       payment2Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 2)?.monthlyPayment),
       payment3Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 3)?.monthlyPayment),
@@ -464,7 +549,7 @@ function updateVehicleForm(event) {
                     className={vehicleForm.status === statusOption ? "is-active" : ""}
                     key={statusOption}
                     type="button"
-                    onClick={() => setVehicleForm((current) => ({ ...current, status: statusOption }))}
+                    onClick={() => updateVehicleStatus(statusOption)}
                   >
                     {statusOption}
                   </button>
@@ -473,12 +558,19 @@ function updateVehicleForm(event) {
             </div>
           </div>
 
+          {vehicleForm.status === "Sold" && (
+            <label className="admin-half-field">
+              Sold date
+              <input name="soldDate" type="date" value={vehicleForm.soldDate} onChange={updateVehicleForm} required />
+            </label>
+          )}
+
           <label className="admin-upload">
             Unit photo
             <span className="admin-upload-box">
               <ImagePlus size={22} />
-              <strong>{uploading ? "Uploading..." : "Upload vehicle photos"}</strong>
-              <small>Select one or multiple JPG, PNG, WEBP, or GIF files up to 6MB each</small>
+              <strong>{uploading ? "Compressing and uploading..." : "Upload vehicle photos"}</strong>
+              <small>Select JPG, PNG, WEBP, or GIF files. Photos are compressed before upload.</small>
               <input name="imageUpload" type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={uploadImage} disabled={uploading} multiple />
             </span>
           </label>
@@ -489,9 +581,20 @@ function updateVehicleForm(event) {
                 <div className="admin-image-preview" key={photo}>
                   <img src={photo} alt={`Vehicle photo ${index + 1}`} />
                   <span>{index === 0 ? "Cover photo" : `Photo ${index + 1}`}</span>
-                  <button type="button" onClick={() => removeVehiclePhoto(photo)}>
-                    Remove
-                  </button>
+                  <div className="admin-image-actions">
+                    <button type="button" onClick={() => moveVehiclePhoto(index, -1)} disabled={index === 0} aria-label="Move photo left">
+                      <ArrowLeft size={15} />
+                    </button>
+                    <button type="button" onClick={() => setCoverPhoto(index)} disabled={index === 0} aria-label="Make cover photo">
+                      <Star size={15} />
+                    </button>
+                    <button type="button" onClick={() => moveVehiclePhoto(index, 1)} disabled={index === (vehicleForm.images?.length ? vehicleForm.images : [vehicleForm.image]).length - 1} aria-label="Move photo right">
+                      <ArrowRight size={15} />
+                    </button>
+                    <button type="button" onClick={() => removeVehiclePhoto(photo)}>
+                      Remove
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -562,6 +665,36 @@ function updateVehicleForm(event) {
             <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Model, year, type, fuel..." />
           </label>
 
+          <div className="admin-filter-grid">
+            <label>
+              Status
+              <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}>
+                {["All", "Available", "Reserved", "Sold"].map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Type
+              <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value)}>
+                {adminTypeOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </label>
+            <button
+              className="text-button"
+              type="button"
+              onClick={() => {
+                setSearch("");
+                setStatusFilter("All");
+                setTypeFilter("All");
+              }}
+            >
+              Clear filters
+            </button>
+          </div>
+
           <div className="admin-vehicle-list">
             {sortedVehicles.map((vehicle) => (
               <article className="admin-vehicle-row" key={vehicle.id}>
@@ -569,6 +702,7 @@ function updateVehicleForm(event) {
                 <div>
                   <strong>{vehicle.name}</strong>
                   <span>{vehicle.year} / {vehicle.type} / {vehicle.status || "Available"} / PHP {Number(vehicle.price).toLocaleString("en-PH")}</span>
+                  {vehicle.status === "Sold" && vehicle.soldDate && <small>Sold on {vehicle.soldDate}</small>}
                 </div>
                 <button type="button" aria-label={`Edit ${vehicle.name}`} onClick={() => editVehicle(vehicle)}>
                   <Pencil size={17} />
