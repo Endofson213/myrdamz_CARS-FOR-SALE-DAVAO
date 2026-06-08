@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { json, requireAdmin } from "../_utils";
+import { uploadVehiclePhoto } from "../../../../lib/supabase-store";
 
 
 const MAX_FILE_SIZE = 6 * 1024 * 1024;
@@ -32,6 +33,16 @@ export async function POST(request) {
   }
 
   const bytes = Buffer.from(await file.arrayBuffer());
+  const supabaseUrl = await uploadVehiclePhoto({
+    bytes,
+    contentType: file.type,
+    extension: EXTENSIONS[file.type]
+  });
+
+  if (supabaseUrl) {
+    return json({ url: supabaseUrl }, 201);
+  }
+
   const fileName = `${crypto.randomUUID()}.${EXTENSIONS[file.type]}`;
   const uploadDir = path.join(process.cwd(), "public", "uploads");
   const filePath = path.join(uploadDir, fileName);
