@@ -12,6 +12,7 @@ import {
 import {
   ArrowRight,
   CarFront,
+  ChevronDown,
   Gauge,
   MessageCircle,
   Menu,
@@ -600,9 +601,8 @@ useEffect(() => {
               type="button"
               onClick={() => setVisibleVehicleCount((count) => Math.min(count + catalogViewMoreSize, filtered.length))}
             >
-              View more units <ArrowRight size={18} />
+              View more <ChevronDown size={17} aria-hidden="true" />
             </button>
-            <span>{remainingVehicleCount} more matching unit{remainingVehicleCount === 1 ? "" : "s"}</span>
           </motion.div>
         )}
 
