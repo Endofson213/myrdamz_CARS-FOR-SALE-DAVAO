@@ -1,7 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useScroll, useMotionValueEvent} from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -17,9 +16,10 @@ import {
   Users,
   X
 } from "lucide-react";
-import Link from "next/link";
-import { formatMileage, formatPrice, getAssetPath } from "../../data/vehicles";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { formatMileage, formatPrice, getAssetPath } from "../../data/vehicles";
 import logo from "../../pictures/LogoMYRDAMZ.png";
 
 const fadeUp = {
@@ -39,58 +39,55 @@ const stagger = {
     }
   }
 };
- 
-function ProductHeader() {
 
-   const [isScrolled, setIsScrolled] = useState(false);
-   const [isMenuOpen, setIsMenuOpen] = useState(false);
+function ProductHeader() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-  setIsScrolled(latest > 30);
-  if (latest > 30) setIsMenuOpen(false);
-});
+    setIsScrolled(latest > 30);
+    if (latest > 30) setIsMenuOpen(false);
+  });
+
   return (
-    
-    <header
-    className={`site-header ${isScrolled ? "is-scrolled" : ""}`}
-  >
-    <Link className="brand" href="/" aria-label="Myrdamz Cars for Sales Davao home">
-      <motion.span
-       className="brand-mark"
+    <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
+      <Link className="brand" href="/" aria-label="Myrdamz Cars for Sales Davao home">
+        <motion.span
+          className="brand-mark"
             animate={{ rotate: [0, 6, -4, 0] }}
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Image
+            src={logo}
+            alt="Myrdamz Cars for Sales Davao logo"
+            width={45}
+            height={45}
+            className="brand-logo"
+          />
+        </motion.span>
+
+        <span>
+          <strong>MYRDAMZ</strong>
+          <small>Cars for Sales Davao</small>
+        </span>
+      </Link>
+
+      <button
+        className="menu-toggle"
+        type="button"
+        aria-label="Toggle navigation menu"
+        aria-expanded={isMenuOpen}
+        onClick={() => setIsMenuOpen((open) => !open)}
       >
-        <Image
-          src={logo}
-          alt="Myrdamz Cars for Sales Davao logo"
-          width={45}
-          height={45}
-          className="brand-logo"
-        />
-      </motion.span>
+        {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+      </button>
 
-      <span>
-        <strong>MYRDAMZ</strong>
-        <small>Cars for Sales Davao</small>
-      </span>
-    </Link>
-
-    <button
-      className="menu-toggle"
-      type="button"
-      aria-label="Toggle navigation menu"
-      aria-expanded={isMenuOpen}
-      onClick={() => setIsMenuOpen((open) => !open)}
-    >
-      {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
-    </button>
-
-    <nav className={`nav-links ${isMenuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
-      <a href="/#catalog" onClick={() => setIsMenuOpen(false)}>CATALOG</a>
-      <a href="/#contact" onClick={() => setIsMenuOpen(false)}>CONTACT</a>
-    </nav>
-  </header>
+      <nav className={`nav-links ${isMenuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
+        <a href="/#catalog" onClick={() => setIsMenuOpen(false)}>CATALOG</a>
+        <a href="/#contact" onClick={() => setIsMenuOpen(false)}>CONTACT</a>
+      </nav>
+    </header>
   );
 }
 
@@ -217,7 +214,7 @@ export default function ProductPageClient({ vehicle, related }) {
     }, 5000);
 
     return () => window.clearInterval(interval);
-  }, [activeImageIndex, galleryImages.length]);
+  }, [galleryImages]);
 
   const specs = [
     ["Year", vehicle.year, BadgeCheck],

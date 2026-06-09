@@ -1,13 +1,13 @@
 "use client";
 
-import { 
+import {
   AnimatePresence,
   motion,
+  useMotionValueEvent,
   useMotionValue,
-  useSpring,
-  useTransform,
   useScroll,
-  useMotionValueEvent 
+  useSpring,
+  useTransform
 } from "framer-motion";
 import {
   ArrowRight,
@@ -21,10 +21,10 @@ import {
   SlidersHorizontal,
   X
 } from "lucide-react";
-import Link from "next/link";
-import { useMemo, useRef, useState , useEffect } from "react";
-import { bodyTypes, formatMileage, formatPrice, getAssetPath, inventory } from "./data/vehicles";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { bodyTypes, formatMileage, formatPrice, getAssetPath, inventory } from "./data/vehicles";
 import logo from "./pictures/LogoMYRDAMZ.png";
 import hero1 from "./pictures/CarHeroBG.jpg";
 import hero2 from "./pictures/CarHeroBG2.jpg";
@@ -145,6 +145,7 @@ export default function Home() {
     search: "",
     sort: "featured"
   });
+
   const [vehicles, setVehicles] = useState(inventory);
   const [vehicleLoadStatus, setVehicleLoadStatus] = useState("ready");
   const [inquiryStatus, setInquiryStatus] = useState("");
@@ -153,7 +154,10 @@ export default function Home() {
   const [catalogPageSize, setCatalogPageSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const [catalogViewMoreSize, setCatalogViewMoreSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const [visibleVehicleCount, setVisibleVehicleCount] = useState(DEFAULT_CATALOG_PAGE_SIZE);
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
   const inquiryParamHandled = useRef(false);
+  const { scrollY } = useScroll();
   const bodyTypeOptions = useMemo(() => createOptions(vehicles, "type", bodyTypes), [vehicles]);
   const fuelOptions = useMemo(() => createOptions(vehicles, "fuel"), [vehicles]);
   const transmissionOptions = useMemo(() => createOptions(vehicles, "transmission"), [vehicles]);
@@ -191,75 +195,68 @@ export default function Home() {
     [filtered, visibleVehicleCount]
   );
   const remainingVehicleCount = Math.max(filtered.length - visibleVehicles.length, 0);
-const [heroIndex, setHeroIndex] = useState(0);
 
-useEffect(() => {
-  heroImages.forEach((image) => {
-    const preload = new window.Image();
-    preload.src = image.src;
-  });
+  useEffect(() => {
+    heroImages.forEach((image) => {
+      const preload = new window.Image();
+      preload.src = image.src;
+    });
 
-  const interval = setInterval(() => {
-    setHeroIndex((current) => (current + 1) % heroImages.length);
-  }, 5000);
+    const interval = setInterval(() => {
+      setHeroIndex((current) => (current + 1) % heroImages.length);
+    }, 5000);
 
-  return () => clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
-useEffect(() => {
-  function updateCatalogPageSize() {
-    setCatalogPageSize(getCatalogPageSize());
-    setCatalogViewMoreSize(getCatalogColumnCount() * VIEW_MORE_ROW_COUNT);
-  }
-
-  updateCatalogPageSize();
-  window.addEventListener("resize", updateCatalogPageSize);
-  return () => window.removeEventListener("resize", updateCatalogPageSize);
-}, []);
-
-useEffect(() => {
-  setVisibleVehicleCount(catalogPageSize);
-}, [filters, catalogPageSize]);
-
-useEffect(() => {
-  async function loadVehicles() {
-    if (process.env.NEXT_PUBLIC_GITHUB_PAGES === "true") {
-      setVehicles(inventory);
-      setVehicleLoadStatus("ready");
-      return;
+  useEffect(() => {
+    function updateCatalogPageSize() {
+      setCatalogPageSize(getCatalogPageSize());
+      setCatalogViewMoreSize(getCatalogColumnCount() * VIEW_MORE_ROW_COUNT);
     }
 
-    setVehicleLoadStatus("loading");
-    try {
-      const response = await fetch("/api/vehicles", { cache: "no-store" });
-      const data = await response.json();
-      if (response.ok && Array.isArray(data.vehicles)) {
-        setVehicles(data.vehicles);
-        setVehicleLoadStatus("ready");
-        return;
+    updateCatalogPageSize();
+    window.addEventListener("resize", updateCatalogPageSize);
+    return () => window.removeEventListener("resize", updateCatalogPageSize);
+  }, []);
+
+  useEffect(() => {
+    setVisibleVehicleCount(catalogPageSize);
+  }, [filters, catalogPageSize]);
+
+  useEffect(() => {
+    async function loadVehicles() {
+      setVehicleLoadStatus("loading");
+      try {
+        const response = await fetch("/api/vehicles", { cache: "no-store" });
+        const data = await response.json();
+        if (response.ok && Array.isArray(data.vehicles)) {
+          setVehicles(data.vehicles);
+          setVehicleLoadStatus("ready");
+          return;
+        }
+        setVehicleLoadStatus(inventory.length ? "ready" : "error");
+      } catch {
+        setVehicleLoadStatus(inventory.length ? "ready" : "error");
       }
-      setVehicleLoadStatus(inventory.length ? "ready" : "error");
-    } catch {
-      setVehicleLoadStatus(inventory.length ? "ready" : "error");
     }
-  }
 
-  loadVehicles();
-}, []);
+    loadVehicles();
+  }, []);
 
-useEffect(() => {
-  if (inquiryParamHandled.current) return;
+  useEffect(() => {
+    if (inquiryParamHandled.current) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const vehicleId = params.get("inquire");
-  if (!vehicleId) return;
+    const params = new URLSearchParams(window.location.search);
+    const vehicleId = params.get("inquire");
+    if (!vehicleId) return;
 
-  const selected = vehicles.find((vehicle) => vehicle.id === vehicleId);
-  if (!selected) return;
+    const selected = vehicles.find((vehicle) => vehicle.id === vehicleId);
+    if (!selected) return;
 
-  inquiryParamHandled.current = true;
-  fillInquiryFromVehicle(selected);
-}, [vehicles]);
+    inquiryParamHandled.current = true;
+    fillInquiryFromVehicle(selected);
+  }, [vehicles]);
 
   function createVehicleMessage(vehicle) {
     return [
@@ -301,6 +298,7 @@ useEffect(() => {
     setInquiryStatus("Messenger opened in a new tab. If it did not open, check your browser pop-up settings.");
     window.open(messengerUrl, "_blank", "noopener,noreferrer");
   }
+
   function resetFilters() {
     setFilters({
       type: "All",
@@ -311,79 +309,70 @@ useEffect(() => {
     });
     setVisibleVehicleCount(catalogPageSize);
   }
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-  setIsScrolled(latest > 80);
-  if (latest > 80) setIsMenuOpen(false);
-});
+    setIsScrolled(latest > 80);
+    if (latest > 80) setIsMenuOpen(false);
+  });
 
   return (
-<main>
-  <header
-  className={`site-header ${isScrolled ? "is-scrolled" : ""}`}
-  >
-    <Link className="brand" href="/" aria-label="Myrdamz Cars for Sales Davao home">
-      <motion.span
+    <main>
+      <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
+        <Link className="brand" href="/" aria-label="Myrdamz Cars for Sales Davao home">
+          <motion.span
             className="brand-mark"
             animate={{ rotate: [0, 6, -4, 0] }}
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
           >
-        <Image
-          src={logo}
-          alt="Myrdamz Cars for Sales Davao logo"
-          width={45}
-          height={45}
-          className="brand-logo"
-        />
-      </motion.span>
+            <Image
+              src={logo}
+              alt="Myrdamz Cars for Sales Davao logo"
+              width={45}
+              height={45}
+              className="brand-logo"
+            />
+          </motion.span>
 
-      <span>
-        <strong>MYRDAMZ</strong>
-        <small>Cars for Sales Davao</small>
-      </span>
-    </Link>
+          <span>
+            <strong>MYRDAMZ</strong>
+            <small>Cars for Sales Davao</small>
+          </span>
+        </Link>
 
-    <button
-      className="menu-toggle"
-      type="button"
-      aria-label="Toggle navigation menu"
-      aria-expanded={isMenuOpen}
-      onClick={() => setIsMenuOpen((open) => !open)}
-    >
-      {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
-    </button>
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((open) => !open)}
+        >
+          {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
 
-    <nav className={`nav-links ${isMenuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
-      <a href="#catalog" onClick={() => setIsMenuOpen(false)}>CATALOG</a>
-      <a href="#experience" onClick={() => setIsMenuOpen(false)}>EXPERIENCE</a>
-    </nav>
-  </header>
+        <nav className={`nav-links ${isMenuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
+          <a href="#catalog" onClick={() => setIsMenuOpen(false)}>CATALOG</a>
+          <a href="#experience" onClick={() => setIsMenuOpen(false)}>EXPERIENCE</a>
+        </nav>
+      </header>
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-<motion.div
-  className="hero-bg"
-  initial={{ scale: 1.025 }}
-  animate={{ scale: 1 }}
-  transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
->
-  <AnimatePresence initial={false}>
-    <motion.div
-      key={heroImages[heroIndex].src}
-      className="hero-bg-slide"
-      style={{
-        backgroundImage: `url(${heroImages[heroIndex].src})`,
-      }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{
-        duration: 0.65,
-        ease: "easeInOut",
-      }}
-    />
-  </AnimatePresence>
+        <motion.div
+          className="hero-bg"
+          initial={{ scale: 1.025 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+        >
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={heroImages[heroIndex].src}
+              className="hero-bg-slide"
+              style={{ backgroundImage: `url(${heroImages[heroIndex].src})` }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.65, ease: "easeInOut" }}
+            />
+          </AnimatePresence>
         </motion.div>
         <div className="scan-lines" aria-hidden="true" />
         <motion.div className="hero-content" variants={stagger} initial="hidden" animate="visible">
@@ -437,30 +426,7 @@ useEffect(() => {
         </motion.div>
       </section>
 
-      {/* <motion.section className="trust-strip" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
-        {[
-          ["Transparent PHP prices", "Every vehicle card displays the listed amount up front."],
-          ["Advanced browsing", "Animated filters, live search, sort order, and price range."],
-          ["Product pages", "Each selected unit opens into its own shareable detail page."]
-        ].map(([title, copy]) => (
-          <motion.div key={title} variants={fadeUp}>
-            <BadgeCheck size={22} />
-            <strong>{title}</strong>
-            <span>{copy}</span>
-          </motion.div>
-        ))}
-      </motion.section> */}
-
-      <section className="catalog-section" id="catalog" aria-labelledby="catalog-title">
-        <motion.div className="section-heading" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
-          {/* <p className="eyebrow">Animated catalog</p>
-          <h2 id="catalog-title">Premium units with posted prices</h2> */}
-          {/* <p>
-            Cards react to motion, filters transition smoothly, and selecting a unit opens a full
-            product page with more room for specs, pricing, and inquiry context.
-          </p> */}
-        </motion.div>
-
+      <section className="catalog-section" id="catalog" aria-label="Vehicle catalog">
         <motion.div className="filter-shell" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
           <div className="filter-title">
             <SlidersHorizontal size={20} />
@@ -552,12 +518,6 @@ useEffect(() => {
                   <Link className="vehicle-media" href={`/cars/${vehicle.id}`} aria-label={`View product page for ${vehicle.name}`}>
                     <img src={getAssetPath(vehicle.image)} alt={vehicle.name} loading="lazy" />
                     <span className={isSold(vehicle) ? "badge badge-sold" : getVehicleStatus(vehicle) === "Reserved" ? "badge badge-reserved" : "badge"}>{isSold(vehicle) ? "Sold" : getVehicleStatus(vehicle) === "Reserved" ? "Reserved" : vehicle.badge || vehicle.type}</span>
-                    {/* <motion.span
-                      className="card-glint"
-                      aria-hidden="true"
-                      animate={{ x: ["-120%", "180%"] }}
-                      transition={{ duration: 3.9, repeat: Infinity, repeatDelay: 2 + index * 0.12, ease: "easeInOut" }}
-                    /> */}
                   </Link>
                   <div className="vehicle-body">
                     <div>
@@ -614,8 +574,6 @@ useEffect(() => {
         )}
       </section>
 
-      
-
       <section className="contact-section" id="contact" aria-labelledby="contact-title">
         <motion.div className="section-heading" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }}>
           <p className="eyebrow">Contact</p>
@@ -623,13 +581,14 @@ useEffect(() => {
           <p>Choose a unit, review the auto-filled details, then send the inquiry through Messenger.</p>
 
           <div className="map-card">
-         <iframe title="MYRDAMZ Car Display Center map" 
-         src="https://maps.google.com/maps?hl=en&amp;q=MYRDAMZ%20CAR%20DISPLAY%20CENTER%20%2F%20CARS%20FOR%20SALE%20DAVAO&amp;z=16&amp;output=embed" 
-         loading="lazy" 
-         allowFullScreen="" 
-         referrerPolicy="no-referrer-when-downgrade">
-         </iframe>
-        </div>
+            <iframe
+              title="MYRDAMZ Car Display Center map"
+              src="https://maps.google.com/maps?hl=en&amp;q=MYRDAMZ%20CAR%20DISPLAY%20CENTER%20%2F%20CARS%20FOR%20SALE%20DAVAO&amp;z=16&amp;output=embed"
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </motion.div>
 
         <motion.form className="contact-form" onSubmit={handleInquirySubmit} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }}>
@@ -641,10 +600,10 @@ useEffect(() => {
             Mobile number
             <input type="tel" name="mobile" value={inquiry.mobile} onChange={handleInquiryChange} placeholder="09XX XXX XXXX" required />
           </label>
-            <label>
-              Interested unit
+          <label>
+            Interested unit
             <input type="text" name="unit" value={inquiry.unit} onChange={handleInquiryChange} placeholder="Vehicle name or body type..." />
-            </label>
+          </label>
           <label>
             Message
             <textarea name="message" value={inquiry.message} onChange={handleInquiryChange} rows="3" placeholder="Preferred viewing day, budget, trade-in details..." />

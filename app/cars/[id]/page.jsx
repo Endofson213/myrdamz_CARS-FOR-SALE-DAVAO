@@ -4,10 +4,6 @@ import { readDb } from "../../../lib/admin-store";
 import ProductPageClient from "./product-page-client";
 
 async function getVehicles() {
-  if (process.env.NEXT_PUBLIC_GITHUB_PAGES === "true") {
-    return inventory;
-  }
-
   try {
     const db = await readDb();
     return db.vehicles;

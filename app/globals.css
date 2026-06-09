@@ -1,18 +1,13 @@
 :root {
   --ink: #111111;
   --charcoal: #050505;
-  --graphite: #2a2a2a;
   --paper: #f4f4f4;
-  --soft-paper: #e8e8e8;
   --gold: #8f1d24;
   --red: #8f1d24;
   --green: #8f1d24;
   --wine: #76141a;
-  --sky: #d6a4aa;
   --foam: #ffffff;
-  --coral: #a8323a;
   --line: rgba(17, 17, 17, 0.14);
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
   --content-max: 1360px;
 }
 
@@ -86,7 +81,6 @@ img {
     box-shadow 0.35s ease;
 }
 
-/* Shrink navbar when scrolled */
 .site-header.is-scrolled {
   padding: 6px 5vw;
   gap: 18px;
@@ -138,7 +132,6 @@ img {
     border-color 0.35s ease;
 }
 
-/* Logo shrink when scrolled */
 .site-header.is-scrolled .brand-mark {
   width: 64px;
   height: 64px;
@@ -294,8 +287,7 @@ img {
 }
 
 .hero .eyebrow,
-.light .eyebrow,
-.modal-copy .eyebrow {
+.light .eyebrow {
   color: var(--gold);
 }
 
@@ -459,41 +451,12 @@ h3 {
   font-weight: 800;
 }
 
-.trust-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.trust-strip div {
-  display: grid;
-  gap: 7px;
-  padding: 28px 5vw;
-  background: rgba(223, 245, 255, 0.86);
-}
-
-.trust-strip svg {
-  color: var(--green);
-}
-
-.trust-strip strong,
-.trust-strip span {
-  display: block;
-}
-
-.trust-strip span {
-  color: rgba(17, 17, 17, 0.64);
-}
-
 .catalog-section {
   padding: 50px 5vw;
   padding-top: 5px;
   padding-bottom: 20px;
 }
 
-.catalog-section > .section-heading,
 .catalog-section > .filter-shell,
 .catalog-section > .catalog-toolbar,
 .catalog-section > .vehicle-grid,
@@ -643,26 +606,9 @@ textarea:focus {
   gap: 14px;
 }
 
-.select-grid label,
-.price-range {
+.select-grid label {
   display: grid;
   gap: 8px;
-}
-
-.price-range {
-  grid-column: 1 / -1;
-}
-
-.price-range span {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.price-range input {
-  min-height: auto;
-  padding: 0;
-  accent-color: var(--wine);
 }
 
 .catalog-toolbar {
@@ -774,15 +720,6 @@ textarea:focus {
   background: #1f4f82;
   color: #ffffff;
   box-shadow: 0 12px 26px rgba(31, 79, 130, 0.26);
-}
-
-.card-glint {
-  position: absolute;
-  inset: -30% auto -30% 0;
-  width: 28%;
-  transform: skewX(-18deg);
-  background: rgba(255, 255, 255, 0.24);
-  pointer-events: none;
 }
 
 .vehicle-body {
@@ -934,11 +871,6 @@ textarea:focus {
 .contact-form label {
   display: grid;
   gap: 8px;
-}
-
-.contact-info {
-  display: grid;
-  gap: 18px;
 }
 
 .map-card {
@@ -1417,10 +1349,6 @@ textarea:focus {
   background: #f4f4f4;
 }
 
-.product-header {
-  background: #050505;
-}
-
 .product-hero {
   position: relative;
   min-height: 82vh;
@@ -1505,13 +1433,6 @@ textarea:focus {
   max-width: 680px;
   color: rgba(239, 251, 255, 0.84);
   font-size: 1.12rem;
-}
-
-.product-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 28px;
 }
 
 .price-stage {
@@ -1614,11 +1535,6 @@ textarea:focus {
   position: relative;
 }
 
-.selected-unit-section {
-  padding: 34px 5vw 84px;
-  background: var(--charcoal);
-}
-
 .product-image-panel {
   align-self: start;
   overflow: hidden;
@@ -1692,21 +1608,6 @@ textarea:focus {
   background: rgba(5, 5, 5, 0.62);
   font-size: 0.78rem;
   font-weight: 900;
-}
-
-.image-caption {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
-  color: rgba(7, 48, 71, 0.64);
-  font-size: 0.88rem;
-  font-weight: 800;
-}
-
-.image-caption svg {
-  color: var(--red);
-  flex: 0 0 auto;
 }
 
 .spec-panel {
@@ -1847,76 +1748,6 @@ textarea:focus {
   font-size: 1.22rem;
 }
 
-.ownership-band {
-  position: relative;
-  overflow: hidden;
-  padding: 82px 5vw;
-  background: var(--charcoal);
-  color: var(--foam);
-}
-
-.ownership-band::before {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: rgba(143, 29, 36, 0.08);
-  pointer-events: none;
-}
-
-.ownership-band > * {
-  position: relative;
-}
-
-.ownership-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: rgba(143, 29, 36, 0.28);
-}
-
-.ownership-grid article {
-  padding: 30px;
-  background: #080808;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.ownership-grid span {
-  display: inline-block;
-  margin-bottom: 26px;
-  color: var(--gold);
-  font-family: inherit;
-  font-size: 2.2rem;
-}
-
-.ownership-grid p {
-  margin-bottom: 0;
-  color: rgba(239, 251, 255, 0.72);
-}
-
-.inquiry-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  border: 1px solid rgba(239, 251, 255, 0.2);
-  border-radius: 8px;
-  margin-top: 24px;
-  padding: 20px;
-  background: rgba(35, 35, 35, 0.92);
-}
-
-.inquiry-card h3,
-.inquiry-card p {
-  margin: 0;
-}
-
-.inquiry-card strong {
-  display: block;
-  margin-top: 6px;
-  color: var(--gold);
-  font-size: 1.35rem;
-}
-
 .related-section {
   position: relative;
   overflow: hidden;
@@ -1984,75 +1815,6 @@ textarea:focus {
   color: #8f1d24;
 }
 
-.modal-backdrop {
-  position: fixed;
-  z-index: 80;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 18px;
-  background: rgba(7, 48, 71, 0.74);
-  backdrop-filter: blur(12px);
-}
-
-.vehicle-modal {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.98fr) minmax(320px, 0.82fr);
-  width: min(920px, 100%);
-  max-height: min(720px, 92vh);
-  overflow: auto;
-  border: 1px solid rgba(239, 251, 255, 0.26);
-  border-radius: 8px;
-  background: #fbfdff;
-  color: var(--ink);
-  box-shadow: var(--shadow);
-}
-
-.modal-close {
-  position: absolute;
-  z-index: 2;
-  top: 12px;
-  right: 12px;
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border: 1px solid rgba(239, 251, 255, 0.42);
-  border-radius: 50%;
-  background: rgba(7, 48, 71, 0.78);
-  color: var(--paper);
-  cursor: pointer;
-}
-
-.modal-media {
-  min-height: 440px;
-}
-
-.modal-media img {
-  height: 100%;
-  object-fit: cover;
-}
-
-.modal-copy {
-  display: grid;
-  gap: 16px;
-  align-content: center;
-  padding: 38px;
-}
-
-.modal-copy h2 {
-  margin-bottom: 0;
-}
-
-.modal-copy p:not(.eyebrow) {
-  color: rgba(7, 48, 71, 0.68);
-}
-
-.wide {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .experience-band,
 .catalog-section,
 .contact-section,
@@ -2107,12 +1869,9 @@ textarea:focus {
     display: none;
   }
 
-  .trust-strip,
   .filter-shell,
   .experience-grid,
-  .ownership-grid,
   .contact-section,
-  .vehicle-modal,
   .admin-auth-panel,
   .admin-grid,
   .product-hero-grid,
@@ -2297,8 +2056,6 @@ textarea:focus {
   .contact-section,
   .product-hero,
   .product-detail-section,
-  .selected-unit-section,
-  .ownership-band,
   .related-section {
     padding: 58px 18px;
   }
@@ -2308,18 +2065,9 @@ textarea:focus {
     padding-bottom: 36px;
   }
 
-  .selected-unit-section {
-    padding-top: 0;
-  }
-
-  .trust-strip div {
-    padding: 22px 18px;
-  }
-
   .select-grid,
   .vehicle-grid,
   .spec-list,
-  .wide,
   .card-actions,
   .product-spec-grid {
     grid-template-columns: 1fr;
@@ -2338,8 +2086,7 @@ textarea:focus {
   .catalog-toolbar,
   .catalog-actions,
   .site-footer,
-  .admin-topbar,
-  .inquiry-card {
+  .admin-topbar {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -2446,13 +2193,6 @@ textarea:focus {
     gap: 12px;
   }
 
-  .modal-media {
-    min-height: 280px;
-  }
-
-  .modal-copy {
-    padding: 24px;
-  }
 }
 
 @media (max-width: 360px) {
@@ -2513,8 +2253,6 @@ textarea:focus {
   .contact-section,
   .product-hero,
   .product-detail-section,
-  .selected-unit-section,
-  .ownership-band,
   .related-section {
     padding-left: 14px;
     padding-right: 14px;

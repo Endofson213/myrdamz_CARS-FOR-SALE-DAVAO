@@ -2,7 +2,6 @@ import { deleteUploadedImageIfUnused, readDb, writeDb } from "../../../../lib/ad
 import { isSupabaseConfigured } from "../../../../lib/supabase-store";
 import { json, requireAdmin } from "../_utils";
 
-
 export async function POST(request) {
   const auth = requireAdmin(request);
   if (auth.error) return auth.error;

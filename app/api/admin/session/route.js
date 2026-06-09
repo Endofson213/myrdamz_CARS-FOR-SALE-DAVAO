@@ -2,7 +2,6 @@ import { getTokenFromRequest, verifyToken } from "../../../../lib/admin-auth";
 import { readLocalDb } from "../../../../lib/admin-store";
 import { json } from "../_utils";
 
-
 export async function GET(request) {
   const db = await readLocalDb();
   const session = verifyToken(getTokenFromRequest(request));

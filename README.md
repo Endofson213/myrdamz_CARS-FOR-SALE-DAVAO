@@ -5,7 +5,6 @@ Luxury animated Next.js catalog website for **Myrdamz Cars for Sales Davao**.
 ## What is included
 
 - Next.js app router project
-- Static export support for GitHub Pages
 - Advanced motion using Framer Motion
 - Vehicle cards with posted PHP prices
 - Dedicated product pages for every listed unit
@@ -26,6 +25,8 @@ npm run dev
 ```bash
 npm run build
 ```
+
+The server-backed admin and API routes require a Node.js deployment such as Vercel.
 
 The catalog routes each car to a static product page such as:
 

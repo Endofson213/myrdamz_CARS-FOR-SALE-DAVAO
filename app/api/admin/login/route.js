@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { createToken, setAuthCookie, verifyPassword } from "../../../../lib/admin-auth";
 import { readLocalDb } from "../../../../lib/admin-store";
 
-
 export async function POST(request) {
   const { username, password } = await request.json();
   const db = await readLocalDb();

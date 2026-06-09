@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, History, Home, ImagePlus, LogOut, Pencil, Save, ShieldCheck, Star, Trash2, Undo2 } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { vehicleBodyTypes } from "../data/vehicles";
 
 const blankVehicle = {
@@ -44,25 +44,21 @@ export default function AdminPage() {
   const [typeFilter, setTypeFilter] = useState("All");
   const [status, setStatus] = useState("");
   const [uploading, setUploading] = useState(false);
-  const isGithubPages = process.env.NEXT_PUBLIC_GITHUB_PAGES === "true";
 
-  const sortedVehicles = useMemo(
-    () => {
-      const query = search.trim().toLowerCase();
-      return vehicles
-        .filter((vehicle) => {
-          const text = [vehicle.name, vehicle.type, vehicle.year, vehicle.fuel, vehicle.transmission, vehicle.status, vehicle.soldDate]
-            .join(" ")
-            .toLowerCase();
-          const matchesSearch = text.includes(query);
-          const matchesStatus = statusFilter === "All" || (vehicle.status || "Available") === statusFilter;
-          const matchesType = typeFilter === "All" || vehicle.type === typeFilter;
-          return matchesSearch && matchesStatus && matchesType;
-        })
-        .sort((a, b) => String(a.name).localeCompare(String(b.name)));
-    },
-    [vehicles, search, statusFilter, typeFilter]
-  );
+  const sortedVehicles = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return vehicles
+      .filter((vehicle) => {
+        const text = [vehicle.name, vehicle.type, vehicle.year, vehicle.fuel, vehicle.transmission, vehicle.status, vehicle.soldDate]
+          .join(" ")
+          .toLowerCase();
+        const matchesSearch = text.includes(query);
+        const matchesStatus = statusFilter === "All" || (vehicle.status || "Available") === statusFilter;
+        const matchesType = typeFilter === "All" || vehicle.type === typeFilter;
+        return matchesSearch && matchesStatus && matchesType;
+      })
+      .sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  }, [vehicles, search, statusFilter, typeFilter]);
 
   const adminTypeOptions = useMemo(
     () => ["All", ...Array.from(new Set(vehicles.map((vehicle) => vehicle.type).filter(Boolean))).sort()],
@@ -70,9 +66,8 @@ export default function AdminPage() {
   );
 
   useEffect(() => {
-    if (isGithubPages) return;
     loadSession();
-  }, [isGithubPages]);
+  }, []);
 
   async function loadSession() {
     const response = await fetch("/api/admin/session", { cache: "no-store" });
@@ -102,7 +97,7 @@ export default function AdminPage() {
     setAuthForm((current) => ({ ...current, [name]: value }));
   }
 
-function updateVehicleForm(event) {
+  function updateVehicleForm(event) {
     const { name, value } = event.target;
     setVehicleForm((current) => ({ ...current, [name]: value }));
   }
@@ -332,7 +327,7 @@ function updateVehicleForm(event) {
       ...vehicle,
       images: vehicle.images?.length ? vehicle.images : [vehicle.image].filter(Boolean),
       year: String(vehicle.year),
-      price: String(vehicle.price),
+      price: formatPeso(vehicle.price),
       mileage: String(vehicle.mileage),
       seats: String(vehicle.seats),
       soldDate: vehicle.soldDate || "",
@@ -342,7 +337,6 @@ function updateVehicleForm(event) {
       payment4Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 4)?.monthlyPayment),
       payment5Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 5)?.monthlyPayment)
     });
-    setVehicleForm((current) => ({ ...current, price: formatPeso(vehicle.price) }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -379,23 +373,6 @@ function updateVehicleForm(event) {
     setEditingId("");
     setVehicleForm(blankVehicle);
     setStatus(`Undid: ${data.undone}`);
-  }
-
-  if (isGithubPages) {
-    return (
-      <main className="admin-page">
-        <section className="admin-auth-panel">
-          <div>
-            <p className="eyebrow"><ShieldCheck size={18} /> Static prototype</p>
-            <h1>Admin is disabled on GitHub Pages</h1>
-            <p>GitHub Pages can show the public catalog, but it cannot run the admin database, uploads, or API routes. Use local dev or Vercel when you need data entry.</p>
-          </div>
-          <Link className="button button-primary" href="/">
-            <Home size={18} /> Back to Home
-          </Link>
-        </section>
-      </main>
-    );
   }
 
   if (session.loading) {
@@ -456,8 +433,8 @@ function updateVehicleForm(event) {
       <section className="admin-history-strip">
         <History size={18} />
         <button className="button button-ghost" type="button" onClick={undoLastChange} disabled={history.length === 0}>
-            <Undo2 size={18} /> Undo last change
-          </button>
+          <Undo2 size={18} /> Undo last change
+        </button>
         <span>{history[0] ? `Last action: ${history[0].label}` : "No actions to undo yet."}</span>
       </section>
 
@@ -475,11 +452,7 @@ function updateVehicleForm(event) {
             )}
           </div>
 
-          <input
-              type="hidden"
-              name="id"
-              value={vehicleForm.id}
-            />
+          <input type="hidden" name="id" value={vehicleForm.id} />
           <label>
             Vehicle name
             <input name="name" value={vehicleForm.name} onChange={updateVehicleName} placeholder="Model Variant" required />
