@@ -149,8 +149,10 @@ export default function HomeClient({ initialHeroImages = [] }) {
   const [visibleVehicleCount, setVisibleVehicleCount] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const [heroImages, setHeroImages] = useState(initialHeroImages);
   const [heroIndex, setHeroIndex] = useState(0);
+  const [nextHeroReady, setNextHeroReady] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const inquiryParamHandled = useRef(false);
+  const loadedHeroImages = useRef(new Set());
   const { scrollY } = useScroll();
   const bodyTypeOptions = useMemo(() => createOptions(vehicles, "type", bodyTypes), [vehicles]);
   const fuelOptions = useMemo(() => createOptions(vehicles, "fuel"), [vehicles]);
@@ -190,23 +192,23 @@ export default function HomeClient({ initialHeroImages = [] }) {
   );
   const remainingVehicleCount = Math.max(filtered.length - visibleVehicles.length, 0);
   const currentHeroImage = heroImages[heroIndex] || "";
+  const nextHeroImage = heroImages.length > 1
+    ? heroImages[(heroIndex + 1) % heroImages.length]
+    : "";
 
   useEffect(() => {
-    if (heroImages.length <= 1) return undefined;
+    if (heroImages.length <= 1 || !nextHeroReady) return undefined;
 
     const interval = setInterval(() => {
       setHeroIndex((current) => (current + 1) % heroImages.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [heroImages.length]);
+  }, [heroImages.length, nextHeroImage, nextHeroReady]);
 
   useEffect(() => {
-    if (heroImages.length <= 1) return;
-
-    const preload = new window.Image();
-    preload.src = heroImages[(heroIndex + 1) % heroImages.length];
-  }, [heroImages, heroIndex]);
+    setNextHeroReady(loadedHeroImages.current.has(nextHeroImage));
+  }, [nextHeroImage]);
 
   useEffect(() => {
     if (initialHeroImages.length) return;
@@ -379,6 +381,22 @@ export default function HomeClient({ initialHeroImages = [] }) {
           animate={{ scale: 1 }}
           transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
         >
+          {nextHeroImage && (
+            <div className="hero-bg-preload" aria-hidden="true">
+              <Image
+                src={nextHeroImage}
+                alt=""
+                fill
+                sizes="100vw"
+                quality={70}
+                loading="eager"
+                onLoad={() => {
+                  loadedHeroImages.current.add(nextHeroImage);
+                  setNextHeroReady(true);
+                }}
+              />
+            </div>
+          )}
           <AnimatePresence initial={false}>
             <motion.div
               key={currentHeroImage || "hero-fallback"}
