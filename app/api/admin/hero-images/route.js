@@ -7,7 +7,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { json, requireAdmin } from "../_utils";
 
-const MAX_FILE_SIZE = 6 * 1024 * 1024;
+const MAX_FILE_SIZE = 4 * 1024 * 1024;
 const EXTENSIONS = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -42,7 +42,7 @@ export async function POST(request) {
   }
 
   if (file.size > MAX_FILE_SIZE) {
-    return json({ error: "Hero image must be 6MB or smaller." }, 400);
+    return json({ error: "Hero image must be 4MB or smaller after compression." }, 400);
   }
 
   let uploadedUrl = "";

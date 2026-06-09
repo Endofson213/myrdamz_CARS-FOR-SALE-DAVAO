@@ -7,7 +7,7 @@ import {
   uploadVehiclePhoto
 } from "../../../../lib/supabase-store";
 
-const MAX_FILE_SIZE = 6 * 1024 * 1024;
+const MAX_FILE_SIZE = 4 * 1024 * 1024;
 const EXTENSIONS = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -31,7 +31,7 @@ export async function POST(request) {
   }
 
   if (file.size > MAX_FILE_SIZE) {
-    return json({ error: "Image must be 6MB or smaller." }, 400);
+    return json({ error: "Image must be 4MB or smaller after compression." }, 400);
   }
 
   try {
@@ -43,8 +43,14 @@ export async function POST(request) {
     });
 
     if (supabaseUrl) {
-      await scheduleVehiclePhotoDeletion(supabaseUrl);
-      return json({ url: supabaseUrl }, 201);
+      let warning = "";
+      try {
+        await scheduleVehiclePhotoDeletion(supabaseUrl);
+      } catch (error) {
+        console.error("Abandoned upload cleanup scheduling failed:", error);
+        warning = "Photo uploaded, but abandoned-upload cleanup could not be scheduled.";
+      }
+      return json({ url: supabaseUrl, warning }, 201);
     }
 
     const fileName = `${crypto.randomUUID()}.${EXTENSIONS[file.type]}`;

@@ -2,6 +2,7 @@ import {
   deleteUploadedImageIfUnused,
   normalizeVehicle,
   readAdminDb,
+  validateVehicleInput,
   writeDb
 } from "../../../../../lib/admin-store";
 import {
@@ -22,7 +23,14 @@ export async function PUT(request, { params }) {
   const { id } = await params;
   try {
     const db = await readAdminDb();
-    const vehicle = normalizeVehicle({ ...(await request.json()), id });
+    const input = await request.json();
+    const validationErrors = validateVehicleInput(input);
+
+    if (validationErrors.length) {
+      return json({ error: validationErrors[0], errors: validationErrors }, 400);
+    }
+
+    const vehicle = normalizeVehicle({ ...input, id });
     vehicle.id = id;
     const index = db.vehicles.findIndex((item) => item.id === id);
 
@@ -36,12 +44,18 @@ export async function PUT(request, { params }) {
 
     if (isSupabaseConfigured()) {
       await updateSupabaseVehicle(id, vehicle);
+      let warning = "";
       const previousImages = new Set(vehicle.images || [vehicle.image].filter(Boolean));
       const removedImages = (before.images || [before.image].filter(Boolean)).filter((image) => !previousImages.has(image));
       if (removedImages.length) {
-        await deleteUploadedImageIfUnused(removedImages, vehicles);
+        try {
+          await deleteUploadedImageIfUnused(removedImages, vehicles);
+        } catch (error) {
+          console.error("Vehicle photo cleanup scheduling failed:", error);
+          warning = "Vehicle saved, but removed-photo cleanup could not be scheduled.";
+        }
       }
-      return json({ vehicle, updatedAt: new Date().toISOString() });
+      return json({ vehicle, warning, updatedAt: new Date().toISOString() });
     }
 
     const nextDb = await writeDb({ ...db, vehicles });
@@ -67,8 +81,14 @@ export async function DELETE(request, { params }) {
 
     if (isSupabaseConfigured()) {
       await deleteSupabaseVehicle(id);
-      await deleteUploadedImageIfUnused(deletedVehicle.images || deletedVehicle.image, vehicles);
-      return json({ ok: true, updatedAt: new Date().toISOString() });
+      let warning = "";
+      try {
+        await deleteUploadedImageIfUnused(deletedVehicle.images || deletedVehicle.image, vehicles);
+      } catch (error) {
+        console.error("Deleted vehicle photo cleanup scheduling failed:", error);
+        warning = "Vehicle deleted, but its photo cleanup could not be scheduled.";
+      }
+      return json({ ok: true, warning, updatedAt: new Date().toISOString() });
     }
 
     const nextDb = await writeDb({ ...db, vehicles });

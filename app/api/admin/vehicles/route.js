@@ -2,6 +2,7 @@ import {
   makeUniqueVehicleId,
   normalizeVehicle,
   readAdminDb,
+  validateVehicleInput,
   writeDb
 } from "../../../../lib/admin-store";
 import { insertSupabaseVehicle, isSupabaseConfigured } from "../../../../lib/supabase-store";
@@ -29,12 +30,14 @@ export async function POST(request) {
 
   try {
     const db = await readAdminDb();
-    const vehicle = normalizeVehicle(await request.json());
+    const input = await request.json();
+    const validationErrors = validateVehicleInput(input);
 
-    if (!vehicle.name) {
-      return json({ error: "Vehicle name is required." }, 400);
+    if (validationErrors.length) {
+      return json({ error: validationErrors[0], errors: validationErrors }, 400);
     }
 
+    const vehicle = normalizeVehicle(input);
     vehicle.id = makeUniqueVehicleId(vehicle.name, db.vehicles);
 
     if (isSupabaseConfigured()) {

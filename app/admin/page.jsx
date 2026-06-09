@@ -34,7 +34,7 @@ const seatOptions = [2, 4, 5, 6, 7, 8, 10, 12, 15];
 
 export default function AdminPage() {
   const [session, setSession] = useState({ loading: true, authenticated: false, setupRequired: false });
-  const [authForm, setAuthForm] = useState({ username: "", password: "" });
+  const [authForm, setAuthForm] = useState({ username: "", password: "", setupCode: "" });
   const [vehicles, setVehicles] = useState([]);
   const [heroImages, setHeroImages] = useState([]);
   const [vehicleForm, setVehicleForm] = useState(blankVehicle);
@@ -46,6 +46,10 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false);
   const [uploadingHero, setUploadingHero] = useState(false);
   const [heroStatus, setHeroStatus] = useState("");
+  const [formDirty, setFormDirty] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState("");
+  const [authSubmitting, setAuthSubmitting] = useState(false);
 
   const sortedVehicles = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -71,40 +75,70 @@ export default function AdminPage() {
     loadSession();
   }, []);
 
-  async function loadSession() {
-    const response = await fetch("/api/admin/session", { cache: "no-store" });
-    const data = await response.json();
-    setSession({ loading: false, ...data });
+  useEffect(() => {
+    function warnBeforeUnload(event) {
+      if (!formDirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    }
 
-    if (data.authenticated) {
-      loadVehicles();
-      loadHeroImages();
+    window.addEventListener("beforeunload", warnBeforeUnload);
+    return () => window.removeEventListener("beforeunload", warnBeforeUnload);
+  }, [formDirty]);
+
+  async function loadSession() {
+    try {
+      const response = await fetch("/api/admin/session", { cache: "no-store" });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Could not check the admin session.");
+      setSession({ loading: false, ...data });
+
+      if (data.authenticated) {
+        loadVehicles();
+        loadHeroImages();
+      }
+    } catch (error) {
+      setSession({ loading: false, authenticated: false, setupRequired: false });
+      setStatus(error instanceof Error ? error.message : "Could not check the admin session.");
     }
   }
 
   async function loadVehicles() {
-    const response = await fetch("/api/admin/vehicles", { cache: "no-store" });
-    const data = await response.json();
+    try {
+      const response = await fetch("/api/admin/vehicles", { cache: "no-store" });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setStatus(data.error || "Could not load vehicles.");
-      return;
+      if (response.status === 401) {
+        setSession({ loading: false, authenticated: false, setupRequired: false });
+        setStatus("Your admin session expired. Log in again.");
+        return;
+      }
+      if (!response.ok) throw new Error(data.error || "Could not load vehicles.");
+
+      setVehicles(data.vehicles || []);
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Could not load vehicles.");
     }
-
-    setVehicles(data.vehicles || []);
   }
 
   async function loadHeroImages() {
-    const response = await fetch("/api/admin/hero-images", { cache: "no-store" });
-    const data = await response.json();
+    try {
+      const response = await fetch("/api/admin/hero-images", { cache: "no-store" });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setHeroStatus(data.error || "Could not load hero images.");
-      return;
+      if (response.status === 401) {
+        setSession({ loading: false, authenticated: false, setupRequired: false });
+        setHeroStatus("Your admin session expired. Log in again.");
+        return;
+      }
+      if (!response.ok) throw new Error(data.error || "Could not load hero images.");
+
+      setHeroImages(data.images || []);
+      setHeroStatus("");
+    } catch (error) {
+      setHeroStatus(error instanceof Error ? error.message : "Could not load hero images.");
     }
-
-    setHeroImages(data.images || []);
-    setHeroStatus("");
   }
 
   function updateAuthForm(event) {
@@ -115,6 +149,7 @@ export default function AdminPage() {
   function updateVehicleForm(event) {
     const { name, value } = event.target;
     setVehicleForm((current) => ({ ...current, [name]: value }));
+    setFormDirty(true);
   }
 
   function getTodayInputDate() {
@@ -127,6 +162,7 @@ export default function AdminPage() {
       status: statusOption,
       soldDate: statusOption === "Sold" ? current.soldDate || getTodayInputDate() : ""
     }));
+    setFormDirty(true);
   }
 
   function makeSlug(value) {
@@ -143,6 +179,7 @@ export default function AdminPage() {
       name: value,
       id: editingId ? current.id : makeSlug(value)
     }));
+    setFormDirty(true);
   }
 
   function formatPeso(value) {
@@ -162,6 +199,7 @@ export default function AdminPage() {
       ...current,
       [name]: digits ? formatPeso(digits) : ""
     }));
+    setFormDirty(true);
   }
 
   function formatMileage(value) {
@@ -174,6 +212,7 @@ export default function AdminPage() {
       ...current,
       mileage: formatMileage(event.target.value)
     }));
+    setFormDirty(true);
   }
 
   function clearVehicleForm() {
@@ -184,7 +223,13 @@ export default function AdminPage() {
 
     setVehicleForm(blankVehicle);
     setEditingId("");
+    setFormDirty(false);
     setStatus("Vehicle form cleared.");
+  }
+
+  function confirmDiscardChanges() {
+    if (!formDirty) return true;
+    return window.confirm("Discard the unsaved changes in the vehicle form?");
   }
 
   function loadImage(file) {
@@ -287,20 +332,21 @@ export default function AdminPage() {
     const nextImages = [...heroImages];
     [nextImages[index], nextImages[nextIndex]] = [nextImages[nextIndex], nextImages[index]];
 
-    const response = await fetch("/api/admin/hero-images", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ images: nextImages })
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch("/api/admin/hero-images", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ images: nextImages })
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setHeroStatus(data.error || "Could not reorder hero images.");
-      return;
+      if (!response.ok) throw new Error(data.error || "Could not reorder hero images.");
+
+      setHeroImages(data.images || nextImages);
+      setHeroStatus("Hero image order updated.");
+    } catch (error) {
+      setHeroStatus(error instanceof Error ? error.message : "Could not reorder hero images.");
     }
-
-    setHeroImages(data.images || nextImages);
-    setHeroStatus("Hero image order updated.");
   }
 
   async function removeHeroImage(image, index) {
@@ -309,20 +355,21 @@ export default function AdminPage() {
     );
     if (!confirmed) return;
 
-    const response = await fetch("/api/admin/hero-images", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: image })
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch("/api/admin/hero-images", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: image })
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setHeroStatus(data.error || "Could not delete hero image.");
-      return;
+      if (!response.ok) throw new Error(data.error || "Could not delete hero image.");
+
+      setHeroImages(data.images || []);
+      setHeroStatus("Hero image deleted.");
+    } catch (error) {
+      setHeroStatus(error instanceof Error ? error.message : "Could not delete hero image.");
     }
-
-    setHeroImages(data.images || []);
-    setHeroStatus("Hero image deleted.");
   }
 
   async function uploadImage(event) {
@@ -341,6 +388,7 @@ export default function AdminPage() {
     setStatus("");
 
     const uploadedUrls = [];
+    const uploadWarnings = [];
 
     try {
       for (const file of files) {
@@ -368,13 +416,18 @@ export default function AdminPage() {
         }
 
         uploadedUrls.push(data.url);
+        if (data.warning) uploadWarnings.push(data.warning);
       }
 
       setVehicleForm((current) => {
         const images = Array.from(new Set([...(current.images || []), current.image, ...uploadedUrls].filter(Boolean)));
         return { ...current, image: images[0] || "", images };
       });
-      setStatus(`${uploadedUrls.length} compressed photo${uploadedUrls.length === 1 ? "" : "s"} uploaded. Save the vehicle to keep them.`);
+      setFormDirty(true);
+      setStatus([
+        `${uploadedUrls.length} compressed photo${uploadedUrls.length === 1 ? "" : "s"} uploaded. Save the vehicle to keep them.`,
+        ...uploadWarnings
+      ].join(" "));
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Could not upload image.");
     } finally {
@@ -393,6 +446,7 @@ export default function AdminPage() {
       const images = (current.images || []).filter((image) => image !== photo);
       return { ...current, images, image: images[0] || "" };
     });
+    setFormDirty(true);
   }
 
   function moveVehiclePhoto(index, direction) {
@@ -404,6 +458,7 @@ export default function AdminPage() {
       [images[index], images[nextIndex]] = [images[nextIndex], images[index]];
       return { ...current, images, image: images[0] || "" };
     });
+    setFormDirty(true);
   }
 
   function setCoverPhoto(index) {
@@ -413,6 +468,7 @@ export default function AdminPage() {
       const nextImages = [cover, ...images].filter(Boolean);
       return { ...current, images: nextImages, image: nextImages[0] || "" };
     });
+    setFormDirty(true);
   }
 
   async function submitAuth(event) {
@@ -426,36 +482,51 @@ export default function AdminPage() {
     }
 
     setStatus("");
+    setAuthSubmitting(true);
 
-    const endpoint = session.setupRequired ? "/api/admin/setup" : "/api/admin/login";
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(authForm)
-    });
-    const data = await response.json();
+    try {
+      const endpoint = session.setupRequired ? "/api/admin/setup" : "/api/admin/login";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(authForm)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setStatus(data.error || "Authentication failed.");
-      return;
+      if (!response.ok) throw new Error(data.error || "Authentication failed.");
+
+      setSession({ loading: false, authenticated: true, setupRequired: false, user: data.user });
+      setAuthForm({ username: "", password: "", setupCode: "" });
+      setStatus(session.setupRequired ? "Admin account created." : "Logged in.");
+      loadVehicles();
+      loadHeroImages();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Authentication failed.");
+    } finally {
+      setAuthSubmitting(false);
     }
-
-    setSession({ loading: false, authenticated: true, setupRequired: false, user: data.user });
-    setAuthForm({ username: "", password: "" });
-    setStatus(session.setupRequired ? "Admin account created." : "Logged in.");
-    loadVehicles();
-    loadHeroImages();
   }
 
   async function logout() {
+    if (!confirmDiscardChanges()) return;
+
     const confirmed = window.confirm("Log out of the admin dashboard?");
     if (!confirmed) return;
 
-    await fetch("/api/admin/logout", { method: "POST" });
-    setSession({ loading: false, authenticated: false, setupRequired: false });
-    setVehicles([]);
-    setHeroImages([]);
-    setStatus("Logged out.");
+    try {
+      const response = await fetch("/api/admin/logout", { method: "POST" });
+      if (!response.ok) throw new Error("Could not log out.");
+
+      setSession({ loading: false, authenticated: false, setupRequired: false });
+      setVehicles([]);
+      setHeroImages([]);
+      setVehicleForm(blankVehicle);
+      setEditingId("");
+      setFormDirty(false);
+      setStatus("Logged out.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Could not log out.");
+    }
   }
 
   async function saveVehicle(event) {
@@ -468,26 +539,41 @@ export default function AdminPage() {
     if (!confirmed) return;
 
     setStatus("");
+    setSaving(true);
 
-    const response = await fetch(editingId ? `/api/admin/vehicles/${editingId}` : "/api/admin/vehicles", {
-      method: editingId ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(vehicleForm)
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch(editingId ? `/api/admin/vehicles/${editingId}` : "/api/admin/vehicles", {
+        method: editingId ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(vehicleForm)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setStatus(data.error || "Could not save vehicle.");
-      return;
+      if (response.status === 401) {
+        setSession({ loading: false, authenticated: false, setupRequired: false });
+        throw new Error("Your admin session expired. Log in again.");
+      }
+      if (!response.ok) throw new Error(data.error || "Could not save vehicle.");
+
+      setStatus(
+        data.warning
+          ? `${data.vehicle.name} saved. ${data.warning}`
+          : `${data.vehicle.name} saved with vehicle ID "${data.vehicle.id}".`
+      );
+      setVehicleForm(blankVehicle);
+      setEditingId("");
+      setFormDirty(false);
+      loadVehicles();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Could not save vehicle.");
+    } finally {
+      setSaving(false);
     }
-
-    setStatus(`${data.vehicle.name} saved with vehicle ID "${data.vehicle.id}".`);
-    setVehicleForm(blankVehicle);
-    setEditingId("");
-    loadVehicles();
   }
 
   function editVehicle(vehicle) {
+    if (formDirty && editingId !== vehicle.id && !confirmDiscardChanges()) return;
+
     setEditingId(vehicle.id);
     setVehicleForm({
       ...blankVehicle,
@@ -504,6 +590,7 @@ export default function AdminPage() {
       payment4Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 4)?.monthlyPayment),
       payment5Years: formatPeso(vehicle.financing?.terms?.find((term) => Number(term.years) === 5)?.monthlyPayment)
     });
+    setFormDirty(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -514,17 +601,30 @@ export default function AdminPage() {
     if (!confirmed) return;
 
     setStatus("");
+    setDeletingId(vehicle.id);
 
-    const response = await fetch(`/api/admin/vehicles/${vehicle.id}`, { method: "DELETE" });
-    const data = await response.json();
+    try {
+      const response = await fetch(`/api/admin/vehicles/${vehicle.id}`, { method: "DELETE" });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setStatus(data.error || "Could not delete vehicle.");
-      return;
+      if (response.status === 401) {
+        setSession({ loading: false, authenticated: false, setupRequired: false });
+        throw new Error("Your admin session expired. Log in again.");
+      }
+      if (!response.ok) throw new Error(data.error || "Could not delete vehicle.");
+
+      if (editingId === vehicle.id) {
+        setVehicleForm(blankVehicle);
+        setEditingId("");
+        setFormDirty(false);
+      }
+      setStatus(data.warning ? `${vehicle.name} deleted. ${data.warning}` : `${vehicle.name} deleted.`);
+      loadVehicles();
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Could not delete vehicle.");
+    } finally {
+      setDeletingId("");
     }
-
-    setStatus(`${vehicle.name} deleted.`);
-    loadVehicles();
   }
 
   if (session.loading) {
@@ -554,10 +654,32 @@ export default function AdminPage() {
             </label>
             <label>
               Password
-              <input name="password" value={authForm.password} onChange={updateAuthForm} type="password" required minLength={8} autoComplete={session.setupRequired ? "new-password" : "current-password"} />
+              <input
+                name="password"
+                value={authForm.password}
+                onChange={updateAuthForm}
+                type="password"
+                required
+                minLength={session.setupRequired ? 12 : 1}
+                maxLength={128}
+                autoComplete={session.setupRequired ? "new-password" : "current-password"}
+              />
             </label>
-            <button className="button button-primary" type="submit">
-              {session.setupRequired ? "Create Admin" : "Log In"} <ShieldCheck size={18} />
+            {session.setupRequired && (
+              <label>
+                Setup code
+                <input
+                  name="setupCode"
+                  value={authForm.setupCode}
+                  onChange={updateAuthForm}
+                  type="password"
+                  required
+                  autoComplete="off"
+                />
+              </label>
+            )}
+            <button className="button button-primary" type="submit" disabled={authSubmitting}>
+              {authSubmitting ? "Please wait..." : session.setupRequired ? "Create Admin" : "Log In"} <ShieldCheck size={18} />
             </button>
             {status && <p className="form-status">{status}</p>}
           </form>
@@ -573,7 +695,13 @@ export default function AdminPage() {
           <p className="eyebrow">Admin</p>
         </div>
         <div className="admin-topbar-actions">
-          <Link className="button button-ghost" href="/">
+          <Link
+            className="button button-ghost"
+            href="/"
+            onClick={(event) => {
+              if (!confirmDiscardChanges()) event.preventDefault();
+            }}
+          >
             <Home size={18} /> Home
           </Link>
           <button className="button button-ghost" type="button" onClick={logout}>
@@ -754,7 +882,7 @@ export default function AdminPage() {
             <span className="admin-upload-box">
               <ImagePlus size={22} />
               <strong>{uploading ? "Compressing and uploading..." : "Upload vehicle photos"}</strong>
-              <small>Select JPG, PNG, WEBP, or GIF files. Photos are compressed before upload.</small>
+              <small>Select JPG, PNG, WEBP, or GIF files. Photos are compressed and must be under 4MB when uploaded.</small>
               <input name="imageUpload" type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={uploadImage} disabled={uploading} multiple />
             </span>
           </label>
@@ -833,8 +961,8 @@ export default function AdminPage() {
             </div>
           </fieldset>
 
-          <button className="button button-primary" type="submit">
-            <Save size={18} /> Save vehicle
+          <button className="button button-primary" type="submit" disabled={saving || uploading}>
+            <Save size={18} /> {saving ? "Saving..." : "Save vehicle"}
           </button>
           {status && <p className="form-status">{status}</p>}
         </form>
@@ -888,10 +1016,20 @@ export default function AdminPage() {
                   <span>{vehicle.year} / {vehicle.type} / {vehicle.status || "Available"} / PHP {Number(vehicle.price).toLocaleString("en-PH")}</span>
                   {vehicle.status === "Sold" && vehicle.soldDate && <small>Sold on {vehicle.soldDate}</small>}
                 </div>
-                <button type="button" aria-label={`Edit ${vehicle.name}`} onClick={() => editVehicle(vehicle)}>
+                <button
+                  type="button"
+                  aria-label={`Edit ${vehicle.name}`}
+                  onClick={() => editVehicle(vehicle)}
+                  disabled={saving || deletingId === vehicle.id}
+                >
                   <Pencil size={17} />
                 </button>
-                <button type="button" aria-label={`Delete ${vehicle.name}`} onClick={() => deleteVehicle(vehicle)}>
+                <button
+                  type="button"
+                  aria-label={`Delete ${vehicle.name}`}
+                  onClick={() => deleteVehicle(vehicle)}
+                  disabled={saving || Boolean(deletingId)}
+                >
                   <Trash2 size={17} />
                 </button>
               </article>
