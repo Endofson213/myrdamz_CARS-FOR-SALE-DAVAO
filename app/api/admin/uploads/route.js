@@ -2,7 +2,10 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { json, requireAdmin } from "../_utils";
-import { uploadVehiclePhoto } from "../../../../lib/supabase-store";
+import {
+  scheduleVehiclePhotoDeletion,
+  uploadVehiclePhoto
+} from "../../../../lib/supabase-store";
 
 const MAX_FILE_SIZE = 6 * 1024 * 1024;
 const EXTENSIONS = {
@@ -40,6 +43,7 @@ export async function POST(request) {
     });
 
     if (supabaseUrl) {
+      await scheduleVehiclePhotoDeletion(supabaseUrl);
       return json({ url: supabaseUrl }, 201);
     }
 

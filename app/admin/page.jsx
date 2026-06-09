@@ -385,7 +385,7 @@ export default function AdminPage() {
 
   function removeVehiclePhoto(photo) {
     const confirmed = window.confirm(
-      "Remove this photo from the vehicle? It will be permanently deleted after you save the vehicle."
+      "Remove this photo from the vehicle? After saving, it will be deleted from storage after at least 24 hours if no vehicle uses it."
     );
     if (!confirmed) return;
 
@@ -509,7 +509,7 @@ export default function AdminPage() {
 
   async function deleteVehicle(vehicle) {
     const confirmed = window.confirm(
-      `Permanently delete "${vehicle.name}" and its unused uploaded photos? This action cannot be undone.`
+      `Permanently delete "${vehicle.name}"? Its unused uploaded photos will be removed from storage after at least 24 hours.`
     );
     if (!confirmed) return;
 

@@ -12,3 +12,7 @@ grant select, insert, update, delete on table public.site_settings to service_ro
 insert into public.site_settings (key, value)
 values ('hero_images', '[]'::jsonb)
 on conflict (key) do nothing;
+
+insert into public.site_settings (key, value)
+values ('pending_image_deletions', '[]'::jsonb)
+on conflict (key) do nothing;

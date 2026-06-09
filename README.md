@@ -33,6 +33,16 @@ The server-backed admin and API routes require a Node.js deployment such as Verc
 Run the SQL files in `supabase/` from the Supabase SQL Editor. The
 `add-site-settings.sql` migration enables compressed, admin-managed homepage hero images.
 
+Set these environment variables in Vercel:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `SUPABASE_SECRET_KEY`
+- `CRON_SECRET` with a random value of at least 16 characters
+
+Unused vehicle photos are queued for at least 24 hours and rechecked before deletion.
+Vercel runs the protected cleanup route daily from `vercel.json`. On the Hobby plan,
+cleanup can occur roughly 24 to 48 hours after a photo becomes unused.
+
 The catalog routes each car to a static product page such as:
 
 - `/cars/fortuner-v-2023`
