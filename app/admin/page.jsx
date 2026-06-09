@@ -8,12 +8,12 @@ import { vehicleBodyTypes } from "../data/vehicles";
 const blankVehicle = {
   id: "",
   name: "",
-  type: "SUV",
-  year: new Date().getFullYear(),
+  type: "",
+  year: "",
   price: "",
   mileage: "",
-  fuel: "Gasoline",
-  transmission: "Automatic",
+  fuel: "",
+  transmission: "",
   seats: "",
   status: "Available",
   soldDate: "",
@@ -162,6 +162,29 @@ export default function AdminPage() {
       ...current,
       [name]: digits ? formatPeso(digits) : ""
     }));
+  }
+
+  function formatMileage(value) {
+    const digits = String(value || "").replace(/\D/g, "");
+    return digits ? `${Number(digits).toLocaleString("en-PH")} km` : "";
+  }
+
+  function updateMileage(event) {
+    setVehicleForm((current) => ({
+      ...current,
+      mileage: formatMileage(event.target.value)
+    }));
+  }
+
+  function clearVehicleForm() {
+    const confirmed = window.confirm(
+      "Clear all vehicle fields and stop editing the current entry?"
+    );
+    if (!confirmed) return;
+
+    setVehicleForm(blankVehicle);
+    setEditingId("");
+    setStatus("Vehicle form cleared.");
   }
 
   function loadImage(file) {
@@ -472,7 +495,7 @@ export default function AdminPage() {
       images: vehicle.images?.length ? vehicle.images : [vehicle.image].filter(Boolean),
       year: String(vehicle.year),
       price: formatPeso(vehicle.price),
-      mileage: String(vehicle.mileage),
+      mileage: formatMileage(vehicle.mileage),
       seats: String(vehicle.seats),
       soldDate: vehicle.soldDate || "",
       downPayment: formatPeso(vehicle.financing?.downPayment),
@@ -624,14 +647,9 @@ export default function AdminPage() {
         <form className="admin-form admin-vehicle-form" onSubmit={saveVehicle}>
           <div className="admin-form-title">
             <h2>{editingId ? "Edit vehicle" : "Add vehicle"}</h2>
-            {editingId && (
-              <button className="text-button" type="button" onClick={() => {
-                setEditingId("");
-                setVehicleForm(blankVehicle);
-              }}>
-                New entry
-              </button>
-            )}
+            <button className="text-button" type="button" onClick={clearVehicleForm}>
+              Clear all
+            </button>
           </div>
 
           <input type="hidden" name="id" value={vehicleForm.id} />
@@ -643,15 +661,17 @@ export default function AdminPage() {
           <div className="admin-field-row">
             <label>
               Type
-              <select name="type" value={vehicleForm.type} onChange={updateVehicleForm}>
+              <select name="type" value={vehicleForm.type} onChange={updateVehicleForm} required>
+                <option value="" disabled>Select type</option>
                 {vehicleBodyTypes.map((type) => (
-                  <option key={type}>{type}</option>
+                  <option key={type} value={type}>{type}</option>
                 ))}
               </select>
             </label>
             <label>
               Year
               <select name="year" value={vehicleForm.year} onChange={updateVehicleForm} required>
+                <option value="" disabled>Select year</option>
                 {yearOptions.map((year) => (
                   <option key={year} value={year}>
                     {year}
@@ -663,23 +683,32 @@ export default function AdminPage() {
 
           <label className="admin-half-field">
             Mileage
-            <input name="mileage" value={vehicleForm.mileage} onChange={updateVehicleForm} type="number" min="0" required />
+            <input
+              name="mileage"
+              value={vehicleForm.mileage}
+              onChange={updateMileage}
+              inputMode="numeric"
+              placeholder="Example: 28,000 km"
+              required
+            />
           </label>
 
           <div className="admin-field-row">
             <label>
               Fuel
-              <select name="fuel" value={vehicleForm.fuel} onChange={updateVehicleForm}>
-                <option>Diesel</option>
-                <option>Gasoline</option>
-                <option>Hybrid</option>
+              <select name="fuel" value={vehicleForm.fuel} onChange={updateVehicleForm} required>
+                <option value="" disabled>Select fuel</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Gasoline">Gasoline</option>
+                <option value="Hybrid">Hybrid</option>
               </select>
             </label>
             <label>
               Transmission
-              <select name="transmission" value={vehicleForm.transmission} onChange={updateVehicleForm}>
-                <option>Automatic</option>
-                <option>Manual</option>
+              <select name="transmission" value={vehicleForm.transmission} onChange={updateVehicleForm} required>
+                <option value="" disabled>Select transmission</option>
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
               </select>
             </label>
           </div>
