@@ -4,6 +4,7 @@ import {
   saveSupabaseHeroImages,
   uploadHeroImage
 } from "../../../../lib/supabase-store";
+import { revalidatePath } from "next/cache";
 import { json, requireAdmin } from "../_utils";
 
 const MAX_FILE_SIZE = 6 * 1024 * 1024;
@@ -56,6 +57,7 @@ export async function POST(request) {
     if (!uploadedUrl) throw new Error("Supabase Storage is not configured.");
 
     const images = await saveSupabaseHeroImages([...(currentImages || []), uploadedUrl]);
+    revalidatePath("/");
     return json({ images, url: uploadedUrl }, 201);
   } catch (error) {
     if (uploadedUrl) await deleteHeroImage(uploadedUrl);
@@ -79,7 +81,9 @@ export async function PUT(request) {
       return json({ error: "Hero image ordering is invalid." }, 400);
     }
 
-    return json({ images: await saveSupabaseHeroImages(nextImages) });
+    const savedImages = await saveSupabaseHeroImages(nextImages);
+    revalidatePath("/");
+    return json({ images: savedImages });
   } catch (error) {
     return heroError(error);
   }
@@ -101,6 +105,7 @@ export async function DELETE(request) {
       currentImages.filter((image) => image !== url)
     );
     await deleteHeroImage(url);
+    revalidatePath("/");
     return json({ images });
   } catch (error) {
     return heroError(error);
