@@ -32,7 +32,7 @@ import hero3 from "./pictures/CarHeroBG3.jpg";
 import hero4 from "./pictures/CarHeroBG4.jpg";
 import hero5 from "./pictures/CarHeroBG5.jpg";
 
-const heroImages = [hero1, hero2, hero3, hero4, hero5];
+const fallbackHeroImages = [hero1, hero2, hero3, hero4, hero5].map((image) => image.src);
 
 const MESSENGER_URL = "https://www.messenger.com/t/105855237963972";
 const DEFAULT_CATALOG_PAGE_SIZE = 8;
@@ -154,6 +154,7 @@ export default function Home() {
   const [catalogPageSize, setCatalogPageSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const [catalogViewMoreSize, setCatalogViewMoreSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const [visibleVehicleCount, setVisibleVehicleCount] = useState(DEFAULT_CATALOG_PAGE_SIZE);
+  const [heroImages, setHeroImages] = useState(fallbackHeroImages);
   const [heroIndex, setHeroIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const inquiryParamHandled = useRef(false);
@@ -195,18 +196,38 @@ export default function Home() {
     [filtered, visibleVehicleCount]
   );
   const remainingVehicleCount = Math.max(filtered.length - visibleVehicles.length, 0);
+  const currentHeroImage = heroImages[heroIndex] || fallbackHeroImages[0];
 
   useEffect(() => {
-    heroImages.forEach((image) => {
-      const preload = new window.Image();
-      preload.src = image.src;
-    });
+    if (heroImages.length <= 1) return undefined;
 
     const interval = setInterval(() => {
       setHeroIndex((current) => (current + 1) % heroImages.length);
     }, 5000);
 
     return () => clearInterval(interval);
+  }, [heroImages.length]);
+
+  useEffect(() => {
+    if (heroImages.length <= 1) return;
+
+    const preload = new window.Image();
+    preload.src = heroImages[(heroIndex + 1) % heroImages.length];
+  }, [heroImages, heroIndex]);
+
+  useEffect(() => {
+    async function loadHeroImages() {
+      try {
+        const response = await fetch("/api/hero-images", { cache: "no-store" });
+        const data = await response.json();
+        if (response.ok && Array.isArray(data.images) && data.images.length) {
+          setHeroIndex(0);
+          setHeroImages(data.images);
+        }
+      } catch {}
+    }
+
+    loadHeroImages();
   }, []);
 
   useEffect(() => {
@@ -330,6 +351,8 @@ export default function Home() {
               width={45}
               height={45}
               className="brand-logo"
+              sizes="88px"
+              priority
             />
           </motion.span>
 
@@ -364,9 +387,9 @@ export default function Home() {
         >
           <AnimatePresence initial={false}>
             <motion.div
-              key={heroImages[heroIndex].src}
+              key={currentHeroImage}
               className="hero-bg-slide"
-              style={{ backgroundImage: `url(${heroImages[heroIndex].src})` }}
+              style={{ backgroundImage: `url("${currentHeroImage}")` }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

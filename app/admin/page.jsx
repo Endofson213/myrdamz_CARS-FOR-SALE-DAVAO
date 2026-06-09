@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, History, Home, ImagePlus, LogOut, Pencil, Save, ShieldCheck, Star, Trash2, Undo2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Home, ImagePlus, LogOut, Pencil, Save, ShieldCheck, Star, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { vehicleBodyTypes } from "../data/vehicles";
@@ -36,7 +36,7 @@ export default function AdminPage() {
   const [session, setSession] = useState({ loading: true, authenticated: false, setupRequired: false });
   const [authForm, setAuthForm] = useState({ username: "", password: "" });
   const [vehicles, setVehicles] = useState([]);
-  const [history, setHistory] = useState([]);
+  const [heroImages, setHeroImages] = useState([]);
   const [vehicleForm, setVehicleForm] = useState(blankVehicle);
   const [editingId, setEditingId] = useState("");
   const [search, setSearch] = useState("");
@@ -44,6 +44,8 @@ export default function AdminPage() {
   const [typeFilter, setTypeFilter] = useState("All");
   const [status, setStatus] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadingHero, setUploadingHero] = useState(false);
+  const [heroStatus, setHeroStatus] = useState("");
 
   const sortedVehicles = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -76,6 +78,7 @@ export default function AdminPage() {
 
     if (data.authenticated) {
       loadVehicles();
+      loadHeroImages();
     }
   }
 
@@ -89,7 +92,19 @@ export default function AdminPage() {
     }
 
     setVehicles(data.vehicles || []);
-    setHistory(data.history || []);
+  }
+
+  async function loadHeroImages() {
+    const response = await fetch("/api/admin/hero-images", { cache: "no-store" });
+    const data = await response.json();
+
+    if (!response.ok) {
+      setHeroStatus(data.error || "Could not load hero images.");
+      return;
+    }
+
+    setHeroImages(data.images || []);
+    setHeroStatus("");
   }
 
   function updateAuthForm(event) {
@@ -165,11 +180,14 @@ export default function AdminPage() {
     });
   }
 
-  async function compressImageFile(file) {
+  async function compressImageFile(file, {
+    maxDimension = 1600,
+    quality = 0.76,
+    fallbackName = "vehicle-photo"
+  } = {}) {
     if (file.type === "image/gif") return file;
 
     const image = await loadImage(file);
-    const maxDimension = 1800;
     const scale = Math.min(1, maxDimension / Math.max(image.naturalWidth, image.naturalHeight));
     const width = Math.max(1, Math.round(image.naturalWidth * scale));
     const height = Math.max(1, Math.round(image.naturalHeight * scale));
@@ -182,16 +200,119 @@ export default function AdminPage() {
 
     context.drawImage(image, 0, 0, width, height);
 
-    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.82));
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", quality));
     if (!blob || blob.size >= file.size) return file;
 
-    const name = file.name.replace(/\.[^.]+$/, "") || "vehicle-photo";
+    const name = file.name.replace(/\.[^.]+$/, "") || fallbackName;
     return new File([blob], `${name}.webp`, { type: "image/webp" });
+  }
+
+  async function uploadHeroImages(event) {
+    const files = Array.from(event.target.files || []);
+    if (!files.length) return;
+
+    const confirmed = window.confirm(
+      `Compress and upload ${files.length} hero image${files.length === 1 ? "" : "s"} to Supabase?`
+    );
+    if (!confirmed) {
+      event.target.value = "";
+      return;
+    }
+
+    setUploadingHero(true);
+    setHeroStatus("");
+
+    try {
+      let nextImages = heroImages;
+
+      for (const file of files) {
+        const uploadFile = await compressImageFile(file, {
+          maxDimension: 2200,
+          quality: 0.72,
+          fallbackName: "hero-image"
+        });
+        const formData = new FormData();
+        formData.append("image", uploadFile);
+
+        const response = await fetch("/api/admin/hero-images", {
+          method: "POST",
+          body: formData
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Could not upload hero image.");
+        }
+
+        nextImages = data.images || nextImages;
+        setHeroImages(nextImages);
+      }
+
+      setHeroStatus(`${files.length} hero image${files.length === 1 ? "" : "s"} uploaded.`);
+    } catch (error) {
+      setHeroStatus(error instanceof Error ? error.message : "Could not upload hero image.");
+    } finally {
+      setUploadingHero(false);
+      event.target.value = "";
+    }
+  }
+
+  async function moveHeroImage(index, direction) {
+    const nextIndex = index + direction;
+    if (nextIndex < 0 || nextIndex >= heroImages.length) return;
+
+    const nextImages = [...heroImages];
+    [nextImages[index], nextImages[nextIndex]] = [nextImages[nextIndex], nextImages[index]];
+
+    const response = await fetch("/api/admin/hero-images", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ images: nextImages })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      setHeroStatus(data.error || "Could not reorder hero images.");
+      return;
+    }
+
+    setHeroImages(data.images || nextImages);
+    setHeroStatus("Hero image order updated.");
+  }
+
+  async function removeHeroImage(image, index) {
+    const confirmed = window.confirm(
+      `Permanently delete hero image ${index + 1} from Supabase? This action cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    const response = await fetch("/api/admin/hero-images", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: image })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      setHeroStatus(data.error || "Could not delete hero image.");
+      return;
+    }
+
+    setHeroImages(data.images || []);
+    setHeroStatus("Hero image deleted.");
   }
 
   async function uploadImage(event) {
     const files = Array.from(event.target.files || []);
     if (!files.length) return;
+
+    const confirmed = window.confirm(
+      `Upload ${files.length} photo${files.length === 1 ? "" : "s"} to storage?`
+    );
+    if (!confirmed) {
+      event.target.value = "";
+      return;
+    }
 
     setUploading(true);
     setStatus("");
@@ -240,6 +361,11 @@ export default function AdminPage() {
   }
 
   function removeVehiclePhoto(photo) {
+    const confirmed = window.confirm(
+      "Remove this photo from the vehicle? It will be permanently deleted after you save the vehicle."
+    );
+    if (!confirmed) return;
+
     setVehicleForm((current) => {
       const images = (current.images || []).filter((image) => image !== photo);
       return { ...current, images, image: images[0] || "" };
@@ -268,6 +394,14 @@ export default function AdminPage() {
 
   async function submitAuth(event) {
     event.preventDefault();
+
+    if (
+      session.setupRequired
+      && !window.confirm(`Create the admin account "${authForm.username.trim()}"?`)
+    ) {
+      return;
+    }
+
     setStatus("");
 
     const endpoint = session.setupRequired ? "/api/admin/setup" : "/api/admin/login";
@@ -287,18 +421,29 @@ export default function AdminPage() {
     setAuthForm({ username: "", password: "" });
     setStatus(session.setupRequired ? "Admin account created." : "Logged in.");
     loadVehicles();
+    loadHeroImages();
   }
 
   async function logout() {
+    const confirmed = window.confirm("Log out of the admin dashboard?");
+    if (!confirmed) return;
+
     await fetch("/api/admin/logout", { method: "POST" });
     setSession({ loading: false, authenticated: false, setupRequired: false });
     setVehicles([]);
-    setHistory([]);
+    setHeroImages([]);
     setStatus("Logged out.");
   }
 
   async function saveVehicle(event) {
     event.preventDefault();
+
+    const action = editingId ? "update" : "add";
+    const confirmed = window.confirm(
+      `${editingId ? "Update" : "Add"} "${vehicleForm.name.trim()}"? This will ${action} the vehicle in the live inventory.`
+    );
+    if (!confirmed) return;
+
     setStatus("");
 
     const response = await fetch(editingId ? `/api/admin/vehicles/${editingId}` : "/api/admin/vehicles", {
@@ -314,7 +459,6 @@ export default function AdminPage() {
     }
 
     setStatus(`${data.vehicle.name} saved with vehicle ID "${data.vehicle.id}".`);
-    setHistory(data.history || []);
     setVehicleForm(blankVehicle);
     setEditingId("");
     loadVehicles();
@@ -341,8 +485,12 @@ export default function AdminPage() {
   }
 
   async function deleteVehicle(vehicle) {
-    const confirmed = window.confirm(`Delete ${vehicle.name} from the admin database?`);
+    const confirmed = window.confirm(
+      `Permanently delete "${vehicle.name}" and its unused uploaded photos? This action cannot be undone.`
+    );
     if (!confirmed) return;
+
+    setStatus("");
 
     const response = await fetch(`/api/admin/vehicles/${vehicle.id}`, { method: "DELETE" });
     const data = await response.json();
@@ -353,26 +501,7 @@ export default function AdminPage() {
     }
 
     setStatus(`${vehicle.name} deleted.`);
-    setHistory(data.history || []);
     loadVehicles();
-  }
-
-  async function undoLastChange() {
-    setStatus("");
-
-    const response = await fetch("/api/admin/undo", { method: "POST" });
-    const data = await response.json();
-
-    if (!response.ok) {
-      setStatus(data.error || "Could not undo the last action.");
-      return;
-    }
-
-    setVehicles(data.vehicles || []);
-    setHistory(data.history || []);
-    setEditingId("");
-    setVehicleForm(blankVehicle);
-    setStatus(`Undid: ${data.undone}`);
   }
 
   if (session.loading) {
@@ -430,12 +559,65 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <section className="admin-history-strip">
-        <History size={18} />
-        <button className="button button-ghost" type="button" onClick={undoLastChange} disabled={history.length === 0}>
-          <Undo2 size={18} /> Undo last change
-        </button>
-        <span>{history[0] ? `Last action: ${history[0].label}` : "No actions to undo yet."}</span>
+      <section className="admin-hero-panel">
+        <div className="admin-form-title">
+          <div>
+            <p className="eyebrow">Homepage</p>
+            <h2>Hero images</h2>
+          </div>
+          <span>{heroImages.length} image{heroImages.length === 1 ? "" : "s"}</span>
+        </div>
+
+        <label className="admin-upload">
+          <span className="admin-upload-box">
+            <ImagePlus size={22} />
+            <strong>{uploadingHero ? "Compressing and uploading..." : "Upload hero images"}</strong>
+            <small>Images are resized to 2200px and compressed to WebP at 72% quality.</small>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={uploadHeroImages}
+              disabled={uploadingHero}
+              multiple
+            />
+          </span>
+        </label>
+
+        {heroImages.length > 0 && (
+          <div className="admin-hero-grid">
+            {heroImages.map((image, index) => (
+              <article key={image} className="admin-hero-image">
+                <img src={image} alt={`Homepage hero ${index + 1}`} loading="lazy" decoding="async" />
+                <div>
+                  <strong>{index === 0 ? "First slide" : `Slide ${index + 1}`}</strong>
+                  <span className="admin-image-actions">
+                    <button
+                      type="button"
+                      onClick={() => moveHeroImage(index, -1)}
+                      disabled={index === 0}
+                      aria-label="Move hero image left"
+                    >
+                      <ArrowLeft size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveHeroImage(index, 1)}
+                      disabled={index === heroImages.length - 1}
+                      aria-label="Move hero image right"
+                    >
+                      <ArrowRight size={15} />
+                    </button>
+                    <button type="button" onClick={() => removeHeroImage(image, index)}>
+                      Delete
+                    </button>
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {heroStatus && <p className="form-status">{heroStatus}</p>}
       </section>
 
       <section className="admin-grid">
@@ -552,7 +734,7 @@ export default function AdminPage() {
             <div className="admin-image-preview-grid">
               {(vehicleForm.images?.length ? vehicleForm.images : [vehicleForm.image]).map((photo, index) => (
                 <div className="admin-image-preview" key={photo}>
-                  <img src={photo} alt={`Vehicle photo ${index + 1}`} />
+                  <img src={photo} alt={`Vehicle photo ${index + 1}`} loading="lazy" decoding="async" />
                   <span>{index === 0 ? "Cover photo" : `Photo ${index + 1}`}</span>
                   <div className="admin-image-actions">
                     <button type="button" onClick={() => moveVehiclePhoto(index, -1)} disabled={index === 0} aria-label="Move photo left">
@@ -671,7 +853,7 @@ export default function AdminPage() {
           <div className="admin-vehicle-list">
             {sortedVehicles.map((vehicle) => (
               <article className="admin-vehicle-row" key={vehicle.id}>
-                <img src={vehicle.image} alt={vehicle.name} />
+                <img src={vehicle.image} alt={vehicle.name} loading="lazy" decoding="async" />
                 <div>
                   <strong>{vehicle.name}</strong>
                   <span>{vehicle.year} / {vehicle.type} / {vehicle.status || "Available"} / PHP {Number(vehicle.price).toLocaleString("en-PH")}</span>

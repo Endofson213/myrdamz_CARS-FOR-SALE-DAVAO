@@ -28,6 +28,11 @@ npm run build
 
 The server-backed admin and API routes require a Node.js deployment such as Vercel.
 
+## Supabase setup
+
+Run the SQL files in `supabase/` from the Supabase SQL Editor. The
+`add-site-settings.sql` migration enables compressed, admin-managed homepage hero images.
+
 The catalog routes each car to a static product page such as:
 
 - `/cars/fortuner-v-2023`

@@ -64,6 +64,8 @@ function ProductHeader() {
             width={45}
             height={45}
             className="brand-logo"
+            sizes="88px"
+            priority
           />
         </motion.span>
 

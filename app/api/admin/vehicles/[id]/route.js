@@ -1,8 +1,6 @@
 import {
-  createHistoryEntry,
   deleteUploadedImageIfUnused,
   normalizeVehicle,
-  pushHistory,
   readAdminDb,
   writeDb
 } from "../../../../../lib/admin-store";
@@ -43,12 +41,11 @@ export async function PUT(request, { params }) {
       if (removedImages.length) {
         await deleteUploadedImageIfUnused(removedImages, vehicles);
       }
-      return json({ vehicle, history: [], updatedAt: new Date().toISOString() });
+      return json({ vehicle, updatedAt: new Date().toISOString() });
     }
 
-    const history = pushHistory(db.history, createHistoryEntry("edit", { before, after: vehicle }));
-    const nextDb = await writeDb({ ...db, vehicles, history });
-    return json({ vehicle, history: nextDb.history, updatedAt: nextDb.updatedAt });
+    const nextDb = await writeDb({ ...db, vehicles });
+    return json({ vehicle, updatedAt: nextDb.updatedAt });
   } catch (error) {
     return vehicleError(error);
   }
@@ -71,12 +68,11 @@ export async function DELETE(request, { params }) {
     if (isSupabaseConfigured()) {
       await deleteSupabaseVehicle(id);
       await deleteUploadedImageIfUnused(deletedVehicle.images || deletedVehicle.image, vehicles);
-      return json({ ok: true, history: [], updatedAt: new Date().toISOString() });
+      return json({ ok: true, updatedAt: new Date().toISOString() });
     }
 
-    const history = pushHistory(db.history, createHistoryEntry("delete", { vehicle: deletedVehicle }));
-    const nextDb = await writeDb({ ...db, vehicles, history });
-    return json({ ok: true, history: nextDb.history, updatedAt: nextDb.updatedAt });
+    const nextDb = await writeDb({ ...db, vehicles });
+    return json({ ok: true, updatedAt: nextDb.updatedAt });
   } catch (error) {
     return vehicleError(error);
   }

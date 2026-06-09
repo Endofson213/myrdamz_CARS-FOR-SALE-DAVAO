@@ -1,8 +1,6 @@
 import {
-  createHistoryEntry,
   makeUniqueVehicleId,
   normalizeVehicle,
-  pushHistory,
   readAdminDb,
   writeDb
 } from "../../../../lib/admin-store";
@@ -19,7 +17,7 @@ export async function GET(request) {
 
   try {
     const db = await readAdminDb();
-    return json({ vehicles: db.vehicles, history: db.history, updatedAt: db.updatedAt });
+    return json({ vehicles: db.vehicles, updatedAt: db.updatedAt });
   } catch (error) {
     return vehicleError(error, 503);
   }
@@ -41,12 +39,11 @@ export async function POST(request) {
 
     if (isSupabaseConfigured()) {
       await insertSupabaseVehicle(vehicle);
-      return json({ vehicle, history: [], updatedAt: new Date().toISOString() }, 201);
+      return json({ vehicle, updatedAt: new Date().toISOString() }, 201);
     }
 
-    const history = pushHistory(db.history, createHistoryEntry("add", { vehicle }));
-    const nextDb = await writeDb({ ...db, vehicles: [vehicle, ...db.vehicles], history });
-    return json({ vehicle, history: nextDb.history, updatedAt: nextDb.updatedAt }, 201);
+    const nextDb = await writeDb({ ...db, vehicles: [vehicle, ...db.vehicles] });
+    return json({ vehicle, updatedAt: nextDb.updatedAt }, 201);
   } catch (error) {
     return vehicleError(error);
   }

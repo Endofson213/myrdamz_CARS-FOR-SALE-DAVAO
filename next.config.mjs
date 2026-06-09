@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: process.cwd(),
-  trailingSlash: true,
-  images: {
-    unoptimized: true
-  }
+  trailingSlash: true
 };
 
 export default nextConfig;
