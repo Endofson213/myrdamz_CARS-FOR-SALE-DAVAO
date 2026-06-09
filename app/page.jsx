@@ -26,13 +26,6 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { bodyTypes, formatMileage, formatPrice, getAssetPath, inventory } from "./data/vehicles";
 import logo from "./pictures/LogoMYRDAMZ.png";
-import hero1 from "./pictures/CarHeroBG.jpg";
-import hero2 from "./pictures/CarHeroBG2.jpg";
-import hero3 from "./pictures/CarHeroBG3.jpg";
-import hero4 from "./pictures/CarHeroBG4.jpg";
-import hero5 from "./pictures/CarHeroBG5.jpg";
-
-const fallbackHeroImages = [hero1, hero2, hero3, hero4, hero5].map((image) => image.src);
 
 const MESSENGER_URL = "https://www.messenger.com/t/105855237963972";
 const DEFAULT_CATALOG_PAGE_SIZE = 8;
@@ -154,7 +147,7 @@ export default function Home() {
   const [catalogPageSize, setCatalogPageSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const [catalogViewMoreSize, setCatalogViewMoreSize] = useState(DEFAULT_CATALOG_PAGE_SIZE);
   const [visibleVehicleCount, setVisibleVehicleCount] = useState(DEFAULT_CATALOG_PAGE_SIZE);
-  const [heroImages, setHeroImages] = useState(fallbackHeroImages);
+  const [heroImages, setHeroImages] = useState([]);
   const [heroIndex, setHeroIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
   const inquiryParamHandled = useRef(false);
@@ -196,7 +189,7 @@ export default function Home() {
     [filtered, visibleVehicleCount]
   );
   const remainingVehicleCount = Math.max(filtered.length - visibleVehicles.length, 0);
-  const currentHeroImage = heroImages[heroIndex] || fallbackHeroImages[0];
+  const currentHeroImage = heroImages[heroIndex] || "";
 
   useEffect(() => {
     if (heroImages.length <= 1) return undefined;
@@ -387,9 +380,9 @@ export default function Home() {
         >
           <AnimatePresence initial={false}>
             <motion.div
-              key={currentHeroImage}
+              key={currentHeroImage || "hero-fallback"}
               className="hero-bg-slide"
-              style={{ backgroundImage: `url("${currentHeroImage}")` }}
+              style={currentHeroImage ? { backgroundImage: `url("${currentHeroImage}")` } : undefined}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
